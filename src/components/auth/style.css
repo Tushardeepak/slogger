@@ -1,0 +1,136 @@
+.headerContainer {
+  width: 100vw;
+  height: 90vh;
+  position: relative;
+  /* background: 50% radial-gradient(rgba(0, 0, 0, 0.418), rgba(0, 0, 0, 0.788)),
+      url("../images/bg.jpg") no-repeat center center/cover !important; */
+}
+
+.tabIconDoor {
+  width: 2.8125rem;
+  height: 2.8125rem;
+  fill: rgb(153, 153, 153);
+  margin-bottom: 0.11rem;
+}
+
+.tabIconDevice {
+  width: 9.6875rem;
+  height: 9.6875rem;
+  fill: rgb(153, 153, 153);
+}
+
+.tabIconPrice {
+  width: 4.375rem;
+  height: 4.375rem;
+  fill: rgb(153, 153, 153);
+}
+
+.tabsNavContainer {
+  padding: 0 5rem;
+  padding-top: 1rem;
+  background-color: rgb(27, 27, 27);
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
+  list-style: none;
+  color: rgb(153, 153, 153) !important;
+  border-bottom: grey 1px solid;
+}
+ul li:hover {
+  color: #fff;
+  cursor: pointer;
+}
+ul li:hover svg path {
+  fill: #fff;
+}
+ul li svg path {
+  outline: none;
+}
+.activeIconTab {
+  border-bottom: 4px solid red;
+  border-radius: 2px;
+  color: #fff !important;
+}
+.nullBorder {
+  border-bottom: 4px solid rgb(27, 27, 27);
+}
+.activeIconTab svg path {
+  fill: #fff;
+}
+.main::-webkit-scrollbar {
+  display: none;
+}
+.mdScreenText {
+  display: none;
+}
+
+@media screen and (max-width: 740px) {
+  .tabIconDoor {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .tabIconDevice {
+    width: 5.6875rem;
+    height: 5.6875rem;
+    margin-bottom: -3.145rem;
+  }
+
+  .tabIconPrice {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .tabsNavContainer {
+    padding: 0 2rem;
+    padding-top: 0.5rem;
+  }
+  .mdScreenText {
+    display: flex;
+    justify-content: center;
+  }
+  .hideMdScreen {
+    display: none;
+  }
+}
+
+/*:::::::::::::::::::::::::::::::::::::::::*/
+
+.signUpVideo {
+  width: 100%;
+  height: 100vh;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 1140px) {
+  .signUpVideo {
+    width: 100%;
+    height: 100vh;
+    margin-left: -290px;
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+}
+
+/* @media screen and (max-height: 500px) {
+  .footer {
+    padding-top: 2rem !important;
+    bottom: -2rem !important;
+    line-height: 1rem !important;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  img {
+    margin-top: 0 !important;
+  }
+  .signUpFormBottom {
+    margin-top: 50px !important;
+  }
+} */
+.c {
+  color: rgb(1, 112, 75);
+}
