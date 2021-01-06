@@ -16,6 +16,7 @@ import TeamTodo from "../todo/TeamTodo";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import News from "../todo/News";
+import { generateMedia } from "styled-media-query";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -81,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Home() {
+function Home(props) {
   const { currentUser, logOut } = useAuth();
   const history = useHistory();
 
@@ -118,7 +119,7 @@ function Home() {
           <PersonalTodo />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <TeamTodo />
+          <TeamTodo UrlTeamName={props.match.params.teamName} />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <News />
@@ -152,12 +153,20 @@ function Home() {
 
 export default Home;
 
+const customMedia = generateMedia({
+  lgDesktop: "1350px",
+  mdDesktop: "1150px",
+  tablet: "960px",
+  smTablet: "740px",
+});
+
 const HomeContainer = styled.div`
   width: 100%;
   height: 100vh;
   background-color: rgb(5, 185, 125, 0.835);
   padding: 4rem 5%;
   padding-bottom: 1rem;
+  overflow: hidden;
 
   .mainPaper {
     position: relative;
@@ -171,7 +180,7 @@ const HomeContainer = styled.div`
     position: absolute;
     top: 0rem;
     left: 0;
-    transform: scale(1.4);
+    transform: scale(1);
     z-index: -1;
   }
   .svgDown {
@@ -179,7 +188,7 @@ const HomeContainer = styled.div`
     position: absolute;
     bottom: 0;
     left: 0;
-    transform: scale(2);
+    transform: scale(1);
     z-index: -1;
   }
 `;

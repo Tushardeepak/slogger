@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import SignUp from "./components/auth/SignUp";
 import Home from "./components/home/Home";
+import TeamTodo from "./components/todo/TeamTodo";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./PrivateRoute";
 
@@ -12,8 +13,8 @@ function App() {
         <AuthProvider>
           <Switch>
             <Route exact path="/signUp" component={SignUp} />
-
             <PrivateRoute exact path="/" component={Home} />
+            <PrivateRoute path="/:teamName" component={Home} />
           </Switch>
         </AuthProvider>
       </Router>

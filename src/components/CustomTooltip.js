@@ -7,7 +7,7 @@ const CustomTooltip = withStyles(() => ({
     fontWeight: 400,
     background: "rgb(5, 185, 125)",
     color: "#fff",
-    marginBottom: "-0.5rem",
+    marginBottom: "0rem",
   },
   arrow: {
     color: "rgb(5, 185, 125)",

@@ -30,6 +30,14 @@ function NavBar() {
     "November",
     "December",
   ];
+  var weekday = new Array(7);
+  weekday[0] = "Sunday";
+  weekday[1] = "Monday";
+  weekday[2] = "Tuesday";
+  weekday[3] = "Wednesday";
+  weekday[4] = "Thursday";
+  weekday[5] = "Friday";
+  weekday[6] = "Saturday";
   useEffect(() => {
     let x = new Date().getDate();
     x = x % 10;
@@ -59,6 +67,7 @@ function NavBar() {
             </span>
             {", "}
             {new Date().getFullYear()}
+            {", "}&nbsp;<span>{weekday[new Date().getDay()]}</span>
           </h2>
         </NavBarDateBox>
       </NavLinksContainer>
@@ -107,8 +116,11 @@ const NavBarStartIcon = styled.div`
     object-fit: contain;
 
     ${customMedia.lessThan("smTablet")`
-       transform: scale(2.2);
-       padding-left: 1.7rem;
+      width: 6rem;
+    height: 2rem;
+    padding:0;
+    padding-left: 0.5rem;
+
     `};
   }
   ${customMedia.lessThan("smTablet")`
@@ -121,6 +133,7 @@ const NavBarStartIcon = styled.div`
     width: 2px;
     height: 3rem;
     margin: 1rem;
+    transform: scale(0.7);
   }
 `;
 const NavLinksContainer = styled.div`
@@ -134,19 +147,19 @@ const NavBarDateBox = styled.div`
   font-family: "Bebas Neue", cursive;
   font-size: 0.9rem;
   ${customMedia.lessThan("smTablet")`
-         font-size: 0.7rem;
+         font-size: 0.5rem;
     `};
   span {
     color: rgb(0, 128, 85) !important;
     font-size: 2rem;
     ${customMedia.lessThan("smTablet")`
-         font-size: 1.5rem;
+         font-size: 1.1rem;
     `};
   }
   sup {
     font-size: 1rem !important;
     ${customMedia.lessThan("smTablet")`
-         font-size: 0.5rem;
+         font-size: 0.5rem !important;
     `};
   }
 `;

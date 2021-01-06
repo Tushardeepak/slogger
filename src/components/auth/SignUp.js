@@ -7,14 +7,14 @@ import { useAuth } from "../../context/AuthContext";
 import { useHistory } from "react-router-dom";
 import { db } from "../../firebase";
 import signUpVideo from "../../assets/videos/Gaulois.mp4";
-import signUpImage from "../../assets/images/signupSlogger.png";
+import signUpImage from "../../assets/images/signUpSlogger.png";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import LockIcon from "@material-ui/icons/Lock";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import CustomTooltip from "../CustomTooltip";
-import signUpLoader from "../../assets/images/signupLoader.gif";
+import signUpLoader from "../../assets/images/signUpLoader.gif";
 
 function SignUp() {
   const [authToggle, setAuthToggle] = useState(false);
@@ -400,14 +400,14 @@ const SignUpContainer = styled.div`
     background-color: #fff;
     z-index: 1000;
     opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .signUpLoader {
     object-fit: contain;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    transform: scale(0.6);
   }
 `;
 
