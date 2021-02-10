@@ -4,6 +4,14 @@
   font-weight: 600 !important;
   background-color: rgb(5, 185, 125) !important;
   margin: 0.5rem !important;
+  overflow: hidden !important;
+}
+.addButtonDisabled {
+  width: 95.5% !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  background-color: rgba(5, 185, 125, 0.418) !important;
+  margin: 0.5rem !important;
 }
 .addButton:hover {
   background-color: rgb(5, 185, 125) !important;
@@ -37,4 +45,57 @@
 .input::placeholder {
   color: rgb(3, 185, 124);
   font-size: 1rem;
+}
+.stopWatchBox {
+  height: 12rem;
+  width: 12rem;
+  border-radius: 50%;
+  border: 3px solid rgb(0, 90, 60);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stopWatchBoxStart {
+  position: relative;
+  height: 12rem;
+  width: 12rem;
+  border-radius: 50%;
+  /* border: 3px solid rgb(0, 90, 60); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stopWatchBoxStart::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border-top: 4px solid rgb(0, 90, 60);
+  border-right: 4px solid rgb(0, 90, 60);
+  border-radius: 50%;
+  animation: animate 2s linear infinite;
+}
+@keyframes animate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.time {
+  color: rgb(0, 90, 60);
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+.timeBtn {
+  color: #fff !important;
+  font-weight: 600 !important;
+  background-color: rgb(5, 185, 125) !important;
+  margin: 0.2rem !important;
 }

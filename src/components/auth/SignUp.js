@@ -54,7 +54,7 @@ function SignUp() {
           lastName: lastName,
         });
         setLoader(false);
-        history.push("/");
+        history.push("/home");
       } catch (error) {
         console.log(error);
       }
@@ -68,7 +68,7 @@ function SignUp() {
       try {
         setLoader(true);
         await signIn(email, password);
-        history.push("/");
+        history.push("/home");
         setLoader(false);
       } catch (error) {
         console.log(error);
@@ -485,6 +485,7 @@ const SignUpForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 
   ${customMedia.lessThan("tablet")`
   margin: 40px auto;
@@ -521,6 +522,7 @@ const SignUpForm = styled.div`
     margin: 0.5rem;
     display: flex;
     align-items: center;
+    overflow: hidden;
   }
   input {
     width: 100%;

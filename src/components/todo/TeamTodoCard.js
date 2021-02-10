@@ -4,11 +4,12 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useAuth } from "../../context/AuthContext";
-import { db } from "../../firebase";
+import { db, storage } from "../../firebase";
 import moment from "moment";
 import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
+import { Button } from "@material-ui/core";
 
 function TeamTodoCard({
   id,
@@ -18,6 +19,7 @@ function TeamTodoCard({
   admin,
   urlTeamName,
   assigned,
+  todoImage,
 }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
@@ -36,6 +38,21 @@ function TeamTodoCard({
   };
 
   const handleDelete = (id) => {
+    if (todoImage !== "") {
+      // Create a reference to the file to delete
+      var desertRef = storage.refFromURL(todoImage);
+
+      // Delete the file
+      desertRef
+        .delete()
+        .then(function () {
+          console.log("File deleted successfully");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+
     db.collection("teams")
       .doc(urlTeamName)
       .collection("teamTodos")
@@ -65,6 +82,34 @@ function TeamTodoCard({
 
   const emptyFunction = () => {};
 
+  const onSelectFile = async (event) => {
+    try {
+      const image = event.target.files[0];
+      const uploadTask = await storage
+        .ref(`todoImages/${image.name}`)
+        .put(image);
+      storage
+        .ref("todoImages")
+        .child(image.name)
+        .getDownloadURL()
+        .then((url) => {
+          console.log(url);
+          db.collection("teams")
+            .doc(urlTeamName)
+            .collection("teamTodos")
+            .doc(id)
+            .set(
+              {
+                todoImage: url,
+              },
+              { merge: true }
+            );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <TodoMainCard>
       <TodoStartIcon>
@@ -85,33 +130,123 @@ function TeamTodoCard({
 
       <TodoTextBox>
         <div style={{ display: "flex" }}>
-          <div className="inputField">
-            <p className="assignedTo">Assigned to :</p>
-            <input
-              value={assignedTo}
-              className="todoInput"
-              type="text"
-              onChange={
-                admin === currentUser.uid
-                  ? (e) => handleInputChange(e.target.value)
-                  : () => emptyFunction()
-              }
-              // onKeyDown={(e) => handleSubmitEnter(e)}
-            />
-            {admin === currentUser.uid ? (
-              <GroupAddIcon
-                className="todoIcon"
-                onClick={() => handleAssignedSubmit()}
+          <div style={{ width: "100%", flex: "0.85" }}>
+            <div className="inputField">
+              <p className="assignedTo">Assigned to :</p>
+              <input
+                value={assignedTo}
+                className="todoInput"
+                type="text"
+                onChange={
+                  admin === currentUser.uid
+                    ? (e) => handleInputChange(e.target.value)
+                    : () => emptyFunction()
+                }
+                // onKeyDown={(e) => handleSubmitEnter(e)}
               />
-            ) : (
-              ""
-            )}
+              {admin === currentUser.uid ? (
+                <GroupAddIcon
+                  className="todoIcon"
+                  onClick={() => handleAssignedSubmit()}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+            <div style={{ display: "flex" }}>
+              {admin === currentUser.uid ? (
+                <div style={{ flex: "0.5" }}>
+                  {" "}
+                  <input
+                    hidden
+                    id="profile-image-file"
+                    type="file"
+                    accept="image/*"
+                    onChange={onSelectFile}
+                  />
+                  <Button
+                    style={{
+                      width: "98%",
+                      fontSize: "0.7rem",
+                      height: "1.5rem",
+                      color: "#fff",
+                      fontWeight: 600,
+                      backgroundColor: "rgb(5, 185, 125)",
+                      marginBottom: "0.5rem",
+                    }}
+                    onClick={() => {
+                      document.getElementById("profile-image-file").click();
+                    }}
+                  >
+                    Upload Image
+                  </Button>
+                </div>
+              ) : (
+                ""
+                // <div style={{ flex: "0.5" }}>
+                //   {todoImage !== "" ? (
+                //     <a
+                //       href={todoImage}
+                //       download
+                //       target="_blank"
+                //       style={{ textDecoration: "none" }}
+                //     >
+                //       <Button
+                //         style={{
+                //           width: "95%",
+                //           fontSize: "0.7rem",
+                //           height: "1.5rem",
+                //           color: "#fff",
+                //           fontWeight: 600,
+                //           backgroundColor: "rgb(5, 185, 125)",
+
+                //           marginBottom: "0.5rem",
+                //         }}
+                //       >
+                //         Download Image
+                //       </Button>
+                //     </a>
+                //   ) : (
+                //     ""
+                //   )}
+                // </div>
+              )}
+
+              <div style={{ flex: "0.5" }}>
+                {todoImage !== "" ? (
+                  <a
+                    href={todoImage}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Button
+                      style={{
+                        width: "95%",
+                        fontSize: "0.7rem",
+                        height: "1.5rem",
+                        color: "#fff",
+                        fontWeight: 600,
+                        backgroundColor: "rgb(5, 185, 125)",
+
+                        marginBottom: "0.5rem",
+                      }}
+                    >
+                      View Image
+                    </Button>
+                  </a>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
           </div>
+
           <p
             className="todoDate"
             style={{
               color: "rgba(0, 99, 66, 0.668)",
               paddingBottom: "0.3rem",
+              flex: "0.15",
             }}
           >
             {date.substring(8, 10)}
@@ -130,7 +265,7 @@ function TeamTodoCard({
             verticalAlign: "center",
             height: "auto",
             // lineHeight: "30px",
-            marginTop: "-4px",
+            marginTop: "-5px",
           }}
         >
           {text}
@@ -157,7 +292,7 @@ const customMedia = generateMedia({
 });
 
 const TodoMainCard = styled.div`
-  margin: 0.4rem 0rem;
+  margin: 1rem 0rem;
   box-shadow: 0px 1px 5px rgb(0, 129, 86);
   background-color: rgb(231, 250, 243);
   border-radius: 10px;
@@ -226,6 +361,7 @@ const TodoTextBox = styled.div`
     padding-left: 0.5rem;
     margin: 0.2rem;
     margin-bottom: 0.2rem;
+    margin-left: 0;
     display: flex;
     align-items: center;
     flex: 0.9;

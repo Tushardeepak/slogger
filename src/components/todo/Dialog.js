@@ -101,6 +101,7 @@ export default function AddingTeamModal({ open, handleClose, make }) {
     db.collection("teams").doc(inputTeamName).set(
       {
         admin: currentUser.uid,
+        teamDeleted: false,
       },
       { merge: true }
     );

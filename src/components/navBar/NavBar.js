@@ -6,13 +6,16 @@ import styled from "styled-components";
 import navIcon from "../../assets/images/navIcon.png";
 import { generateMedia } from "styled-media-query";
 
-function NavBar() {
+function NavBar({ page }) {
   const [sup, setSup] = useState("");
   const { currentUser, logOut } = useAuth();
   const history = useHistory();
 
   const handleSignOut = async () => {
     await logOut();
+    history.push("/signUp");
+  };
+  const handleSignup = () => {
     history.push("/signUp");
   };
 
@@ -51,10 +54,11 @@ function NavBar() {
       setSup("th");
     }
   }, []);
-  return (
+  return page === 1 ? (
     <NavBarContainer>
-      <NavBarStartIcon>
-        <img src={navIcon} className="navIcon" alt="SLOGGER" />
+      <NavBarStartIcon onClick={() => history.push("/slogger")}>
+        {/* <img src={navIcon} className="navIcon" alt="SLOGGER" /> */}
+        <h1>SLOGGER</h1>
         <hr className="navLogoRightLine" />
       </NavBarStartIcon>
       <NavLinksContainer>
@@ -75,6 +79,16 @@ function NavBar() {
         <Button onClick={() => handleSignOut()}>Log Out</Button>
       </NavBarEndContainer>
     </NavBarContainer>
+  ) : (
+    <NavBarContainer0Page>
+      <NavBarStartIcon>
+        <h2>SLOGGER</h2>
+      </NavBarStartIcon>
+      <NavLinksContainer></NavLinksContainer>
+      <NavBarEndContainer0Page>
+        <Button onClick={() => handleSignup()}>sign up</Button>
+      </NavBarEndContainer0Page>
+    </NavBarContainer0Page>
   );
 }
 
@@ -102,13 +116,40 @@ const NavBarContainer = styled.div`
   background: #fff;
   backdrop-filter: blur(0.3px);
   -webkit-backdrop-filter: blur(0.3px);
-
   box-shadow: 0px 5px 5px rgb(0, 85, 57);
+
+  h1 {
+    margin-left: 2rem;
+    color: rgb(0, 90, 60);
+  }
+`;
+
+const NavBarContainer0Page = styled.div`
+  overflow: hidden;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 3rem;
+  top: 0rem;
+  left: 0;
+  position: fixed;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+
+  h2 {
+    margin-left: 2rem;
+    color: #272142;
+  }
 `;
 const NavBarStartIcon = styled.div`
   flex: 0.2;
   display: flex;
   align-items: center;
+  cursor: pointer;
   .navIcon {
     width: 10rem;
     height: 2.5rem;
@@ -137,7 +178,7 @@ const NavBarStartIcon = styled.div`
   }
 `;
 const NavLinksContainer = styled.div`
-  flex: 0.6;
+  flex: 0.75;
   ${customMedia.lessThan("smTablet")`
         flex: 0.4;
     `};
@@ -178,12 +219,39 @@ const NavBarEndContainer = styled.div`
     color: #fff;
     font-weight: 600;
     transition: all 0.5s ease-in-out;
-    border-radius: 2rem;
+    border-radius: 0.5rem;
     font-size: 0.65rem;
     &:hover {
       background-color: #fff;
       color: rgb(5, 185, 125);
       border: 2px solid rgb(5, 185, 125);
+    }
+    ${customMedia.lessThan("smTablet")`
+         font-size: 0.55rem;
+    `};
+  }
+`;
+const NavBarEndContainer0Page = styled.div`
+  flex: 0.2;
+  display: flex;
+  justify-content: flex-end;
+  ${customMedia.lessThan("smTablet")`
+        flex: 0.3;
+    `};
+
+  Button {
+    margin: 2rem;
+    background-color: transparent;
+    border: 2px solid transparent;
+    color: #272142;
+    font-weight: 600;
+    transition: all 0.5s ease-in-out;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    &:hover {
+      background-color: transparent;
+      color: #272142;
+      border: 2px solid #272142;
     }
     ${customMedia.lessThan("smTablet")`
          font-size: 0.55rem;

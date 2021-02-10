@@ -8,6 +8,7 @@ const CustomTooltip = withStyles(() => ({
     background: "rgb(5, 185, 125)",
     color: "#fff",
     marginBottom: "0rem",
+    overflow: "hidden",
   },
   arrow: {
     color: "rgb(5, 185, 125)",
