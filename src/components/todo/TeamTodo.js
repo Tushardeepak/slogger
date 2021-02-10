@@ -21,6 +21,9 @@ import green from "@material-ui/core/colors/green";
 import CustomTooltip from "../CustomTooltip";
 import firebase from "firebase";
 import TeamTodoCard from "./TeamTodoCard";
+import noTeamTodoImage from "../../assets/images/noTeamTodo.svg";
+import noTodoJoinTeam from "../../assets/images/noTodoJoinTeam.svg";
+import deletedTeam from "../../assets/images/deletedTeam.svg";
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -31,11 +34,12 @@ const defaultMaterialTheme = createMuiTheme({
 });
 
 function TeamTodo({ UrlTeamName }) {
-  const [open, setOpen] = useState(false);
+  const [openMaker, setOpenMaker] = useState(false);
   const [make, setMake] = useState(false);
   const [selectedDate, handleDateChange] = useState(new Date());
   const [inputTodo, setInputTodo] = useState("");
   const [thisIsAdmin, setThisIsAdmin] = useState(false);
+  const [deleteTeam, setDeleteTeam] = useState(false);
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
   const [teams, setTeams] = useState([]);
@@ -50,28 +54,51 @@ function TeamTodo({ UrlTeamName }) {
 
   const handleClickMakeTeam = () => {
     setMake(true);
-    setOpen(true);
+    setOpenMaker(true);
   };
 
   const handleClickJoinTeam = () => {
     setMake(false);
-    setOpen(true);
+    setOpenMaker(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenMaker(false);
   };
 
   const handleSubmit = () => {
-    db.collection("teams").doc(UrlTeamName).collection("teamTodos").add({
-      todoText: inputTodo,
-      todoTime: selectedDate.toISOString(),
-      timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-      admin: currentUser.uid,
-      checked: false,
-      assignedTo: "",
-    });
-    setInputTodo("");
+    if (inputTodo !== "") {
+      db.collection("teams").doc(UrlTeamName).collection("teamTodos").add({
+        todoText: inputTodo,
+        todoTime: selectedDate.toISOString(),
+        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+        admin: currentUser.uid,
+        checked: false,
+        assignedTo: "",
+        todoImage: "",
+      });
+      setInputTodo("");
+      setLoader(false);
+    }
+  };
+
+  const handleSubmitEnter = async (event) => {
+    if (
+      (inputTodo !== "" && event.code === "Enter") ||
+      event.code === "NumpadEnter"
+    ) {
+      db.collection("teams").doc(UrlTeamName).collection("teamTodos").add({
+        todoText: inputTodo,
+        todoTime: selectedDate.toISOString(),
+        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+        admin: currentUser.uid,
+        checked: false,
+        assignedTo: "",
+        todoImage: "",
+      });
+      setInputTodo("");
+      setLoader(false);
+    }
   };
 
   React.useEffect(() => {
@@ -87,6 +114,7 @@ function TeamTodo({ UrlTeamName }) {
           todoTime: doc.data().todoTime,
           checked: doc.data().checked,
           assignedTo: doc.data().assignedTo,
+          todoImage: doc.data().todoImage,
         }));
         setTeamsTodoList(list);
       });
@@ -126,9 +154,11 @@ function TeamTodo({ UrlTeamName }) {
       const tempTeamList = snapshot.docs.map((doc) => ({
         id: doc.id,
         admin: doc.data().admin,
+        teamDeleted: doc.data().teamDeleted,
       }));
       tempTeamList.filter((team) => {
         if (team.id === UrlTeamName) {
+          setDeleteTeam(team.teamDeleted);
           if (team.admin === currentUser.uid) {
             setThisIsAdmin(true);
           }
@@ -144,10 +174,11 @@ function TeamTodo({ UrlTeamName }) {
             <Button className="addButton" onClick={() => handleClickMakeTeam()}>
               Make a team
             </Button>
-            <h3>My Teams</h3>
+            <h3 style={{ overflow: "hidden" }}>My Teams</h3>
             <MyTeamContainer>
               {teams.map((team) => (
                 <TeamCard
+                  id={team.id}
                   teamName={team.teamName}
                   UrlTeamName={UrlTeamName}
                 ></TeamCard>
@@ -158,10 +189,11 @@ function TeamTodo({ UrlTeamName }) {
             <Button className="addButton" onClick={() => handleClickJoinTeam()}>
               Join a team
             </Button>
-            <h3>Joined Teams</h3>
+            <h3 style={{ overflow: "hidden" }}>Joined Teams</h3>
             <MyTeamContainer>
               {joinedTeams.map((team) => (
                 <TeamCard
+                  id={team.id}
                   teamName={team.teamName}
                   UrlTeamName={UrlTeamName}
                 ></TeamCard>
@@ -180,10 +212,16 @@ function TeamTodo({ UrlTeamName }) {
                   type="text"
                   placeholder="Write here..."
                   onChange={(e) => handleInputChange(e.target.value)}
-                  // onKeyDown={(e) => handleSubmitEnter(e)}
+                  onKeyDown={(e) => handleSubmitEnter(e)}
                 />
               </div>
-              <div style={{ display: "flex", padding: "0 0.3rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  paddingLeft: "0 0rem",
+                  width: "100%",
+                }}
+              >
                 <MuiPickersUtilsProvider utils={MomentUtils}>
                   <CustomTooltip title="Enter date" placement="top" arrow>
                     <div className="dateBox">
@@ -224,41 +262,127 @@ function TeamTodo({ UrlTeamName }) {
                 justifyContent: "center",
                 alignItems: "center",
                 color: "rgb(5, 185, 125)",
-                padding: "1rem 0rem",
+                padding: "1.4rem 0rem",
+                borderBottom: "2px solid rgba(0, 141, 94, 0.295)",
               }}
             >
               <h1>SLOGGER</h1>
             </div>
           )}
+          {teamsTodoList.length === 0 ? (
+            thisIsAdmin ? (
+              <div
+                style={{
+                  height: "80%",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  objectFit: "contain",
+                }}
+              >
+                <img
+                  src={noTeamTodoImage}
+                  style={{ height: "15rem", width: "15rem" }}
+                />
+                <h3 style={{ color: "rgba(0, 141, 94, 0.695)" }}>
+                  NO WORK TO DO
+                </h3>{" "}
+                <h4 style={{ color: "rgba(0, 141, 94, 0.695)" }}>ADD SOME</h4>{" "}
+                <br />
+                <h6
+                  style={{
+                    color: "rgba(0, 141, 94, 0.695)",
+                    cursor: "pointer",
+                  }}
+                >
+                  Need Help?
+                </h6>{" "}
+              </div>
+            ) : deleteTeam ? (
+              <div
+                style={{
+                  height: "80%",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  objectFit: "contain",
+                }}
+              >
+                <img
+                  src={deletedTeam}
+                  style={{ height: "15rem", width: "15rem" }}
+                />
+                <h4 style={{ color: "rgba(0, 141, 94, 0.695)" }}>
+                  THIS TEAM WAS DELETED BY THE ADMIN
+                </h4>{" "}
+                <br />
+                <h6
+                  style={{
+                    color: "rgba(0, 141, 94, 0.695)",
+                    cursor: "pointer",
+                  }}
+                >
+                  Need Help?
+                </h6>{" "}
+              </div>
+            ) : (
+              <div
+                style={{
+                  height: "80%",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  objectFit: "contain",
+                }}
+              >
+                <img
+                  src={noTodoJoinTeam}
+                  style={{ height: "15rem", width: "15rem" }}
+                />
+                <h4 style={{ color: "rgba(0, 141, 94, 0.695)" }}>
+                  NO WORK TO DO, WE WILL UPDATE IF THERE WILL BE ANY
+                </h4>{" "}
+                <h5 style={{ color: "rgba(0, 141, 94, 0.695)" }}>
+                  TILL THEN SIT BACK AND RELAX
+                </h5>{" "}
+                <br />
+                <h6
+                  style={{
+                    color: "rgba(0, 141, 94, 0.695)",
+                    cursor: "pointer",
+                  }}
+                >
+                  Need Help?
+                </h6>{" "}
+              </div>
+            )
+          ) : (
+            ""
+          )}
 
-          <div
-            style={{
-              padding: "1rem",
-              overflowY: "scroll",
-              background: " rgba(224, 255, 245, 0.781)",
-              width: "94%",
-              height: "72%",
-              display: "flex",
-              flexDirection: "column",
-              borderTop: "2px solid rgba(0, 141, 94, 0.295)",
-            }}
-          >
-            {teamsTodoList.map((todo) => (
-              <TeamTodoCard
-                id={todo.id}
-                text={todo.todoText}
-                date={todo.todoTime}
-                checked={todo.checked}
-                admin={todo.admin}
-                urlTeamName={UrlTeamName}
-                assigned={todo.assignedTo}
-              />
-            ))}
-          </div>
+          {teamsTodoList.map((todo) => (
+            <TeamTodoCard
+              id={todo.id}
+              text={todo.todoText}
+              date={todo.todoTime}
+              checked={todo.checked}
+              admin={todo.admin}
+              urlTeamName={UrlTeamName}
+              assigned={todo.assignedTo}
+              todoImage={todo.todoImage}
+            />
+          ))}
         </TeamTodoRightContainer>
       </TeamTodoContainer>
-      {open && (
-        <AddingTeamModal open={open} handleClose={handleClose} make={make} />
+      {openMaker && (
+        <AddingTeamModal
+          open={openMaker}
+          handleClose={handleClose}
+          make={make}
+        />
       )}
     </div>
   );
@@ -284,6 +408,7 @@ const TeamTodoLeftContainer = styled.div`
   flex: 0.5;
   border-right: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
+  overflow: hidden;
 `;
 
 const TeamTodoLeftLeftBox = styled.div`
@@ -343,11 +468,14 @@ const TeamTodoLeftRightBox = styled.div`
 `;
 const TeamTodoRightContainer = styled.div`
   flex: 0.5;
+  overflow-y: scroll;
+  padding: 0 1rem;
 `;
 
 const TodoRightUpBox = styled.div`
   display: flex;
   flex-direction: column;
+  border-bottom: 2px solid rgba(0, 141, 94, 0.295);
 
   ${customMedia.lessThan("smTablet")`
 
@@ -355,14 +483,13 @@ const TodoRightUpBox = styled.div`
   `}
 
   .inputField {
-    width: 95%;
+    width: 100%;
     height: 1.7rem;
     background-color: rgba(3, 185, 124, 0.308);
     border-radius: 5px;
     border: none;
-    padding: 0.2rem;
-    padding-left: 0.5rem;
-    margin: 0.5rem;
+    padding: 0.2rem 0;
+    margin: 0.5rem 0;
     margin-bottom: 0.2rem;
     display: flex;
     align-items: center;
@@ -380,7 +507,7 @@ const TodoRightUpBox = styled.div`
     color: rgb(0, 90, 60);
     font-size: 0.7rem;
     flex: 0.95;
-    padding-left: 0.5rem;
+    padding-left: 0rem;
 
     ${customMedia.lessThan("smTablet")`
       font-size:0.5rem;
@@ -417,7 +544,8 @@ const TodoRightUpBox = styled.div`
     border: none;
     border-radius: 5px;
     padding: 0.4rem;
-    margin: 0.2rem;
+    margin: 0.2rem 0;
+    margin-right: 0.2rem;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -431,11 +559,15 @@ const TodoRightUpBox = styled.div`
     color: #fff;
     font-weight: 600;
     background-color: rgb(5, 185, 125);
-    margin: 0.2rem;
+    margin: 0.2rem 0;
 
     ${customMedia.lessThan("smTablet")`
      margin: 0rem;
     `};
+  }
+
+  .AddButton:hover {
+    background-color: rgb(5, 185, 125);
   }
   .AddButtonDisabled {
     opacity: 0.7;

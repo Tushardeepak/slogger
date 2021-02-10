@@ -23,7 +23,7 @@ import { useAuth } from "../../context/AuthContext";
 import TodoCard from "./TodoCard";
 import noTodoImg from "../../assets/images/noTodo.svg";
 import TeamTodo from "./TeamTodo";
-import News from "./News";
+import News from "./SlogPage";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import HashLoader from "react-spinners";
@@ -205,7 +205,7 @@ function PersonalTodo() {
               <ThemeProvider theme={defaultMaterialTheme}>
                 <DateTimePicker
                   variant="inline"
-                  label="Add time"
+                  // label="Add time"
                   value={selectedDate}
                   onChange={handleDateChange}
                   style={{
@@ -234,7 +234,15 @@ function PersonalTodo() {
           {todoLength !== 0 ? (
             <DonutChart todoLength={todoLength} />
           ) : (
-            <p style={{ fontWeight: 600, padding: "1rem" }}>NO ITEMS</p>
+            <h3
+              style={{
+                fontWeight: 600,
+                padding: "1rem",
+                color: "rgba(0, 141, 94, 0.695)",
+              }}
+            >
+              NO ITEMS
+            </h3>
           )}
         </TodoLeftDownBox>
       </TodoLeftContainer>
@@ -286,7 +294,24 @@ function PersonalTodo() {
           ) : (
             <NoTodo>
               <img src={noTodoImg} className="noTodo"></img>
-              <p style={{ fontWeight: 600 }}>NO ITEMS</p>
+              <h3
+                style={{
+                  fontWeight: 600,
+                  padding: "1rem",
+                  color: "rgba(0, 141, 94, 0.695)",
+                }}
+              >
+                NO ITEMS
+              </h3>
+              <h5
+                style={{
+                  fontWeight: 600,
+                  color: "rgba(0, 141, 94, 0.695)",
+                  cursor: "pointer",
+                }}
+              >
+                Need Help?
+              </h5>
             </NoTodo>
           )}
         </TabPanel>
@@ -362,6 +387,7 @@ const TodoContainer = styled.div`
   height: 87%;
   position: absolute;
   display: flex;
+  overflow: hidden;
 
   ${customMedia.lessThan("smTablet")`
       flex-direction:column;
@@ -452,6 +478,7 @@ const TodoLeftUpBox = styled.div`
     `};
   }
   .dateBox {
+    overflow: hidden;
     width: 88%;
     height: 2rem;
     background-color: rgba(3, 185, 124, 0.308);
@@ -473,10 +500,12 @@ const TodoLeftUpBox = styled.div`
     font-weight: 600;
     background-color: rgb(5, 185, 125);
     margin: 0.5rem;
-
     ${customMedia.lessThan("smTablet")`
      margin: 0rem;
     `};
+  }
+  .AddButton:hover {
+    background-color: rgb(5, 185, 125);
   }
   .AddButtonDisabled {
     opacity: 0.7;
