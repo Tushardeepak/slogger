@@ -30,6 +30,7 @@ import HashLoader from "react-spinners";
 import DonutChart from "./DonutChart";
 import firebase from "firebase";
 import { generateMedia } from "styled-media-query";
+import { useHistory } from "react-router-dom";
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -112,6 +113,7 @@ function PersonalTodo() {
   const [loader, setLoader] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [todoLength, setTodoLength] = useState(0);
+  const history = useHistory();
 
   const { currentUser } = useAuth();
 
@@ -309,6 +311,7 @@ function PersonalTodo() {
                   color: "rgba(0, 141, 94, 0.695)",
                   cursor: "pointer",
                 }}
+                onClick={() => history.push("/help")}
               >
                 Need Help?
               </h5>
@@ -433,6 +436,7 @@ const TodoLeftUpBox = styled.div`
     margin: 0.5rem;
     display: flex;
     align-items: center;
+    overflow: hidden;
     ${customMedia.lessThan("smTablet")`
          margin:0;
          height: 3rem;
@@ -448,6 +452,7 @@ const TodoLeftUpBox = styled.div`
     font-size: 1rem;
     flex: 0.9;
     padding-left: 0.5rem;
+    overflow: hidden;
 
     ${customMedia.lessThan("smTablet")`
       font-size:0.7rem;
@@ -500,6 +505,7 @@ const TodoLeftUpBox = styled.div`
     font-weight: 600;
     background-color: rgb(5, 185, 125);
     margin: 0.5rem;
+    overflow: hidden;
     ${customMedia.lessThan("smTablet")`
      margin: 0rem;
     `};
@@ -517,6 +523,7 @@ const TodoLeftUpBox = styled.div`
   }
 `;
 const TodoLeftDownBox = styled.div`
+  overflow: hidden;
   flex: 0.5 !important;
   ${customMedia.lessThan("smTablet")`
   flex: 0.5;

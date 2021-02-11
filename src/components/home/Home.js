@@ -172,7 +172,7 @@ const HomeContainer = styled.div`
   background-color: rgb(5, 185, 125, 0.835);
   padding: 4rem 3.8%;
   padding-bottom: 1rem;
-  overflow: hidden;
+  overflow: hidden !important;
 
   .mainPaper {
     position: relative;

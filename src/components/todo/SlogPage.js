@@ -1,4 +1,12 @@
-import { Button } from "@material-ui/core";
+import {
+  Button,
+  useMediaQuery,
+  useTheme,
+  AppBar,
+  Tab,
+  Tabs,
+  makeStyles,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { generateMedia } from "styled-media-query";
@@ -10,6 +18,8 @@ import newsPhoto from "../../assets/images/signUpSlogger.png";
 import { db } from "../../firebase";
 import { useAuth } from "../../context/AuthContext";
 import "./style.css";
+import Box from "@material-ui/core/Box";
+import PropTypes from "prop-types";
 
 const StyledMenu = withStyles({
   paper: {
@@ -44,6 +54,72 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={1}>{children}</Box>}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "transparent",
+    width: "100%",
+  },
+  AppBar: {
+    backgroundColor: "transparent !important",
+    boxShadow: "none",
+    color: "#000",
+    marginTop: "-1rem",
+    paddingTop: "0.5rem",
+  },
+  Tabs: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  indicator: {
+    backgroundColor: "rgb(5, 185, 125)",
+    height: 3,
+    borderRadius: "7px",
+    width: "10.2rem",
+  },
+  label: {
+    fontStyle: "normal",
+    fontWeight: "500",
+    fontSize: "0.8rem",
+    // lineHeight: "2.3rem",
+    color: "#565656",
+    textTransform: "uppercase",
+    // padding: "1.8rem 4.2rem",
+    padding: "0.3rem",
+  },
+  flexContainer: {
+    borderBottom: "2px solid rgba(196, 196, 196, 0.5)",
+  },
+}));
+
 function SlogPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [location, setLocation] = useState("");
@@ -52,8 +128,16 @@ function SlogPage() {
   const [searchedLocation, setSearchedLocation] = useState({});
   const [time, setTime] = useState(0);
   const [timeOn, setTimeOn] = useState(false);
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
 
   const { currentUser } = useAuth();
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const handleSource = (x) => {
     console.log(x);
@@ -169,7 +253,231 @@ function SlogPage() {
     return () => clearInterval(interval);
   }, [timeOn]);
 
-  return (
+  return !isSmall ? (
+    <div>
+      <AppBar className={classes.AppBar} position="static">
+        <Tabs
+          classes={{
+            indicator: classes.indicator,
+            flexContainer: classes.flexContainer,
+          }}
+          variant="fullWidth"
+          scrollButtons="auto"
+          className={classes.Tabs}
+          value={value}
+          onChange={handleChange}
+          aria-label="simple tabs example"
+          style={{ position: "relative" }}
+        >
+          <Tab
+            className={classes.label}
+            label="NEWS / SEARCH"
+            {...a11yProps(0)}
+          />
+          <Tab
+            className={classes.label}
+            label="WEATHER / SW"
+            {...a11yProps(1)}
+          />
+        </Tabs>
+        <TabPanel
+          value={value}
+          index={0}
+          style={{ width: "100%", overflow: "hidden", marginBottom: "1.5rem" }}
+        >
+          <div style={{ width: "100%", height: "65vh", overflow: "hidden" }}>
+            <SearchContainer>
+              <input
+                value={searchTerm}
+                type="text"
+                style={{
+                  flex: "0.7",
+                  border: "none",
+                  background: "none",
+                  padding: "0 0.5rem",
+                  height: "2rem",
+                  outline: "none",
+                  borderBottom: "2px solid rgb(5, 185, 125)",
+                  margin: "0 0.5rem",
+                  color: "rgb(3, 185, 124)",
+                  fontSize: "1rem",
+                }}
+                onKeyDown={(e) => handleSubmitEnter(e)}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search anything..."
+              />
+              <Button
+                style={{
+                  background: "rgb(5, 185, 125)",
+                  flex: "0.3",
+                  color: "#fff",
+                  height: "2rem",
+                  marginRight: "0.5rem",
+                  overflow: "hidden",
+                }}
+                onClick={handleSearch}
+              >
+                Search
+              </Button>
+            </SearchContainer>
+            <NewsContainer style={{ padding: 0, margin: 0 }}>
+              {newsList?.map((news) => (
+                <NewsBox>
+                  <img src={news.urlToImage ? news.urlToImage : newsPhoto} />
+                  <p>{news.title}</p>
+                  <a
+                    href={news.url}
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Button
+                      style={{
+                        background: "rgb(5, 185, 125, 0.55)",
+                        color: "#fff",
+                        width: "100%",
+                      }}
+                    >
+                      read more
+                    </Button>
+                  </a>
+                </NewsBox>
+              ))}
+              <div style={{ height: "5rem", width: "100%" }}></div>
+            </NewsContainer>
+          </div>
+        </TabPanel>
+        <TabPanel
+          value={value}
+          index={1}
+          style={{ width: "100%", overflow: "hidden", marginBottom: "1.5rem" }}
+        >
+          <div style={{ width: "100%", height: "65vh", overflow: "hidden" }}>
+            <WeatherContainer>
+              <SearchContainer
+                style={{
+                  width: "70%",
+                  height: "2rem",
+                  background: "none",
+                }}
+              >
+                <input
+                  value={location}
+                  type="text"
+                  style={{
+                    flex: "1",
+                    border: "none",
+                    background: "none",
+                    padding: "0 0.5rem",
+                    height: "1rem",
+                    outline: "none",
+                    borderBottom: "2px solid rgb(5, 185, 125)",
+                    margin: "0 0.5rem",
+                    color: "rgb(3, 185, 124)",
+                    fontSize: "0.7rem",
+                  }}
+                  onKeyDown={(e) => handleSubmitEnterWeather(e)}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="Type city and press enter..."
+                />
+              </SearchContainer>
+              <h2
+                style={{ color: "rgb(18, 107, 77)", fontFamily: "sans-serif" }}
+              >
+                {searchedLocation.name},{searchedLocation.sys?.country}
+              </h2>
+              <div
+                style={{
+                  margin: "1rem 0",
+                  height: "3rem",
+                  width: "7rem",
+                  background: "rgb(3, 148, 99)",
+                  borderRadius: "10px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderBottom: "3px solid rgb(18, 107, 77)",
+                  borderRight: "3px solid rgb(18, 107, 77)",
+                }}
+              >
+                <h1 style={{ color: "#fff", fontFamily: "sans-serif" }}>
+                  {Math.round(searchedLocation.main?.temp)}
+                  <sup>o</sup>C
+                </h1>
+              </div>
+              <h4
+                style={{ color: "rgb(3, 148, 99)", fontFamily: "sans-serif" }}
+              >
+                {`Feels like: ${searchedLocation.main?.feels_like}`}
+                <sup>o</sup>C
+              </h4>
+              <h4
+                style={{
+                  color: "rgb(3, 148, 99)",
+                  fontFamily: "sans-serif",
+                  marginTop: "1rem",
+                }}
+              >
+                {searchedLocation?.weather
+                  ? searchedLocation?.weather[0].description?.toUpperCase()
+                  : ""}
+              </h4>
+            </WeatherContainer>
+            <StopWatch
+              style={{
+                marginTop: "-7rem",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 0,
+              }}
+            >
+              <div className={timeOn ? "stopWatchBoxStart" : "stopWatchBox"}>
+                <span className="time">
+                  {("0" + Math.floor((time / 3600000) % 60)).slice(-2)}:
+                </span>
+                <span className="time">
+                  {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
+                </span>
+                <span className="time">
+                  {("0" + Math.floor((time / 1000) % 60)).slice(-2)}:
+                </span>
+                <span className="time">
+                  {("0" + ((time / 10) % 100)).slice(-2)}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: "1rem",
+                }}
+              >
+                {!timeOn && time === 0 && (
+                  <Button className="timeBtn" onClick={() => setTimeOn(true)}>
+                    Start
+                  </Button>
+                )}
+                {timeOn && (
+                  <Button className="timeBtn" onClick={() => setTimeOn(false)}>
+                    Stop
+                  </Button>
+                )}
+                {!timeOn && time !== 0 && (
+                  <Button className="timeBtn" onClick={() => setTimeOn(true)}>
+                    Resume
+                  </Button>
+                )}
+                {!timeOn && time > 0 && (
+                  <Button className="timeBtn" onClick={() => setTime(0)}>
+                    Reset
+                  </Button>
+                )}
+              </div>
+            </StopWatch>
+          </div>
+        </TabPanel>
+      </AppBar>
+    </div>
+  ) : (
     <SlogContainer>
       <SlogLeftContainer>
         <SearchContainer>
@@ -477,4 +785,5 @@ const StopWatch = styled.div`
   align-items: center;
   justify-content: space-evenly;
   padding: 1rem;
+  overflow: hidden;
 `;

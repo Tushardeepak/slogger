@@ -169,7 +169,6 @@ const TodoActions = styled.div`
 
   .delete {
     cursor: pointer;
-    margin-top: -10px;
     ${customMedia.lessThan("smTablet")`
       transform:scale(0.8);
     `};
