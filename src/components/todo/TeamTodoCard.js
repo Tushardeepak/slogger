@@ -165,6 +165,7 @@ function TeamTodoCard({
                     onChange={onSelectFile}
                   />
                   <Button
+                    className="uploadView"
                     style={{
                       width: "98%",
                       fontSize: "0.7rem",
@@ -220,6 +221,7 @@ function TeamTodoCard({
                     style={{ textDecoration: "none" }}
                   >
                     <Button
+                      className="uploadView"
                       style={{
                         width: "95%",
                         fontSize: "0.7rem",
@@ -340,6 +342,9 @@ const TodoTextBox = styled.div`
   .assignedTo {
     color: rgb(0, 90, 60);
     font-size: 0.7rem;
+    ${customMedia.lessThan("smTablet")`
+         font-size: 0.5rem;
+    `};
   }
 
   .todoIcon {
@@ -349,6 +354,10 @@ const TodoTextBox = styled.div`
     padding-right: 0.3rem;
     cursor: pointer;
     transform: rotateY(180deg) !important;
+    ${customMedia.lessThan("smTablet")`
+         flex:0.2;
+         font-size: 1.5rem;
+    `};
   }
 
   .inputField {
@@ -365,9 +374,11 @@ const TodoTextBox = styled.div`
     display: flex;
     align-items: center;
     flex: 0.9;
+    overflow: hidden;
     ${customMedia.lessThan("smTablet")`
-         margin:0;
-         height: 3rem;
+         margin:0.1rem 0;
+         height: 1.5rem;
+         flex: 0.8;
     `};
   }
   input {
@@ -382,23 +393,32 @@ const TodoTextBox = styled.div`
     padding-left: 0.5rem;
 
     ${customMedia.lessThan("smTablet")`
-      font-size:0.5rem;
+      font-size:0.7rem;
     `};
   }
   input::placeholder {
     color: rgb(3, 185, 124);
     font-size: 0.7rem;
     ${customMedia.lessThan("smTablet")`
-      font-size:0.5rem;
+      font-size:0.7rem;
     `};
   }
 
   .todoDate {
-    flex: 0.2;
     font-size: 10px;
     text-align: center;
     ${customMedia.lessThan("smTablet")`
-       font-size:9px;
+       font-size:7px;
+        padding-left:0.1rem !important;
+        flex: 0.18 !important;
+    `};
+  }
+
+  .uploadView {
+    overflow: hidden;
+    ${customMedia.lessThan("smTablet")`
+      font-size:8px !important;
+      padding:0.1rem 0 !important;
     `};
   }
 `;
@@ -416,7 +436,8 @@ const TodoActions = styled.div`
   border-left: 2px solid rgba(0, 99, 66, 0.768);
 
   ${customMedia.lessThan("smTablet")`
-      flex: 0.09;
+      flex: 0.05;
+      padding-right: 0.7rem;
     `};
 
   .delete {

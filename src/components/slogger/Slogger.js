@@ -11,9 +11,11 @@ import teamTodoImg from "../../assets/images/teamTodoImg.svg";
 import { Button } from "@material-ui/core";
 import "./style.css";
 import { useHistory } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function Slogger() {
   const history = useHistory();
+  const { currentUser } = useAuth();
   return (
     <div style={{ height: "auto" }}>
       <NavBar page={0} />
@@ -22,19 +24,17 @@ function Slogger() {
           <source src={homeBannerVideo} type="video/mp4"></source>
         </video>
         <img src={homePageIcon} />
-        <Button onClick={() => history.push("/signup")}>Get started</Button>
+        <Button
+          onClick={
+            currentUser != null
+              ? () => history.push("/")
+              : () => history.push("/signup")
+          }
+        >
+          {currentUser != null ? "Go to Dashboard" : "Get started"}
+        </Button>
       </Banner>
-      <div
-        className="questionContainer"
-        style={{
-          background: "rgb(27,0,147,0.8)",
-          width: "100%",
-          height: "90vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div className="questionContainer">
         <div className="questionBox">
           <div className="questionVideo">
             <video autoPlay loop muted className="quesVideo">
@@ -79,7 +79,7 @@ function Slogger() {
             <h1 style={{ color: "#fff" }}>2) Join teams</h1>
             <h1 style={{ color: "#fff" }}>3) Assign work to teammates</h1>
             <h1 style={{ color: "#fff" }}>4) Check when the work is done</h1>
-            <h1 style={{ color: "#fff" }}>5) Add images any work</h1>
+            <h1 style={{ color: "#fff" }}>5) Add images to any work</h1>
           </div>
         </div>
       </div>
@@ -88,43 +88,94 @@ function Slogger() {
         <hr></hr>
       </div>
 
-      <div className="teamTodoSection">
-        <img src={newsImg} className="teamTodoImg" />
+      <div className="slogSection">
         <div className="slogTodoTextBox">
           <h1 className="t1">1) Get latest news</h1>
           <h1 className="t2">2) Get links of the original site</h1>
           <h1 className="t3">3) Search news on any topic</h1>
-          <h1 className="t3">3) Get weather report of any location</h1>
-          <h1 className="t3">3) Stopwatch </h1>
+          <h1 className="t3">4) Get weather report of any location</h1>
+          <h1 className="t3">5) Stopwatch </h1>
         </div>
+        <img src={newsImg} className="teamTodoImg" />
       </div>
       <FooterContainer>
-        <span style={{ marginLeft: "15%", fontSize: "1.125rem" }}>
+        <span
+          style={{ marginLeft: "15%", fontSize: "1.125rem", cursor: "pointer" }}
+        >
           Questions?
           <br />
         </span>
         <div className="footerColumn">
           <ul>
-            <li>FAQ</li>
-            <li>Relations</li>
-            <li>How to use</li>
+            <li onClick={() => history.push("/help")}>FAQ</li>
+            <li>
+              {" "}
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Relations
+              </a>
+            </li>
+            <li onClick={() => history.push("/help")}>How to use</li>
           </ul>
           <ul>
-            <li>Help Center</li>
-            <li>Collaborate</li>
-            <li>Terms of Use</li>
-            <li>Contact Us</li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Help Center
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Collaborate
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Terms of Use
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Contact Us
+              </a>
+            </li>
           </ul>
           <ul>
-            <li>Amount</li>
-            <li>Complain</li>
-            <li>Privacy</li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Amount
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Complain
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Privacy
+              </a>
+            </li>
           </ul>
           <ul>
-            <li>Media Center</li>
-            <li>Storage</li>
-            <li>Cookie Preferences</li>
-            <li>Legal Notices</li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Media Center
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Storage
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Cookie Preferences
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Tushardeepak/slogger-official">
+                Legal Notices
+              </a>
+            </li>
           </ul>
         </div>
       </FooterContainer>
@@ -164,6 +215,11 @@ const Banner = styled.div`
     object-fit: contain;
     width: 50%;
     height: 50%;
+    ${customMedia.lessThan("smTablet")`
+   width: 80%;
+    height: 80%;
+    margin-top:-5rem;
+  `}
   }
 
   Button {
@@ -180,6 +236,9 @@ const Banner = styled.div`
       color: #272142;
       border: 2px solid #272142;
     }
+    ${customMedia.lessThan("smTablet")`
+   margin-top:-5rem;
+  `}
   }
 `;
 
@@ -204,8 +263,13 @@ const FooterContainer = styled.div`
     text-decoration: none;
     list-style: none;
     line-height: 2.5;
+    cursor: pointer;
   }
   .footerColumn li:hover {
+    color: #999;
+  }
+  a {
+    text-decoration: none;
     color: #999;
   }
 

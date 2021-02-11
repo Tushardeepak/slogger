@@ -6,6 +6,7 @@ import TeamTodo from "./components/todo/TeamTodo";
 import Slogger from "./components/slogger/Slogger";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./PrivateRoute";
+import HelpPage from "./components/helpPage/HelpPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Switch>
             <Route exact path="/signUp" component={SignUp} />
             <Route exact path="/slogger" component={Slogger} />
+            <Route exact path="/help" component={HelpPage} />
             <PrivateRoute exact path="/" component={Home} />
             <PrivateRoute path="/:teamName" component={Home} />
           </Switch>

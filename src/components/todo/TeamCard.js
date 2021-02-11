@@ -22,8 +22,12 @@ function TeamCard({ id, teamName, UrlTeamName }) {
   };
 
   return UrlTeamName === teamName ? (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div
+      style={{ display: "flex", alignItems: "center" }}
+      className="TeamButtons"
+    >
       <Button
+        className="TeamButtons"
         style={{
           width: "98%",
           height: "auto",
@@ -61,6 +65,7 @@ function TeamCard({ id, teamName, UrlTeamName }) {
   ) : (
     <div style={{ display: "flex", alignItems: "center" }}>
       <Button
+        className="TeamButtons"
         style={{
           width: "98%",
           height: "auto",
@@ -99,5 +104,3 @@ function TeamCard({ id, teamName, UrlTeamName }) {
 }
 
 export default TeamCard;
-
-const CardContainer = styled.div``;

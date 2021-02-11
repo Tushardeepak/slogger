@@ -1,4 +1,14 @@
-import { Button } from "@material-ui/core";
+import {
+  Button,
+  useMediaQuery,
+  useTheme,
+  AppBar,
+  Tab,
+  Tabs,
+  makeStyles,
+} from "@material-ui/core";
+import Box from "@material-ui/core/Box";
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { db } from "../../firebase";
@@ -24,6 +34,73 @@ import TeamTodoCard from "./TeamTodoCard";
 import noTeamTodoImage from "../../assets/images/noTeamTodo.svg";
 import noTodoJoinTeam from "../../assets/images/noTodoJoinTeam.svg";
 import deletedTeam from "../../assets/images/deletedTeam.svg";
+import { useHistory } from "react-router-dom";
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box p={1}>{children}</Box>}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "transparent",
+    width: "100%",
+  },
+  AppBar: {
+    backgroundColor: "transparent !important",
+    boxShadow: "none",
+    color: "#000",
+    marginTop: "-1rem",
+    paddingTop: "0.5rem",
+  },
+  Tabs: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  indicator: {
+    backgroundColor: "rgb(5, 185, 125)",
+    height: 3,
+    borderRadius: "7px",
+    width: "10.2rem",
+  },
+  label: {
+    fontStyle: "normal",
+    fontWeight: "500",
+    fontSize: "0.8rem",
+    // lineHeight: "2.3rem",
+    color: "#565656",
+    textTransform: "uppercase",
+    // padding: "1.8rem 4.2rem",
+    padding: "0.3rem",
+  },
+  flexContainer: {
+    borderBottom: "2px solid rgba(196, 196, 196, 0.5)",
+  },
+}));
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -46,6 +123,11 @@ function TeamTodo({ UrlTeamName }) {
   const [joinedTeams, setJoinedTeams] = useState([]);
   const [teamsTodoList, setTeamsTodoList] = useState([]);
   const { currentUser } = useAuth();
+  const history = useHistory();
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
 
   const handleInputChange = (value) => {
     setInputTodo(value);
@@ -171,7 +253,10 @@ function TeamTodo({ UrlTeamName }) {
       <TeamTodoContainer>
         <TeamTodoLeftContainer>
           <TeamTodoLeftLeftBox>
-            <Button className="addButton" onClick={() => handleClickMakeTeam()}>
+            <Button
+              className="addButton1"
+              onClick={() => handleClickMakeTeam()}
+            >
               Make a team
             </Button>
             <h3 style={{ overflow: "hidden" }}>My Teams</h3>
@@ -186,7 +271,10 @@ function TeamTodo({ UrlTeamName }) {
             </MyTeamContainer>
           </TeamTodoLeftLeftBox>
           <TeamTodoLeftRightBox>
-            <Button className="addButton" onClick={() => handleClickJoinTeam()}>
+            <Button
+              className="addButton1"
+              onClick={() => handleClickJoinTeam()}
+            >
               Join a team
             </Button>
             <h3 style={{ overflow: "hidden" }}>Joined Teams</h3>
@@ -272,6 +360,7 @@ function TeamTodo({ UrlTeamName }) {
           {teamsTodoList.length === 0 ? (
             thisIsAdmin ? (
               <div
+                className="teamNoTodoImage"
                 style={{
                   height: "80%",
                   width: "100%",
@@ -283,24 +372,43 @@ function TeamTodo({ UrlTeamName }) {
               >
                 <img
                   src={noTeamTodoImage}
-                  style={{ height: "15rem", width: "15rem" }}
+                  style={{
+                    height: "15rem",
+                    width: "15rem",
+                    overflow: "hidden",
+                  }}
                 />
-                <h3 style={{ color: "rgba(0, 141, 94, 0.695)" }}>
+                <h3
+                  style={{
+                    color: "rgba(0, 141, 94, 0.695)",
+                    overflow: "hidden",
+                  }}
+                >
                   NO WORK TO DO
                 </h3>{" "}
-                <h4 style={{ color: "rgba(0, 141, 94, 0.695)" }}>ADD SOME</h4>{" "}
+                <h4
+                  style={{
+                    color: "rgba(0, 141, 94, 0.695)",
+                    overflow: "hidden",
+                  }}
+                >
+                  ADD SOME
+                </h4>{" "}
                 <br />
                 <h6
                   style={{
                     color: "rgba(0, 141, 94, 0.695)",
                     cursor: "pointer",
+                    overflow: "hidden",
                   }}
+                  onClick={() => history.push("/help")}
                 >
                   Need Help?
                 </h6>{" "}
               </div>
             ) : deleteTeam ? (
               <div
+                className="teamNoTodoImage"
                 style={{
                   height: "80%",
                   width: "100%",
@@ -312,9 +420,19 @@ function TeamTodo({ UrlTeamName }) {
               >
                 <img
                   src={deletedTeam}
-                  style={{ height: "15rem", width: "15rem" }}
+                  style={{
+                    height: "15rem",
+                    width: "15rem",
+                    overflow: "hidden",
+                  }}
                 />
-                <h4 style={{ color: "rgba(0, 141, 94, 0.695)" }}>
+                <h4
+                  style={{
+                    color: "rgba(0, 141, 94, 0.695)",
+                    overflow: "hidden",
+                    textAlign: "center",
+                  }}
+                >
                   THIS TEAM WAS DELETED BY THE ADMIN
                 </h4>{" "}
                 <br />
@@ -322,13 +440,16 @@ function TeamTodo({ UrlTeamName }) {
                   style={{
                     color: "rgba(0, 141, 94, 0.695)",
                     cursor: "pointer",
+                    overflow: "hidden",
                   }}
+                  onClick={() => history.push("/help")}
                 >
                   Need Help?
                 </h6>{" "}
               </div>
             ) : (
               <div
+                className="teamNoTodoImage"
                 style={{
                   height: "80%",
                   width: "100%",
@@ -340,12 +461,28 @@ function TeamTodo({ UrlTeamName }) {
               >
                 <img
                   src={noTodoJoinTeam}
-                  style={{ height: "15rem", width: "15rem" }}
+                  style={{
+                    height: "15rem",
+                    width: "15rem",
+                    overflow: "hidden",
+                  }}
                 />
-                <h4 style={{ color: "rgba(0, 141, 94, 0.695)" }}>
-                  NO WORK TO DO, WE WILL UPDATE IF THERE WILL BE ANY
+                <h4
+                  style={{
+                    color: "rgba(0, 141, 94, 0.695)",
+                    overflow: "hidden",
+                    textAlign: "center",
+                  }}
+                >
+                  NO WORK TO DO, WE WILL UPDATE
                 </h4>{" "}
-                <h5 style={{ color: "rgba(0, 141, 94, 0.695)" }}>
+                <h5
+                  style={{
+                    color: "rgba(0, 141, 94, 0.695)",
+                    overflow: "hidden",
+                    textAlign: "center",
+                  }}
+                >
                   TILL THEN SIT BACK AND RELAX
                 </h5>{" "}
                 <br />
@@ -353,7 +490,9 @@ function TeamTodo({ UrlTeamName }) {
                   style={{
                     color: "rgba(0, 141, 94, 0.695)",
                     cursor: "pointer",
+                    overflow: "hidden",
                   }}
+                  onClick={() => history.push("/help")}
                 >
                   Need Help?
                 </h6>{" "}
@@ -402,6 +541,10 @@ const TeamTodoContainer = styled.div`
   height: 87%;
   position: absolute;
   display: flex;
+  ${customMedia.lessThan("smTablet")`
+  flex:0.7;
+    flex-direction:column;
+`}
 `;
 
 const TeamTodoLeftContainer = styled.div`
@@ -409,6 +552,11 @@ const TeamTodoLeftContainer = styled.div`
   border-right: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
   overflow: hidden;
+  ${customMedia.lessThan("smTablet")`
+      flex:0.4;
+      border-bottom: 2px solid rgba(0, 141, 94, 0.295);
+      margin-bottom:1rem;
+  `}
 `;
 
 const TeamTodoLeftLeftBox = styled.div`
@@ -420,12 +568,18 @@ const TeamTodoLeftLeftBox = styled.div`
   flex-direction: column;
   padding: 0.5rem;
 
-  .addButton {
+  .addButton1 {
     width: 95.5%;
     color: #fff;
     font-weight: 600;
     background-color: rgb(5, 185, 125);
     margin: 0.5rem;
+    overflow: hidden;
+    ${customMedia.lessThan("smTablet")`
+      width:97% !important;
+      margin: 0.5rem 1rem;
+      margin-left:0rem;
+    `}
   }
   h3 {
     color: rgb(5, 185, 125);
@@ -434,6 +588,10 @@ const TeamTodoLeftLeftBox = styled.div`
     width: 100%;
     text-transform: uppercase;
     margin: 0.3rem 0;
+    ${customMedia.lessThan("smTablet")`
+      font-size:10px;
+      margin-top:-0.4rem;
+    `}
   }
 `;
 const MyTeamContainer = styled.div`
@@ -450,12 +608,18 @@ const TeamTodoLeftRightBox = styled.div`
   flex-direction: column;
   padding: 0.5rem;
 
-  .addButton {
+  .addButton1 {
     width: 95.5%;
     color: #fff;
     font-weight: 600;
     background-color: rgb(5, 185, 125);
     margin: 0.5rem;
+    overflow: hidden;
+    ${customMedia.lessThan("smTablet")`
+      width:97% !important;
+      margin: 0.5rem 1rem;
+      margin-left:0rem;
+    `}
   }
   h3 {
     color: rgb(5, 185, 125);
@@ -464,12 +628,21 @@ const TeamTodoLeftRightBox = styled.div`
     width: 100%;
     text-transform: uppercase;
     margin: 0.3rem 0;
+    ${customMedia.lessThan("smTablet")`
+      font-size:10px;
+      margin-top:-0.4rem;
+    `}
   }
 `;
 const TeamTodoRightContainer = styled.div`
   flex: 0.5;
   overflow-y: scroll;
   padding: 0 1rem;
+  .teamNoTodoImage {
+    ${customMedia.lessThan("smTablet")`
+    height:100% !important;
+  `}
+  }
 `;
 
 const TodoRightUpBox = styled.div`
@@ -478,7 +651,6 @@ const TodoRightUpBox = styled.div`
   border-bottom: 2px solid rgba(0, 141, 94, 0.295);
 
   ${customMedia.lessThan("smTablet")`
-
     border:none;
   `}
 
@@ -495,7 +667,7 @@ const TodoRightUpBox = styled.div`
     align-items: center;
     ${customMedia.lessThan("smTablet")`
          margin:0;
-         height: 3rem;
+         height: 2rem;
     `};
   }
   input {
@@ -510,14 +682,14 @@ const TodoRightUpBox = styled.div`
     padding-left: 0rem;
 
     ${customMedia.lessThan("smTablet")`
-      font-size:0.5rem;
+    margin-left:0.5rem;
     `};
   }
   input::placeholder {
     color: rgb(3, 185, 124);
     font-size: 0.7rem;
     ${customMedia.lessThan("smTablet")`
-      font-size:0.5rem;
+      
     `};
   }
   .todoIcon {
@@ -534,7 +706,7 @@ const TodoRightUpBox = styled.div`
     padding-right: 0.3rem;
     cursor: pointer;
     ${customMedia.lessThan("smTablet")`
-    margin-top:-10px;
+    margin-top:0px;
     `};
   }
   .dateBox {
@@ -549,6 +721,7 @@ const TodoRightUpBox = styled.div`
     display: flex;
     align-items: center;
     cursor: pointer;
+    overflow: hidden;
     ${customMedia.lessThan("smTablet")`
     padding: 0.1rem 0.5rem;
          margin:0.1rem 0;
@@ -562,7 +735,9 @@ const TodoRightUpBox = styled.div`
     margin: 0.2rem 0;
 
     ${customMedia.lessThan("smTablet")`
-     margin: 0rem;
+     margin: 0.2rem 0.2rem;
+     margin-right:0;
+      padding:0.08rem 0;
     `};
   }
 

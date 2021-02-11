@@ -6,6 +6,20 @@
   margin: 0.5rem !important;
   overflow: hidden !important;
 }
+.addButton:hover {
+  background-color: rgb(5, 185, 125) !important;
+}
+.addButtonModal {
+  width: 95.5% !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  background-color: rgb(5, 185, 125) !important;
+  margin: 0.5rem !important;
+  overflow: hidden !important;
+}
+.addButtonModal:hover {
+  background-color: rgb(5, 185, 125) !important;
+}
 .addButtonDisabled {
   width: 95.5% !important;
   color: #fff !important;
@@ -13,9 +27,7 @@
   background-color: rgba(5, 185, 125, 0.418) !important;
   margin: 0.5rem !important;
 }
-.addButton:hover {
-  background-color: rgb(5, 185, 125) !important;
-}
+
 .title {
   color: rgb(0, 156, 104);
 }
@@ -30,6 +42,19 @@
   margin: 0.5rem;
   display: flex;
   align-items: center;
+}
+.inputFieldModal {
+  width: 20rem;
+  height: 2rem;
+  background-color: rgba(3, 185, 124, 0.308);
+  border-radius: 1rem;
+  border: none;
+  padding: 1rem;
+  padding-left: 0.5rem;
+  margin: 0.5rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 .input {
   width: 100%;
@@ -46,6 +71,21 @@
   color: rgb(3, 185, 124);
   font-size: 1rem;
 }
+.inputModal {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+  background: none;
+  color: rgb(0, 90, 60);
+  font-size: 1rem;
+  flex: 0.9;
+  padding-left: 0.5rem;
+}
+.inputModal::placeholder {
+  color: rgb(3, 185, 124);
+  font-size: 1rem;
+}
 .stopWatchBox {
   height: 12rem;
   width: 12rem;
@@ -54,6 +94,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .stopWatchBoxStart {
@@ -65,9 +106,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .stopWatchBoxStart::before {
+  overflow: hidden;
   content: "";
   position: absolute;
   top: 0px;
@@ -98,4 +141,17 @@
   font-weight: 600 !important;
   background-color: rgb(5, 185, 125) !important;
   margin: 0.2rem !important;
+}
+
+@media only screen and (max-width: 740px) {
+  .TeamButtons {
+    font-size: 10px !important;
+  }
+  .inputFieldModal {
+    width: 10rem;
+    height: 1.5rem;
+  }
+  .addButtonModal {
+    width: 100% !important;
+  }
 }

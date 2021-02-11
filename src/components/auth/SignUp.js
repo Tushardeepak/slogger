@@ -54,7 +54,7 @@ function SignUp() {
           lastName: lastName,
         });
         setLoader(false);
-        history.push("/home");
+        history.push("/");
       } catch (error) {
         console.log(error);
       }
@@ -68,7 +68,7 @@ function SignUp() {
       try {
         setLoader(true);
         await signIn(email, password);
-        history.push("/home");
+        history.push("/");
         setLoader(false);
       } catch (error) {
         console.log(error);
@@ -90,6 +90,12 @@ function SignUp() {
     setConfirmPassword("");
     setError(false);
   };
+
+  React.useEffect(() => {
+    if (currentUser !== null) {
+      history.push("/");
+    }
+  }, []);
 
   return (
     <SignUpContainer>

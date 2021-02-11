@@ -149,9 +149,9 @@ export default function AddingTeamModal({ open, handleClose, make }) {
           ) : (
             ""
           )}
-          <div className="inputField">
+          <div className="inputFieldModal">
             <input
-              className="input"
+              className="inputModal"
               value={inputTeamName}
               type="text"
               placeholder={make ? "Give team name..." : "Write team name..."}
@@ -161,11 +161,15 @@ export default function AddingTeamModal({ open, handleClose, make }) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button className="addButton" onClick={handleClose} color="primary">
+        <Button
+          className="addButtonModal"
+          onClick={handleClose}
+          color="primary"
+        >
           Cancel
         </Button>
         <Button
-          className="addButton"
+          className="addButtonModal"
           onClick={make ? () => handleMakeSubmit() : () => handleJoinSubmit()}
           color="primary"
         >
