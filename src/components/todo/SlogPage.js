@@ -129,7 +129,7 @@ function SlogPage() {
   const [time, setTime] = useState(0);
   const [timeOn, setTimeOn] = useState(false);
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+  const isSmall = useMediaQuery(theme.breakpoints.up("md"));
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -285,7 +285,10 @@ function SlogPage() {
           index={0}
           style={{ width: "100%", overflow: "hidden", marginBottom: "1.5rem" }}
         >
-          <div style={{ width: "100%", height: "65vh", overflow: "hidden" }}>
+          <div
+            style={{ width: "100%", height: "65vh", overflow: "hidden" }}
+            className="slogPageRes"
+          >
             <SearchContainer>
               <input
                 value={searchTerm}
@@ -351,7 +354,10 @@ function SlogPage() {
           index={1}
           style={{ width: "100%", overflow: "hidden", marginBottom: "1.5rem" }}
         >
-          <div style={{ width: "100%", height: "65vh", overflow: "hidden" }}>
+          <div
+            style={{ width: "100%", height: "65vh", overflow: "hidden" }}
+            className="slogPageRes"
+          >
             <WeatherContainer>
               <SearchContainer
                 style={{
@@ -446,6 +452,7 @@ function SlogPage() {
                 </span>
               </div>
               <div
+                className="startStop"
                 style={{
                   display: "flex",
                   marginTop: "1rem",
@@ -680,7 +687,7 @@ const SlogLeftContainer = styled.div`
   padding: 0.5rem;
   padding-bottom: 2rem;
 
-  ${customMedia.lessThan("smTablet")`
+  ${customMedia.lessThan("tablet")`
 flex: 0.45;
        padding: 0rem;
        margin:0;
@@ -690,7 +697,7 @@ flex: 0.45;
   input::placeholder {
     color: rgb(3, 185, 124);
     font-size: 1rem;
-    ${customMedia.lessThan("smTablet")`
+    ${customMedia.lessThan("tablet")`
       font-size:0.7rem;
     `};
   }
@@ -755,7 +762,7 @@ const SlogRightContainer = styled.div`
   padding: 0.5rem;
   overflow: hidden;
 
-  ${customMedia.lessThan("smTablet")`
+  ${customMedia.lessThan("tablet")`
 flex: 0.45;
        padding: 0rem;
        margin:0;
@@ -765,7 +772,7 @@ flex: 0.45;
   input::placeholder {
     color: rgb(3, 185, 124);
     font-size: 0.7rem;
-    ${customMedia.lessThan("smTablet")`
+    ${customMedia.lessThan("tablet")`
       font-size:0.7rem;
     `};
   }
