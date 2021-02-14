@@ -12,6 +12,7 @@ import { Button } from "@material-ui/core";
 import "./style.css";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import "../todo/heightMedia.css";
 
 function Slogger() {
   const history = useHistory();

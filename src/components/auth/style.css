@@ -115,22 +115,20 @@ ul li svg path {
   }
 }
 
-/* @media screen and (max-height: 500px) {
+@media screen and (max-height: 600px) {
   .footer {
-    padding-top: 2rem !important;
-    bottom: -2rem !important;
-    line-height: 1rem !important;
+    top: 1rem !important;
   }
 }
 
-@media screen and (max-height: 500px) {
+@media screen and (max-height: 600px) {
   img {
-    margin-top: 0 !important;
+    display: none !important;
   }
-  .signUpFormBottom {
+  /* .signUpFormBottom {
     margin-top: 50px !important;
-  }
-} */
+  } */
+}
 .c {
   color: rgba(224, 255, 245, 0.781);
 }

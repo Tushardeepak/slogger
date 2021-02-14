@@ -31,6 +31,7 @@ import DonutChart from "./DonutChart";
 import firebase from "firebase";
 import { generateMedia } from "styled-media-query";
 import { useHistory } from "react-router-dom";
+import "./heightMedia.css";
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -461,6 +462,9 @@ const TodoLeftUpBox = styled.div`
   input::placeholder {
     color: rgb(3, 185, 124);
     font-size: 1rem;
+    @media (max-height: 700px) {
+      font-size: 0.5rem;
+    }
     ${customMedia.lessThan("smTablet")`
       font-size:0.7rem;
     `};
@@ -479,7 +483,7 @@ const TodoLeftUpBox = styled.div`
     padding-right: 0.3rem;
     cursor: pointer;
     ${customMedia.lessThan("smTablet")`
-    margin-top:-10px;
+    margin-top:-0px;
     `};
   }
   .dateBox {

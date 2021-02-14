@@ -11,6 +11,7 @@ import { db } from "../../firebase";
 import { useAuth } from "../../context/AuthContext";
 import firebase from "firebase";
 import { useHistory } from "react-router-dom";
+import "./heightMedia.css";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="" ref={ref} {...props} />;

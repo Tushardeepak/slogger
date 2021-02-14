@@ -729,6 +729,9 @@ const NewsContainer = styled.div`
   overflow-x: hidden;
   display: grid;
   grid-template-columns: 6fr 6fr;
+  ${customMedia.lessThan("smTablet")`
+      grid-template-columns: 6fr;
+    `};
 `;
 
 const NewsBox = styled.div`
@@ -783,6 +786,22 @@ const WeatherContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  h1 {
+    ${customMedia.lessThan("smTablet")`
+      margin:0rem 0 !important; 
+    `};
+  }
+  h2 {
+    ${customMedia.lessThan("smTablet")`
+      margin:0rem 0 !important; 
+    `};
+  }
+  h4 {
+    ${customMedia.lessThan("smTablet")`
+      margin:0rem 0 !important; 
+    `};
+  }
 `;
 const StopWatch = styled.div`
   flex: 0.5;
@@ -793,4 +812,21 @@ const StopWatch = styled.div`
   justify-content: space-evenly;
   padding: 1rem;
   overflow: hidden;
+  ${customMedia.lessThan("smTablet")`
+      margin-top: -6rem !important;
+      flex: 0.6 !important;
+    `};
+
+  .stopWatchBox {
+    ${customMedia.lessThan("smTablet")`
+      height:9.3rem !important;
+      width:9.3rem !important;
+    `};
+  }
+  .stopWatchBoxStart {
+    ${customMedia.lessThan("smTablet")`
+      height:9.3rem !important;
+      width:9.3rem !important;
+    `};
+  }
 `;
