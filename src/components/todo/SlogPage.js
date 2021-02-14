@@ -14,7 +14,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import green from "@material-ui/core/colors/green";
-import newsPhoto from "../../assets/images/signUpSlogger.png";
+import newsPhoto from "../../assets/images/signUpMainLogo.png";
 import { db } from "../../firebase";
 import { useAuth } from "../../context/AuthContext";
 import "./style.css";
