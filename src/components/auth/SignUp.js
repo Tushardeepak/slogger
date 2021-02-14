@@ -7,7 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useHistory } from "react-router-dom";
 import { db } from "../../firebase";
 import signUpVideo from "../../assets/videos/Gaulois.mp4";
-import signUpImage from "../../assets/images/signUpSlogger.png";
+import signUpImage from "../../assets/images/signUpMainLogo.png";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import LockIcon from "@material-ui/icons/Lock";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
