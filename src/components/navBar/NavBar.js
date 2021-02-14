@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import styled from "styled-components";
 import navIcon from "../../assets/images/navIcon.png";
 import { generateMedia } from "styled-media-query";
+import "../todo/heightMedia.css";
 
 function NavBar({ page, home }) {
   const [sup, setSup] = useState("");
@@ -221,7 +222,7 @@ const NavBarStartIcon = styled.div`
 const NavLinksContainer = styled.div`
   flex: 0.75;
   ${customMedia.lessThan("smTablet")`
-        flex: 0.3;
+        flex: 0.25;
     `};
 `;
 const NavBarDateBox = styled.div`

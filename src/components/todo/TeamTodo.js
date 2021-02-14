@@ -35,6 +35,7 @@ import noTeamTodoImage from "../../assets/images/noTeamTodo.svg";
 import noTodoJoinTeam from "../../assets/images/noTodoJoinTeam.svg";
 import deletedTeam from "../../assets/images/deletedTeam.svg";
 import { useHistory } from "react-router-dom";
+import "./heightMedia.css";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

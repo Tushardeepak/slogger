@@ -1,0 +1,37 @@
+@media only screen and (max-height: 700px) {
+  input {
+    font-size: 0.5rem !important;
+  }
+  input::placeholder {
+    font-size: 0.5rem !important;
+  }
+  .inputField {
+    padding: 0.5rem !important;
+  }
+  .dateBox {
+    padding: 0.5rem 0.7rem !important;
+  }
+  .todoIcon {
+    font-size: 1rem !important;
+  }
+  .AlarmIcon {
+    font-size: 1rem !important;
+  }
+  h3 {
+    font-size: 8px !important;
+    padding: 5px 0 !important;
+  }
+  h4 {
+    padding: 5px 0 !important;
+  }
+  h5 {
+    padding: 5px 0 !important;
+  }
+  h6 {
+    padding: 5px 0 !important;
+  }
+  h1 {
+    padding: 0px 0 !important;
+    margin: 10px 0 !important;
+  }
+}
