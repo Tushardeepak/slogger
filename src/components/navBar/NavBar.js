@@ -142,7 +142,7 @@ const NavBarContainer = styled.div`
     margin-left: 1.9rem;
     color: rgb(0, 90, 60);
     ${customMedia.lessThan("smTablet")`
-      margin-left: 0.8rem;
+      margin-left: 1.2rem !important;
       font-size:15px !important;
     `};
   }
@@ -215,7 +215,7 @@ const NavBarStartIcon = styled.div`
     margin: 1rem;
     transform: scale(0.7);
     ${customMedia.lessThan("smTablet")`
-        margin: 1rem 0.5rem;
+       display:none;
     `};
   }
 `;
