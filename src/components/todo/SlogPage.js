@@ -744,6 +744,9 @@ const NewsBox = styled.div`
   padding: 0.2rem;
   display: flex;
   flex-direction: column;
+  ${customMedia.lessThan("smTablet")`
+      width: 15rem !important;
+    `};
 
   img {
     object-fit: cover;
