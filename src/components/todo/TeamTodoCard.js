@@ -21,6 +21,7 @@ function TeamTodoCard({
   urlTeamName,
   assigned,
   todoImage,
+  comment,
 }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
@@ -83,35 +84,6 @@ function TeamTodoCard({
   };
 
   const emptyFunction = () => {};
-
-  const onSelectFile = async (event, id) => {
-    // try {
-    //   const image = event.target.files[0];
-    //   const uploadTask = await storage
-    //     .ref(`todoImages/${image.name}`)
-    //     .put(image);
-    //   storage
-    //     .ref("todoImages")
-    //     .child(image.name)
-    //     .getDownloadURL()
-    //     .then((url) => {
-    //       console.log(url);
-    //       db.collection("teams")
-    //         .doc(urlTeamName)
-    //         .collection("teamTodos")
-    //         .doc(id)
-    //         .set(
-    //           {
-    //             todoImage: url,
-    //           },
-    //           { merge: true }
-    //         );
-    //     });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    console.log(id);
-  };
 
   return (
     <TodoMainCard>
@@ -220,6 +192,8 @@ function TeamTodoCard({
           todoImage={todoImage}
           admin={admin}
           currentUser={currentUser}
+          comment={comment}
+          urlTeamName={urlTeamName}
         />
       )}
     </TodoMainCard>

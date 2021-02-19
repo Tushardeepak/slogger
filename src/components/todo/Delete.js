@@ -83,11 +83,15 @@ export default function Delete({ open, handleClose, teamName, id }) {
       </DialogContent>
 
       <DialogActions>
-        <Button className="addButton" onClick={handleClose} color="primary">
+        <Button
+          className="addButtonDelete"
+          onClick={handleClose}
+          color="primary"
+        >
           Cancel
         </Button>
         <Button
-          className="addButton"
+          className="addButtonDelete"
           onClick={
             cannotDelete ? () => handleJoinDelete() : () => setModalOpen(true)
           }
