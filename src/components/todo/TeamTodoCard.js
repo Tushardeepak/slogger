@@ -10,6 +10,7 @@ import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import { Button } from "@material-ui/core";
+import Material from "./Material";
 
 function TeamTodoCard({
   id,
@@ -24,6 +25,7 @@ function TeamTodoCard({
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
   const [assignedTo, setAssignedTo] = useState();
+  const [openMaterial, setOpenMaterial] = useState(false);
 
   React.useEffect(() => {
     if (assigned === "") {
@@ -82,32 +84,33 @@ function TeamTodoCard({
 
   const emptyFunction = () => {};
 
-  const onSelectFile = async (event) => {
-    try {
-      const image = event.target.files[0];
-      const uploadTask = await storage
-        .ref(`todoImages/${image.name}`)
-        .put(image);
-      storage
-        .ref("todoImages")
-        .child(image.name)
-        .getDownloadURL()
-        .then((url) => {
-          console.log(url);
-          db.collection("teams")
-            .doc(urlTeamName)
-            .collection("teamTodos")
-            .doc(id)
-            .set(
-              {
-                todoImage: url,
-              },
-              { merge: true }
-            );
-        });
-    } catch (error) {
-      console.log(error);
-    }
+  const onSelectFile = async (event, id) => {
+    // try {
+    //   const image = event.target.files[0];
+    //   const uploadTask = await storage
+    //     .ref(`todoImages/${image.name}`)
+    //     .put(image);
+    //   storage
+    //     .ref("todoImages")
+    //     .child(image.name)
+    //     .getDownloadURL()
+    //     .then((url) => {
+    //       console.log(url);
+    //       db.collection("teams")
+    //         .doc(urlTeamName)
+    //         .collection("teamTodos")
+    //         .doc(id)
+    //         .set(
+    //           {
+    //             todoImage: url,
+    //           },
+    //           { merge: true }
+    //         );
+    //     });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    console.log(id);
   };
 
   return (
@@ -154,92 +157,21 @@ function TeamTodoCard({
               )}
             </div>
             <div style={{ display: "flex" }}>
-              {admin === currentUser.uid ? (
-                <div style={{ flex: "0.5" }}>
-                  {" "}
-                  <input
-                    hidden
-                    id="profile-image-file"
-                    type="file"
-                    accept="image/*"
-                    onChange={onSelectFile}
-                  />
-                  <Button
-                    className="uploadView"
-                    style={{
-                      width: "98%",
-                      fontSize: "0.7rem",
-                      height: "1.5rem",
-                      color: "#fff",
-                      fontWeight: 600,
-                      backgroundColor: "rgb(5, 185, 125)",
-                      marginBottom: "0.5rem",
-                    }}
-                    onClick={() => {
-                      document.getElementById("profile-image-file").click();
-                    }}
-                  >
-                    Upload Image
-                  </Button>
-                </div>
-              ) : (
-                ""
-                // <div style={{ flex: "0.5" }}>
-                //   {todoImage !== "" ? (
-                //     <a
-                //       href={todoImage}
-                //       download
-                //       target="_blank"
-                //       style={{ textDecoration: "none" }}
-                //     >
-                //       <Button
-                //         style={{
-                //           width: "95%",
-                //           fontSize: "0.7rem",
-                //           height: "1.5rem",
-                //           color: "#fff",
-                //           fontWeight: 600,
-                //           backgroundColor: "rgb(5, 185, 125)",
-
-                //           marginBottom: "0.5rem",
-                //         }}
-                //       >
-                //         Download Image
-                //       </Button>
-                //     </a>
-                //   ) : (
-                //     ""
-                //   )}
-                // </div>
-              )}
-
-              <div style={{ flex: "0.5" }}>
-                {todoImage !== "" ? (
-                  <a
-                    href={todoImage}
-                    target="_blank"
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Button
-                      className="uploadView"
-                      style={{
-                        width: "95%",
-                        fontSize: "0.7rem",
-                        height: "1.5rem",
-                        color: "#fff",
-                        fontWeight: 600,
-                        backgroundColor: "rgb(5, 185, 125)",
-
-                        marginBottom: "0.5rem",
-                      }}
-                    >
-                      View Image
-                    </Button>
-                  </a>
-                ) : (
-                  ""
-                )}
-              </div>
+              <Button
+                className="uploadView"
+                style={{
+                  width: "98%",
+                  fontSize: "0.7rem",
+                  height: "1.5rem",
+                  color: "#fff",
+                  fontWeight: 600,
+                  backgroundColor: "rgb(5, 185, 125)",
+                  marginBottom: "0.5rem",
+                }}
+                onClick={() => setOpenMaterial(true)}
+              >
+                Material
+              </Button>
             </div>
           </div>
 
@@ -279,6 +211,16 @@ function TeamTodoCard({
         </TodoActions>
       ) : (
         ""
+      )}
+      {openMaterial && (
+        <Material
+          open={openMaterial}
+          handleClose={() => setOpenMaterial(false)}
+          id={id}
+          todoImage={todoImage}
+          admin={admin}
+          currentUser={currentUser}
+        />
       )}
     </TodoMainCard>
   );

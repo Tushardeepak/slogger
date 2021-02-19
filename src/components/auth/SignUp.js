@@ -126,13 +126,14 @@ function SignUp() {
                 arrow
                 placement="top"
               >
-                <div className="inputField">
+                <div className="inputFieldSignUp">
                   <AccountBoxIcon className="EmailAccount" />
                   <input
                     type="text"
                     placeholder="Email"
                     value={email}
                     autoComplete="off"
+                    className="inputSignUp"
                     onChange={(e) => handleChange(setEmail, e.target.value)}
                   ></input>
                 </div>
@@ -142,7 +143,7 @@ function SignUp() {
                 arrow
                 placement="top"
               >
-                <div className="inputField">
+                <div className="inputFieldSignUp">
                   <LockIcon className="EmailAccount" />
                   <input
                     className="password"
@@ -150,6 +151,7 @@ function SignUp() {
                     placeholder="Password"
                     value={password}
                     autocomplete="new-password"
+                    className="inputSignUp"
                     onChange={(e) => handleChange(setPassword, e.target.value)}
                   ></input>
                   {visibility ? (
@@ -224,13 +226,16 @@ function SignUp() {
           <SignUpForm>
             <img src={signUpImage} />
             <div className="signUpFormBottom">
-              <div className="inputField">
+              <div className="inputFieldSignUp">
                 <CustomTooltip
                   title="Alaric: What's your first name?"
                   arrow
                   placement="top"
                 >
-                  <div className="inputField" style={{ background: "none" }}>
+                  <div
+                    className="inputFieldSignUp"
+                    style={{ background: "none" }}
+                  >
                     <ArrowForwardIosIcon className="EmailAccount shortScreen" />
                     <input
                       type="text"
@@ -238,6 +243,7 @@ function SignUp() {
                       placeholder="First Name"
                       autocomplete="new-password"
                       className="firstName"
+                      className="inputSignUp"
                       onChange={(e) =>
                         handleChange(setFirstName, e.target.value)
                       }
@@ -245,7 +251,10 @@ function SignUp() {
                   </div>
                 </CustomTooltip>
                 <CustomTooltip title="Alaric: Last name?" arrow placement="top">
-                  <div className="inputField" style={{ background: "none" }}>
+                  <div
+                    className="inputFieldSignUp"
+                    style={{ background: "none" }}
+                  >
                     <ArrowForwardIosIcon className="EmailAccount shortScreen" />
                     <input
                       type="text"
@@ -253,6 +262,7 @@ function SignUp() {
                       placeholder="Last Name"
                       autocomplete="new-password"
                       className="firstName"
+                      className="inputSignUp"
                       onChange={(e) =>
                         handleChange(setLastName, e.target.value)
                       }
@@ -265,13 +275,14 @@ function SignUp() {
                 arrow
                 placement="top"
               >
-                <div className="inputField">
+                <div className="inputFieldSignUp">
                   <AccountBoxIcon className="EmailAccount" />
                   <input
                     type="text"
                     placeholder="Email"
                     value={email}
                     autoComplete="off"
+                    className="inputSignUp"
                     onChange={(e) => handleChange(setEmail, e.target.value)}
                   ></input>
                 </div>
@@ -281,13 +292,14 @@ function SignUp() {
                 arrow
                 placement="top"
               >
-                <div className="inputField">
+                <div className="inputFieldSignUp">
                   <LockIcon className="EmailAccount" />
                   <input
                     className="password"
                     type={passwordVisibility}
                     placeholder="Password"
                     value={password}
+                    className="inputSignUp"
                     autocomplete="new-password"
                     onChange={(e) => handleChange(setPassword, e.target.value)}
                   ></input>
@@ -309,7 +321,7 @@ function SignUp() {
                 arrow
                 placement="top"
               >
-                <div className="inputField">
+                <div className="inputFieldSignUp">
                   <LockIcon className="EmailAccount" />
                   <input
                     className="password"
@@ -317,6 +329,7 @@ function SignUp() {
                     placeholder="Confirm Password"
                     value={confirmPassword}
                     autoComplete="off"
+                    className="inputSignUp"
                     onChange={(e) =>
                       handleChange(setConfirmPassword, e.target.value)
                     }
@@ -518,7 +531,7 @@ const SignUpForm = styled.div`
     flex-direction: column;
     align-items: center;
   }
-  .inputField {
+  .inputFieldSignUp {
     width: 90%;
     height: 2rem;
     background-color: rgba(3, 185, 124, 0.308);
@@ -530,34 +543,34 @@ const SignUpForm = styled.div`
     align-items: center;
     overflow: hidden;
   }
-  input {
+  .inputSignUp {
     width: 100%;
     height: 100%;
     outline: none;
     border: none;
     background: transparent;
     color: rgb(3, 185, 124);
-    font-size: 1rem;
+    font-size: 1rem !important;
     flex: 0.9;
   }
-  input::placeholder {
+  .inputSignUp::placeholder {
     color: rgb(3, 185, 124);
-    font-size: 1rem;
+    font-size: 1rem !important;
   }
   .EmailAccount {
     color: rgb(3, 185, 124);
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
     flex: 0.1;
     padding-right: 0.3rem;
   }
-  .firstName {
+  .inputSignUp {
     ${customMedia.lessThan("tablet")`
-      font-size:8px;
+      font-size:8px !important;
     `};
   }
-  .firstName::placeholder {
+  .inputSignUp::placeholder {
     ${customMedia.lessThan("tablet")`
-      font-size:8px;
+      font-size:8px !important;
     `};
   }
   .shortScreen {
