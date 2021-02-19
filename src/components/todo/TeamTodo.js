@@ -264,6 +264,7 @@ function TeamTodo({ UrlTeamName }) {
             <MyTeamContainer>
               {teams.map((team) => (
                 <TeamCard
+                  key={team.id}
                   id={team.id}
                   teamName={team.teamName}
                   UrlTeamName={UrlTeamName}
@@ -282,6 +283,7 @@ function TeamTodo({ UrlTeamName }) {
             <MyTeamContainer>
               {joinedTeams.map((team) => (
                 <TeamCard
+                  key={team.id}
                   id={team.id}
                   teamName={team.teamName}
                   UrlTeamName={UrlTeamName}
@@ -505,6 +507,7 @@ function TeamTodo({ UrlTeamName }) {
 
           {teamsTodoList.map((todo) => (
             <TeamTodoCard
+              key={todo.id}
               id={todo.id}
               text={todo.todoText}
               date={todo.todoTime}

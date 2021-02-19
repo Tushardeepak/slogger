@@ -543,6 +543,7 @@ function SlogPage() {
               </a>
             </NewsBox>
           ))}
+          <div style={{ height: "3rem", width: "100%" }}></div>
         </NewsContainer>
       </SlogLeftContainer>
       <SlogRightContainer>
@@ -574,7 +575,13 @@ function SlogPage() {
               placeholder="Type city and press enter..."
             />
           </SearchContainer>
-          <h2 style={{ color: "rgb(18, 107, 77)", fontFamily: "sans-serif" }}>
+          <h2
+            style={{
+              color: "rgb(18, 107, 77)",
+              fontFamily: "sans-serif",
+              overflow: "hidden",
+            }}
+          >
             {searchedLocation.name},{searchedLocation.sys?.country}
           </h2>
           <div
@@ -589,14 +596,27 @@ function SlogPage() {
               alignItems: "center",
               borderBottom: "3px solid rgb(18, 107, 77)",
               borderRight: "3px solid rgb(18, 107, 77)",
+              overflow: "hidden",
             }}
           >
-            <h1 style={{ color: "#fff", fontFamily: "sans-serif" }}>
+            <h1
+              style={{
+                color: "#fff",
+                fontFamily: "sans-serif",
+                overflow: "hidden",
+              }}
+            >
               {Math.round(searchedLocation.main?.temp)}
               <sup>o</sup>C
             </h1>
           </div>
-          <h4 style={{ color: "rgb(3, 148, 99)", fontFamily: "sans-serif" }}>
+          <h4
+            style={{
+              color: "rgb(3, 148, 99)",
+              fontFamily: "sans-serif",
+              overflow: "hidden",
+            }}
+          >
             {`Feels like: ${searchedLocation.main?.feels_like}`}
             <sup>o</sup>C
           </h4>
@@ -605,6 +625,7 @@ function SlogPage() {
               color: "rgb(3, 148, 99)",
               fontFamily: "sans-serif",
               marginTop: "1rem",
+              overflow: "hidden",
             }}
           >
             {searchedLocation?.weather
