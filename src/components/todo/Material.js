@@ -8,6 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import "./style.css";
 import "./heightMedia.css";
+import { db, storage } from "../../firebase";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="" ref={ref} {...props} />;
@@ -20,34 +21,54 @@ export default function Material({
   todoImage,
   admin,
   currentUser,
+  comment,
+  urlTeamName,
 }) {
+  const [editComment, setEditComment] = useState(comment);
+  const [done, setDone] = useState(false);
+
+  const setText = (e) => {
+    setEditComment(e.target.value);
+    setDone(false);
+  };
+
+  const handleSet = () => {
+    setDone(true);
+    db.collection("teams").doc(urlTeamName).collection("teamTodos").doc(id).set(
+      {
+        comment: editComment,
+      },
+      { merge: true }
+    );
+    setEditComment("");
+  };
+
   const onSelectFile = async (event) => {
-    // try {
-    //   const image = event.target.files[0];
-    //   const uploadTask = await storage
-    //     .ref(`todoImages/${image.name}`)
-    //     .put(image);
-    //   storage
-    //     .ref("todoImages")
-    //     .child(image.name)
-    //     .getDownloadURL()
-    //     .then((url) => {
-    //       console.log(url);
-    //       db.collection("teams")
-    //         .doc(urlTeamName)
-    //         .collection("teamTodos")
-    //         .doc(id)
-    //         .set(
-    //           {
-    //             todoImage: url,
-    //           },
-    //           { merge: true }
-    //         );
-    //     });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    console.log(id);
+    try {
+      const image = event.target.files[0];
+      const uploadTask = await storage
+        .ref(`todoImages/${image.name}`)
+        .put(image);
+      storage
+        .ref("todoImages")
+        .child(image.name)
+        .getDownloadURL()
+        .then((url) => {
+          console.log(url);
+          db.collection("teams")
+            .doc(urlTeamName)
+            .collection("teamTodos")
+            .doc(id)
+            .set(
+              {
+                todoImage: url,
+              },
+              { merge: true }
+            );
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -63,10 +84,13 @@ export default function Material({
         Material
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-slide-description">
-          <div style={{ display: "flex" }}>
+        <DialogContentText
+          id="alert-dialog-slide-description"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <div className="materialMainBox">
             {admin === currentUser.uid ? (
-              <div style={{ margin: "0 0.5rem" }}>
+              <div style={{ marginRight: "0.5rem" }}>
                 {" "}
                 <input
                   hidden
@@ -125,7 +149,7 @@ export default function Material({
               // </div>
             )}
 
-            <div style={{ margin: "0 0.5rem" }}>
+            <div style={{ marginLeft: "0.5rem" }}>
               {todoImage !== "" ? (
                 <a
                   href={todoImage}
@@ -154,6 +178,29 @@ export default function Material({
               )}
             </div>
           </div>
+          <textarea
+            defaultValue={editComment}
+            className="commentTextBox"
+            rows="5"
+            cols="50"
+            onChange={(e) => setText(e)}
+          />
+          <Button
+            className="uploadView"
+            style={{
+              overflow: "hidden",
+              width: "10rem",
+              fontSize: "0.7rem",
+              height: "1.5rem",
+              color: "#fff",
+              fontWeight: 600,
+              backgroundColor: "rgb(5, 185, 125)",
+              margin: "0.5rem 0",
+            }}
+            onClick={() => handleSet()}
+          >
+            {done ? "Done" : "Set"}
+          </Button>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

@@ -159,6 +159,7 @@ function TeamTodo({ UrlTeamName }) {
         checked: false,
         assignedTo: "",
         todoImage: "",
+        comment: "",
       });
       setInputTodo("");
       setLoader(false);
@@ -178,6 +179,7 @@ function TeamTodo({ UrlTeamName }) {
         checked: false,
         assignedTo: "",
         todoImage: "",
+        comment: "",
       });
       setInputTodo("");
       setLoader(false);
@@ -198,6 +200,7 @@ function TeamTodo({ UrlTeamName }) {
           checked: doc.data().checked,
           assignedTo: doc.data().assignedTo,
           todoImage: doc.data().todoImage,
+          comment: doc.data().comment,
         }));
         setTeamsTodoList(list);
       });
@@ -516,6 +519,7 @@ function TeamTodo({ UrlTeamName }) {
               urlTeamName={UrlTeamName}
               assigned={todo.assignedTo}
               todoImage={todo.todoImage}
+              comment={todo.comment}
             />
           ))}
         </TeamTodoRightContainer>
