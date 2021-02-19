@@ -3,23 +3,25 @@
   "name": "Slogger",
   "icons": [
     {
-      "src": "/public/icon2.png",
+      "src": "./images/icon2.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/public/icon2.png",
+      "src": "./images/icon2.png",
       "sizes": "144x144",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/public/icon2.png",
+      "src": "./images/icon2.png",
       "sizes": "522x525",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable"
     }
     
-  ],
-  "start_url": ".",
+  ],"start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
