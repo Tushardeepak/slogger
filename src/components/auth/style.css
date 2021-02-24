@@ -114,7 +114,7 @@ ul li svg path {
     object-fit: cover;
   }
 }
-
+/* 
 @media screen and (max-height: 600px) {
   .footer {
     top: 1rem !important;
@@ -125,10 +125,10 @@ ul li svg path {
   img {
     display: none !important;
   }
-  /* .signUpFormBottom {
+  .signUpFormBottom {
     margin-top: 50px !important;
-  } */
+  }
 }
 .c {
   color: rgba(224, 255, 245, 0.781);
-}
+} */
