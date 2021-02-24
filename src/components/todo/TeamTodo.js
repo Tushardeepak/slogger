@@ -34,8 +34,10 @@ import TeamTodoCard from "./TeamTodoCard";
 import noTeamTodoImage from "../../assets/images/noTeamTodo.svg";
 import noTodoJoinTeam from "../../assets/images/noTodoJoinTeam.svg";
 import deletedTeam from "../../assets/images/deletedTeam.svg";
+import profileSetterImage from "../../assets/images/profileSetterImage.svg";
 import { useHistory } from "react-router-dom";
 import "./heightMedia.css";
+import SnackBar from "../snackbar/SnackBar";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -116,10 +118,17 @@ function TeamTodo({ UrlTeamName }) {
   const [make, setMake] = useState(false);
   const [selectedDate, handleDateChange] = useState(new Date());
   const [inputTodo, setInputTodo] = useState("");
+  const [userName, setUserName] = useState("");
+  const [name, setName] = useState("");
+  const [skill, setSkill] = useState("");
+  const [email, setEmail] = useState("");
+  const [otherContact, setOtherContact] = useState("");
   const [thisIsAdmin, setThisIsAdmin] = useState(false);
   const [deleteTeam, setDeleteTeam] = useState(false);
   const [error, setError] = useState(false);
+  const [profileError, setProfileError] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [firstLoader, setFirstLoader] = useState(true);
   const [teams, setTeams] = useState([]);
   const [joinedTeams, setJoinedTeams] = useState([]);
   const [teamsTodoList, setTeamsTodoList] = useState([]);
@@ -129,6 +138,11 @@ function TeamTodo({ UrlTeamName }) {
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [profileSetter, setProfileSetter] = useState(true);
+  const [openMakeSnackBar, setOpenMakeSnackBar] = useState(false);
+  const [openJoinSnackBar, setOpenJoinSnackBar] = useState(false);
+  const [openDeleteSnackBar, setOpenDeleteSnackBar] = useState(false);
+  const [currentTeamName, setCurrentTeamName] = useState("");
 
   const handleInputChange = (value) => {
     setInputTodo(value);
@@ -160,6 +174,7 @@ function TeamTodo({ UrlTeamName }) {
         assignedTo: "",
         todoImage: "",
         comment: "",
+        checkedBy: "",
       });
       setInputTodo("");
       setLoader(false);
@@ -180,9 +195,24 @@ function TeamTodo({ UrlTeamName }) {
         assignedTo: "",
         todoImage: "",
         comment: "",
+        checkedBy: "",
       });
       setInputTodo("");
       setLoader(false);
+    }
+  };
+
+  const handleSaveProfile = () => {
+    if (name !== "" && email !== "") {
+      setProfileError(false);
+      db.collection("users").doc(currentUser.uid).collection("profile").add({
+        name: name,
+        email: email,
+        other: otherContact,
+        skill: skill,
+      });
+    } else {
+      setProfileError(true);
     }
   };
 
@@ -198,6 +228,7 @@ function TeamTodo({ UrlTeamName }) {
           todoText: doc.data().todoText,
           todoTime: doc.data().todoTime,
           checked: doc.data().checked,
+          checkedBy: doc.data().checkedBy,
           assignedTo: doc.data().assignedTo,
           todoImage: doc.data().todoImage,
           comment: doc.data().comment,
@@ -252,7 +283,102 @@ function TeamTodo({ UrlTeamName }) {
       });
     });
   }, [UrlTeamName]);
-  return (
+
+  React.useEffect(() => {
+    db.collection("users")
+      .doc(currentUser.uid)
+      .collection("profile")
+      .onSnapshot((snapshot) => {
+        const profile = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          name: doc.data().name,
+        }));
+        profile.filter((p) => {
+          if (p.name !== "") {
+            setUserName(p.name);
+            setProfileSetter(false);
+            setFirstLoader(false);
+          }
+        });
+      });
+  }, []);
+
+  return firstLoader ? (
+    <p>Loading...</p>
+  ) : profileSetter ? (
+    <div
+      style={{
+        width: "100%",
+        height: "70vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div className="profileContainer">
+        <div className="profileImageBox">
+          <img className="profileSetterImage" src={profileSetterImage} />
+          <p className="profileHeading">
+            To use this feature <br /> Please set your profile first.
+          </p>
+          <Button className="addButton" onClick={() => handleSaveProfile()}>
+            Save
+          </Button>
+        </div>
+
+        <div className="profileBox">
+          <div className="inputFieldProfile">
+            <label className="profileLabel">Name:</label>
+            <input
+              value={name}
+              className="todoInputProfile"
+              type="text"
+              placeholder="..."
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div className="inputFieldProfile">
+            <label className="profileLabel">Email:</label>
+            <input
+              value={email}
+              className="todoInputProfile"
+              type="text"
+              placeholder="..."
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="inputFieldProfile">
+            <label className="profileLabel">Other:</label>
+            <input
+              value={otherContact}
+              className="todoInputProfile"
+              type="text"
+              placeholder="..."
+              onChange={(e) => setOtherContact(e.target.value)}
+            />
+          </div>
+
+          <div className="inputFieldProfile">
+            <label className="profileLabel">Skill:</label>
+            <input
+              value={skill}
+              className="todoInputProfile"
+              type="text"
+              placeholder="..."
+              onChange={(e) => setSkill(e.target.value)}
+            />
+          </div>
+          {profileError ? (
+            <p style={{ color: "red" }}>Fill Name and Email correctly</p>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
+    </div>
+  ) : (
     <div>
       <TeamTodoContainer>
         <TeamTodoLeftContainer>
@@ -271,6 +397,9 @@ function TeamTodo({ UrlTeamName }) {
                   id={team.id}
                   teamName={team.teamName}
                   UrlTeamName={UrlTeamName}
+                  deleteBtn={true}
+                  setOpenDeleteSnackBar={setOpenDeleteSnackBar}
+                  setCurrentTeamName={setCurrentTeamName}
                 ></TeamCard>
               ))}
             </MyTeamContainer>
@@ -290,6 +419,9 @@ function TeamTodo({ UrlTeamName }) {
                   id={team.id}
                   teamName={team.teamName}
                   UrlTeamName={UrlTeamName}
+                  deleteBtn={true}
+                  setOpenDeleteSnackBar={setOpenDeleteSnackBar}
+                  setCurrentTeamName={setCurrentTeamName}
                 ></TeamCard>
               ))}
             </MyTeamContainer>
@@ -515,11 +647,13 @@ function TeamTodo({ UrlTeamName }) {
               text={todo.todoText}
               date={todo.todoTime}
               checked={todo.checked}
+              checkedBy={todo.checkedBy}
               admin={todo.admin}
               urlTeamName={UrlTeamName}
               assigned={todo.assignedTo}
               todoImage={todo.todoImage}
               comment={todo.comment}
+              userName={userName}
             />
           ))}
         </TeamTodoRightContainer>
@@ -529,6 +663,29 @@ function TeamTodo({ UrlTeamName }) {
           open={openMaker}
           handleClose={handleClose}
           make={make}
+          setCurrentTeamName={setCurrentTeamName}
+          openSnackbar={make ? setOpenMakeSnackBar : setOpenJoinSnackBar}
+        />
+      )}
+      {openMakeSnackBar && (
+        <SnackBar
+          open={openMakeSnackBar}
+          handleClose={() => setOpenMakeSnackBar(false)}
+          text={`Team ${currentTeamName} Created`}
+        />
+      )}
+      {openJoinSnackBar && (
+        <SnackBar
+          open={openJoinSnackBar}
+          handleClose={() => setOpenJoinSnackBar(false)}
+          text={`Welcome to team ${currentTeamName}`}
+        />
+      )}
+      {openDeleteSnackBar && (
+        <SnackBar
+          open={openDeleteSnackBar}
+          handleClose={() => openDeleteSnackBar(false)}
+          text={`Team ${currentTeamName} deleted`}
         />
       )}
     </div>

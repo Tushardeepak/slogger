@@ -9,6 +9,7 @@ import Slide from "@material-ui/core/Slide";
 import "./style.css";
 import "./heightMedia.css";
 import { db, storage } from "../../firebase";
+import SnackBar from "../snackbar/SnackBar";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="" ref={ref} {...props} />;
@@ -23,9 +24,11 @@ export default function Material({
   currentUser,
   comment,
   urlTeamName,
+  checkedBy,
 }) {
   const [editComment, setEditComment] = useState(comment);
   const [done, setDone] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
 
   const setText = (e) => {
     setEditComment(e.target.value);
@@ -44,6 +47,7 @@ export default function Material({
   };
 
   const onSelectFile = async (event) => {
+    setOpenSnack(true);
     try {
       const image = event.target.files[0];
       const uploadTask = await storage
@@ -69,6 +73,8 @@ export default function Material({
     } catch (error) {
       console.log(error);
     }
+
+    setOpenSnack(false);
   };
 
   return (
@@ -81,8 +87,12 @@ export default function Material({
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle id="alert-dialog-slide-title" className="title">
-        Material
+        Details
+        {checkedBy !== "" && (
+          <p style={{ fontSize: "small" }}>Completed By: {checkedBy}</p>
+        )}
       </DialogTitle>
+
       <DialogContent>
         <DialogContentText
           id="alert-dialog-slide-description"
@@ -181,6 +191,7 @@ export default function Material({
           <textarea
             defaultValue={editComment}
             className="commentTextBox"
+            placeholder="Add something..."
             rows="5"
             cols="50"
             onChange={(e) => setText(e)}
@@ -199,10 +210,18 @@ export default function Material({
             }}
             onClick={() => handleSet()}
           >
-            {done ? "Done" : "Set"}
+            {done ? "Done" : "Add"}
           </Button>
         </DialogContentText>
       </DialogContent>
+      {openSnack && (
+        <SnackBar
+          open={openSnack}
+          handleClose={() => setOpenSnack(false)}
+          text={"Uploading..."}
+          material={true}
+        />
+      )}
       <DialogActions>
         <Button
           className="addButtonModal"

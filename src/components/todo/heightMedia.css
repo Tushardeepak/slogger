@@ -8,6 +8,7 @@
   .inputField {
     padding: 0.5rem !important;
   }
+
   .dateBox {
     padding: 0.5rem 0.7rem !important;
   }
@@ -35,3 +36,12 @@
     margin: 10px 0 !important;
   }
 }
+/* @media only screen and (max-height: 650px) {
+  .inputFieldPersonal {
+    height: 5rem !important;
+  }
+  .todoInputPersonal {
+    padding: 0 !important;
+    height: 5rem !important;
+  }
+} */

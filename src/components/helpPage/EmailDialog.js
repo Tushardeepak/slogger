@@ -13,9 +13,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="" ref={ref} {...props} />;
 });
 
-export default function AddingTeamModal({ open, handleClose }) {
+export default function AddingTeamModal({ open, handleClose, setSent }) {
   const [senderEmail, setSenderEmail] = useState("");
-  const [sent, setSent] = useState(false);
 
   const handleSend = (e) => {
     e.preventDefault();
@@ -37,6 +36,7 @@ export default function AddingTeamModal({ open, handleClose }) {
 
     e.target.reset();
     setSent(true);
+    handleClose();
   };
   return (
     <Dialog
@@ -50,41 +50,26 @@ export default function AddingTeamModal({ open, handleClose }) {
       <DialogTitle id="alert-dialog-slide-title" className="title">
         Mail us
       </DialogTitle>
-      {sent ? (
-        <DialogContent>
-          <DialogContentText
-            id="alert-dialog-slide-description"
+
+      <DialogContent>
+        <DialogContentText id="alert-dialog-slide-description">
+          <form
+            className="contact-form"
+            onSubmit={handleSend}
             style={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "center",
+              width: "30rem",
             }}
           >
-            <h1 className="thank">Thank You</h1>
-            <h3 className="thank">We will reach out to you soon</h3>
-          </DialogContentText>
-        </DialogContent>
-      ) : (
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            <form
-              className="contact-form"
-              onSubmit={handleSend}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                width: "30rem",
-              }}
-            >
-              <label>Email</label>
-              <input type="email" name="email" className="input" />
-              <label>Message</label>
-              <textarea name="message" className="input" />
-              <input type="submit" value="Send" className="addButton" />
-            </form>
-          </DialogContentText>
-        </DialogContent>
-      )}
+            <label>Email</label>
+            <input type="email" name="email" className="input" />
+            <label>Message</label>
+            <textarea name="message" className="input" />
+            <input type="submit" value="Send" className="addButton" />
+          </form>
+        </DialogContentText>
+      </DialogContent>
     </Dialog>
   );
 }

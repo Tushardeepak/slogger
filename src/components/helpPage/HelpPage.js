@@ -13,11 +13,12 @@ import { useAuth } from "../../context/AuthContext";
 import { Button } from "@material-ui/core";
 import EmailDialog from "./EmailDialog";
 import EmailIcon from "@material-ui/icons/Email";
+import SnackBar from "../snackbar/SnackBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    overflow: "hidden",
+    overflow: "scroll",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -32,6 +33,7 @@ function HelpPage() {
   const [loader, setLoader] = useState(false);
   const [email, setEmail] = useState("");
   const [openEmail, setOpenEmail] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const handleChange = (set, value) => {
     set(value);
@@ -339,7 +341,20 @@ function HelpPage() {
           </div>
         </HelpPageRightBox>
       </HelpPageContainer>
-      {openEmail && <EmailDialog open={openEmail} handleClose={handleClose} />}
+      {openEmail && (
+        <EmailDialog
+          open={openEmail}
+          handleClose={handleClose}
+          setSent={setSent}
+        />
+      )}
+      {sent && (
+        <SnackBar
+          open={sent}
+          handleClose={() => setSent(false)}
+          text={"Mail Sent, Thank You!"}
+        />
+      )}
     </div>
   );
 }

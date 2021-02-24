@@ -5,6 +5,8 @@ import {
   Paper,
   Tab,
   Tabs,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
@@ -17,6 +19,9 @@ import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import SlogPage from "../todo/SlogPage";
 import { generateMedia } from "styled-media-query";
+import Discussion from "../todo/Discussion";
+import { db } from "../../firebase";
+import SnackBar from "../snackbar/SnackBar";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -88,10 +93,33 @@ function Home(props) {
 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
+  const [userName, setUserName] = React.useState("");
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  React.useEffect(() => {
+    db.collection("users")
+      .doc(currentUser.uid)
+      .collection("profile")
+      .onSnapshot((snapshot) => {
+        const profile = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          name: doc.data().name,
+        }));
+        profile.filter((p) => {
+          if (p.name !== "") {
+            setUserName(p.name);
+            setOpen(true);
+          }
+        });
+      });
+  }, []);
+
   return (
     <div style={{ width: "100%", height: "100vh", overflow: "hidden" }}>
       <HomeContainer>
@@ -113,11 +141,16 @@ function Home(props) {
             >
               <Tab
                 className={classes.label}
-                label="PERSONAL"
+                label={!isSmall ? "My" : "PERSONAL"}
                 {...a11yProps(0)}
               />
               <Tab className={classes.label} label="TEAM" {...a11yProps(1)} />
-              <Tab className={classes.label} label="SLOG" {...a11yProps(2)} />
+              <Tab
+                className={classes.label}
+                label={!isSmall ? "Chat" : "DISCUSSION"}
+                {...a11yProps(2)}
+              />
+              <Tab className={classes.label} label="SLOG" {...a11yProps(3)} />
             </Tabs>
           </AppBar>
           <TabPanel style={{ width: "100%" }} value={value} index={0}>
@@ -127,6 +160,9 @@ function Home(props) {
             <TeamTodo UrlTeamName={props.match.params.teamName} />
           </TabPanel>
           <TabPanel value={value} index={2}>
+            <Discussion UrlTeamName={props.match.params.teamName} />
+          </TabPanel>
+          <TabPanel value={value} index={3}>
             <SlogPage />
           </TabPanel>
         </Paper>
@@ -153,6 +189,14 @@ function Home(props) {
           ></path>
         </svg>
       </HomeContainer>
+      {open && (
+        <SnackBar
+          open={open}
+          handleClose={() => setOpen(false)}
+          text={`Welcome! ${userName}`}
+          home={true}
+        />
+      )}
     </div>
   );
 }

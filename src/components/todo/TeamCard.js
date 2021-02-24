@@ -5,7 +5,14 @@ import styled from "styled-components";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Delete from "./Delete";
 
-function TeamCard({ id, teamName, UrlTeamName }) {
+function TeamCard({
+  id,
+  teamName,
+  UrlTeamName,
+  deleteBtn,
+  setOpenDeleteSnackBar,
+  setCurrentTeamName,
+}) {
   const [openDelete, setOpenDelete] = React.useState(false);
   const history = useHistory();
 
@@ -45,20 +52,27 @@ function TeamCard({ id, teamName, UrlTeamName }) {
       >
         {teamName}
       </Button>
-      <DeleteIcon
-        style={{
-          fontSize: "20px",
-          color: "rgb(2, 112, 75)",
-          cursor: "pointer",
-        }}
-        onClick={() => handleDelete()}
-      />
+      {deleteBtn ? (
+        <DeleteIcon
+          style={{
+            fontSize: "20px",
+            color: "rgb(2, 112, 75)",
+            cursor: "pointer",
+          }}
+          onClick={() => handleDelete()}
+        />
+      ) : (
+        ""
+      )}
+
       {openDelete && (
         <Delete
           open={openDelete}
           handleClose={handleClose}
           teamName={teamName}
           id={id}
+          setOpenDeleteSnackBar={setOpenDeleteSnackBar}
+          setCurrentTeamName={setCurrentTeamName}
         />
       )}
     </div>
@@ -83,19 +97,26 @@ function TeamCard({ id, teamName, UrlTeamName }) {
       >
         {teamName}
       </Button>
-      <DeleteIcon
-        style={{
-          fontSize: "20px",
-          color: "rgb(2, 112, 75)",
-          cursor: "pointer",
-        }}
-        onClick={() => handleDelete()}
-      />
+      {deleteBtn ? (
+        <DeleteIcon
+          style={{
+            fontSize: "20px",
+            color: "rgb(2, 112, 75)",
+            cursor: "pointer",
+          }}
+          onClick={() => handleDelete()}
+        />
+      ) : (
+        ""
+      )}
+
       {openDelete && (
         <Delete
           open={openDelete}
           handleClose={handleClose}
           teamName={teamName}
+          setOpenDeleteSnackBar={setOpenDeleteSnackBar}
+          setCurrentTeamName={setCurrentTeamName}
           id={id}
         />
       )}

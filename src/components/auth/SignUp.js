@@ -21,8 +21,8 @@ function SignUp() {
   const [visibility, setVisibility] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState("password");
   const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  //const [firstName, setFirstName] = useState("");
+  //const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
@@ -39,7 +39,7 @@ function SignUp() {
     if (
       email === "" ||
       password === "" ||
-      firstName === "" ||
+      // firstName === "" ||
       confirmPassword === "" ||
       password !== confirmPassword
     ) {
@@ -50,8 +50,8 @@ function SignUp() {
         const USER = await signUp(email, password);
         db.collection("users").doc(USER?.uid).collection("profile").add({
           email: email,
-          firstName: firstName,
-          lastName: lastName,
+          // firstName: firstName,
+          //lastName: lastName,
         });
         setLoader(false);
         history.push("/");
@@ -226,7 +226,7 @@ function SignUp() {
           <SignUpForm>
             <img src={signUpImage} />
             <div className="signUpFormBottom">
-              <div className="inputFieldSignUp">
+              {/* <div className="inputFieldSignUp">
                 <CustomTooltip
                   title="Alaric: What's your first name?"
                   arrow
@@ -269,7 +269,7 @@ function SignUp() {
                     ></input>
                   </div>
                 </CustomTooltip>
-              </div>
+              </div> */}
               <CustomTooltip
                 title="Alaric: Enter a valid email, It's good for future."
                 arrow
