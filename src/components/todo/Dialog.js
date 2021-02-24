@@ -17,7 +17,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="" ref={ref} {...props} />;
 });
 
-export default function AddingTeamModal({ open, handleClose, make }) {
+export default function AddingTeamModal({
+  open,
+  handleClose,
+  make,
+  setCurrentTeamName,
+  openSnackbar,
+}) {
   const [inputTeamName, setInputTeamName] = useState("");
   const [teamList, setTeamList] = useState([]);
   const [alreadyExist, setAlreadyExist] = useState(false);
@@ -77,8 +83,10 @@ export default function AddingTeamModal({ open, handleClose, make }) {
       teamName: inputTeamName,
       timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
+    setCurrentTeamName(inputTeamName);
     history.push(`/${inputTeamName}`);
     handleClose();
+    openSnackbar(true);
   };
 
   const addTeamNameToUser = () => {
@@ -87,8 +95,10 @@ export default function AddingTeamModal({ open, handleClose, make }) {
       admin: currentUser.uid,
       timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
+    setCurrentTeamName(inputTeamName);
     history.push(`/${inputTeamName}`);
     handleClose();
+    openSnackbar(true);
   };
 
   // const makeTeamCollection = () => {
@@ -107,6 +117,7 @@ export default function AddingTeamModal({ open, handleClose, make }) {
       { merge: true }
     );
     addTeamNameToUser();
+
     // makeTeamCollection();
   };
 

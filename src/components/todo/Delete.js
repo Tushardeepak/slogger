@@ -16,7 +16,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="" ref={ref} {...props} />;
 });
 
-export default function Delete({ open, handleClose, teamName, id }) {
+export default function Delete({
+  open,
+  handleClose,
+  teamName,
+  id,
+  setCurrentTeamName,
+  setOpenDeleteSnackBar,
+}) {
   const [cannotDelete, setCannotDelete] = React.useState(false);
   const [ModalOpen, setModalOpen] = React.useState(false);
 
@@ -32,6 +39,8 @@ export default function Delete({ open, handleClose, teamName, id }) {
       .doc(id)
       .delete();
     handleClose();
+    setOpenDeleteSnackBar(true);
+    setCurrentTeamName(teamName);
   };
 
   React.useEffect(() => {
@@ -108,6 +117,8 @@ export default function Delete({ open, handleClose, teamName, id }) {
           id={id}
           closeBackModal={handleClose}
           currentUser={currentUser.uid}
+          setOpenDeleteSnackBar={setOpenDeleteSnackBar}
+          setCurrentTeamName={setCurrentTeamName}
         />
       )}
     </Dialog>
@@ -121,6 +132,8 @@ function DeleteUserTeamModal({
   id,
   closeBackModal,
   currentUser,
+  setOpenDeleteSnackBar,
+  setCurrentTeamName,
 }) {
   const [todoSideDelete, setTodoSideDelete] = React.useState(false);
   const [userSideDelete, setUserSideDelete] = React.useState(false);
@@ -141,8 +154,11 @@ function DeleteUserTeamModal({
       .collection("userTeams")
       .doc(id)
       .delete();
-    history.push("/");
+
     setUserSideDelete(true);
+    setOpenDeleteSnackBar(true);
+    setCurrentTeamName(teamName);
+    history.push("/");
   };
 
   const databaseDelete = () => {
@@ -270,7 +286,7 @@ function DeleteUserTeamModal({
       <DialogActions>
         <Button
           className="addButton"
-          onClick={handleCompleteClose}
+          onClick={() => handleCompleteClose()}
           color="primary"
           disabled={userSideDelete && todoSideDelete ? false : true}
           className={

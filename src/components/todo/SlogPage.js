@@ -196,7 +196,7 @@ function SlogPage() {
         console.log(loc);
 
         fetch(`
-        http://api.openweathermap.org/data/2.5/weather?q=${loc[0].l}&units=metric&APPID=a1cefd4ba7c137e4c484e6a95d51aebe`)
+        http://api.openweathermap.org/data/2.5/weather?q=${loc[0]?.l}&units=metric&APPID=a1cefd4ba7c137e4c484e6a95d51aebe`)
           .then((res) => res.json())
           .then((data) => setSearchedLocation(data))
           .then((data) => console.log(data));

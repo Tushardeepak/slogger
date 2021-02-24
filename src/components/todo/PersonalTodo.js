@@ -192,11 +192,11 @@ function PersonalTodo() {
     <TodoContainer>
       <TodoLeftContainer>
         <TodoLeftUpBox>
-          <div className="inputField">
+          <div className="inputField inputFieldPersonal">
             <CreateIcon className="todoIcon" />
             <input
               value={inputTodo}
-              className="todoInput"
+              className="todoInputPersonal"
               type="text"
               placeholder="Write here..."
               onChange={(e) => handleInputChange(e.target.value)}

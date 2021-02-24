@@ -9,24 +9,29 @@ import moment from "moment";
 import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
-import { Button } from "@material-ui/core";
+import { Button, IconButton, useMediaQuery, useTheme } from "@material-ui/core";
 import Material from "./Material";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 function TeamTodoCard({
   id,
   text,
   date,
   checked,
+  checkedBy,
   admin,
   urlTeamName,
   assigned,
   todoImage,
   comment,
+  userName,
 }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
   const [assignedTo, setAssignedTo] = useState();
   const [openMaterial, setOpenMaterial] = useState(false);
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   React.useEffect(() => {
     if (assigned === "") {
@@ -65,12 +70,17 @@ function TeamTodoCard({
 
   const handleChecked = () => {
     setLocalCheck(!localCheck);
-    db.collection("teams").doc(urlTeamName).collection("teamTodos").doc(id).set(
-      {
-        checked: localCheck,
-      },
-      { merge: true }
-    );
+    db.collection("teams")
+      .doc(urlTeamName)
+      .collection("teamTodos")
+      .doc(id)
+      .set(
+        {
+          checked: localCheck,
+          checkedBy: localCheck ? userName : "",
+        },
+        { merge: true }
+      );
   };
 
   const handleAssignedSubmit = () => {
@@ -128,39 +138,60 @@ function TeamTodoCard({
                 ""
               )}
             </div>
-            <div style={{ display: "flex" }}>
-              <Button
-                className="uploadView"
-                style={{
-                  width: "98%",
-                  fontSize: "0.7rem",
-                  height: "1.5rem",
-                  color: "#fff",
-                  fontWeight: 600,
-                  backgroundColor: "rgb(5, 185, 125)",
-                  marginBottom: "0.5rem",
-                }}
-                onClick={() => setOpenMaterial(true)}
-              >
-                Material
-              </Button>
+          </div>
+          <div
+            style={{ flex: "0.15", display: "flex", flexDirection: "column" }}
+          >
+            <p
+              className="todoDate"
+              style={{
+                color: "rgba(0, 99, 66, 0.668)",
+                paddingBottom: "0.3rem",
+              }}
+            >
+              {date.substring(8, 10)}
+              {"/"}
+              {date.substring(5, 7)}
+              {"/"}
+              {date.substring(0, 4)}
+            </p>
+            <div>
+              {!isSmall ? (
+                <IconButton
+                  className="uploadView"
+                  style={{
+                    width: "98%",
+                    fontSize: "0.65rem",
+                    height: "1.2rem",
+                    color: "#fff",
+                    fontWeight: 600,
+                    backgroundColor: "rgb(5, 185, 125)",
+                    marginLeft: "0.7rem",
+                    marginTop: "-0.4rem",
+                  }}
+                  onClick={() => setOpenMaterial(true)}
+                >
+                  <ErrorOutlineIcon />
+                </IconButton>
+              ) : (
+                <Button
+                  className="uploadView"
+                  style={{
+                    width: "98%",
+                    fontSize: "0.65rem",
+                    height: "1.2rem",
+                    color: "#fff",
+                    fontWeight: 600,
+                    backgroundColor: "rgb(5, 185, 125)",
+                    marginBottom: "0.7rem",
+                  }}
+                  onClick={() => setOpenMaterial(true)}
+                >
+                  Details
+                </Button>
+              )}
             </div>
           </div>
-
-          <p
-            className="todoDate"
-            style={{
-              color: "rgba(0, 99, 66, 0.668)",
-              paddingBottom: "0.3rem",
-              flex: "0.15",
-            }}
-          >
-            {date.substring(8, 10)}
-            {"/"}
-            {date.substring(5, 7)}
-            {"/"}
-            {date.substring(0, 4)}
-          </p>
         </div>
         <p
           style={{
@@ -194,6 +225,7 @@ function TeamTodoCard({
           currentUser={currentUser}
           comment={comment}
           urlTeamName={urlTeamName}
+          checkedBy={checkedBy}
         />
       )}
     </TodoMainCard>
@@ -278,11 +310,11 @@ const TodoTextBox = styled.div`
 
   .inputField {
     width: 95%;
-    height: 1.4rem;
+    height: 2rem;
     background-color: rgba(3, 185, 124, 0.308);
     border-radius: 5px;
     border: none;
-    padding: 0.05rem 0.2rem;
+    padding: 0rem 0.2rem;
     padding-left: 0.5rem;
     margin: 0.2rem;
     margin-bottom: 0.2rem;
@@ -335,6 +367,7 @@ const TodoTextBox = styled.div`
     ${customMedia.lessThan("smTablet")`
       font-size:8px !important;
       padding:0.1rem 0 !important;
+      width:60% !important;
     `};
   }
 `;
