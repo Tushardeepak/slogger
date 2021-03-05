@@ -206,7 +206,7 @@ function Discussion({ UrlTeamName, userName }) {
   return (
     <div>
       <TeamTodoContainer>
-        <TeamTodoLeftContainer>
+        <TeamTodoLeftContainer className="heightControl">
           <TeamTodoLeftLeftBox>
             <h3 style={{ overflow: "hidden" }}>My Teams</h3>
             <MyTeamContainer>

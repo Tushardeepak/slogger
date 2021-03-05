@@ -448,7 +448,7 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
   ) : (
     <div>
       <TeamTodoContainer>
-        <TeamTodoLeftContainer>
+        <TeamTodoLeftContainer className="heightControl">
           <TeamTodoLeftLeftBox>
             <Button
               className="addButton1"

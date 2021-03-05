@@ -238,11 +238,21 @@ const HomeContainer = styled.div`
   padding-bottom: 1rem;
   overflow: hidden !important;
 
+  ${customMedia.lessThan("smTablet")`
+          padding: 0;
+          padding-top:3rem;
+    `};
+
   .mainPaper {
     position: relative;
     width: 93%;
     height: 86%;
     border-radius: 20px;
+    ${customMedia.lessThan("smTablet")`
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+    `};
   }
 
   .svgUp {

@@ -45,3 +45,8 @@
     height: 5rem !important;
   }
 } */
+@media only screen and (max-height: 400px) {
+  .heightControl {
+    display: none !important;
+  }
+}

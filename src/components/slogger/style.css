@@ -158,8 +158,12 @@
   border-radius: 100px 0px 100px 0px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+.bannerImg {
+  height: 200px;
+  width: 500px;
+}
 @media only screen and (max-width: 740px) {
-  h1 {
+  /* h1 {
     font-size: 25px !important;
   }
   hr {
@@ -208,5 +212,40 @@
     padding-left: 1.5rem;
     margin-top: -9rem;
     margin-left: 0;
+  } */
+
+  .bannerImg {
+    height: 130px !important;
+    width: 330px !important;
+  }
+  .bannerBtn {
+    margin-top: 2rem !important;
+  }
+
+  .questionInner h1 {
+    font-size: 0.8rem !important;
+  }
+  .weGotYou {
+    margin-bottom: -4rem;
+  }
+  h1 {
+    font-size: 1rem !important;
+  }
+  .bubbleBox {
+    height: auto !important;
+    margin: 2rem 0;
+    border-radius: 0px 0px 0px 0px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 0px !important;
+  }
+
+  .bubbleBoxOpp {
+    height: auto !important;
+    margin: 2rem 0;
+    border-radius: 0px 0px 0px 0px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 0px !important;
+  }
+  .personalTodoSection {
+    display: flex;
+    flex-direction: column;
   }
 }
