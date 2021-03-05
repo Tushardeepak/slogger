@@ -3,13 +3,7 @@
   "name": "Slogger",
   "icons": [
     {
-      "src": "./images/icon2.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./images/icon2.png",
+      "src": "./images/icon1.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any"
@@ -21,8 +15,9 @@
       "purpose": "maskable"
     }
     
-  ],"start_url": ".",
+  ],"start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "scope": "/"
 }

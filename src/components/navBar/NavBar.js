@@ -59,7 +59,7 @@ function NavBar({ page, home }) {
   }, []);
   return page === 1 ? (
     <NavBarContainer>
-      <NavBarStartIcon onClick={() => history.push("/slogger")}>
+      <NavBarStartIcon onClick={() => history.push("/")}>
         {/* <img src={navIcon} className="navIcon" alt="SLOGGER" /> */}
         <h1>SLOGGER</h1>
         <hr className="navLogoRightLine" />
@@ -80,7 +80,7 @@ function NavBar({ page, home }) {
       </NavLinksContainer>
       <NavBarEndContainer>
         {home ? (
-          <Button onClick={() => history.push("/")}>home</Button>
+          <Button onClick={() => history.push("/home")}>home</Button>
         ) : (
           <Button onClick={() => history.push("/help")}>help</Button>
         )}
@@ -90,7 +90,7 @@ function NavBar({ page, home }) {
     </NavBarContainer>
   ) : (
     <NavBarContainer0Page>
-      <NavBar0StartIcon onClick={() => history.push("/slogger")}>
+      <NavBar0StartIcon onClick={() => history.push("/")}>
         <h2>SLOGGER</h2>
       </NavBar0StartIcon>
       {isSmall ? <NavLinksContainer></NavLinksContainer> : ""}

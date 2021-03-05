@@ -15,9 +15,9 @@ function App() {
         <AuthProvider>
           <Switch>
             <Route exact path="/signUp" component={SignUp} />
-            <Route exact path="/slogger" component={Slogger} />
+            <Route exact path="/" component={Slogger} />
             <Route exact path="/help" component={HelpPage} />
-            <PrivateRoute exact path="/" component={Home} />
+            <PrivateRoute exact path="/home" component={Home} />
             <PrivateRoute path="/:teamName" component={Home} />
           </Switch>
         </AuthProvider>
