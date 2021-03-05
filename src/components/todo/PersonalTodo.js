@@ -395,6 +395,7 @@ const TodoContainer = styled.div`
 
   ${customMedia.lessThan("smTablet")`
       flex-direction:column;
+      
     `};
 `;
 
@@ -439,8 +440,10 @@ const TodoLeftUpBox = styled.div`
     align-items: center;
     overflow: hidden;
     ${customMedia.lessThan("smTablet")`
-         margin:0;
-         height: 3rem;
+    margin:0;
+      width: 87%;
+      height:7rem;
+         padding:0.5rem 1rem;
     `};
   }
   input {
@@ -512,6 +515,7 @@ const TodoLeftUpBox = styled.div`
     overflow: hidden;
     ${customMedia.lessThan("smTablet")`
      margin: 0rem;
+     height:2rem;
     `};
   }
   .AddButton:hover {

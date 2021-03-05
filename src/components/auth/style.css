@@ -132,3 +132,9 @@ ul li svg path {
 .c {
   color: rgba(224, 255, 245, 0.781);
 } */
+
+@media only screen and (max-height: 400px) {
+  .footer {
+    display: none !important;
+  }
+}

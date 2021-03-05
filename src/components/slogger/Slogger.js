@@ -25,12 +25,13 @@ function Slogger() {
           <source src={homeBannerVideo} type="video/mp4"></source>
         </video>
 
-        <img src={homePageIcon} style={{ height: "200px", width: "500px" }} />
+        <img src={homePageIcon} className="bannerImg" />
         <div className="questionInner">
           <h1 className="t1">One stop solution for Work Management</h1>
           <h1 className="t2">and Team Management</h1>
         </div>
         <Button
+          className="bannerBtn"
           onClick={
             currentUser != null
               ? () => history.push("/home")
