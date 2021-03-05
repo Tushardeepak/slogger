@@ -33,7 +33,7 @@ function Slogger() {
         <Button
           onClick={
             currentUser != null
-              ? () => history.push("/")
+              ? () => history.push("/home")
               : () => history.push("/signup")
           }
         >
