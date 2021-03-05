@@ -133,14 +133,14 @@ const NavBarContainer = styled.div`
   position: fixed;
   margin-bottom: 0.5rem;
   color: #fff;
-  background: #fff;
+  background: rgba(0, 145, 96, 0.3);
   backdrop-filter: blur(0.3px);
   -webkit-backdrop-filter: blur(0.3px);
-  box-shadow: 0px 5px 5px rgb(0, 85, 57);
+  /* box-shadow: 0px 5px 5px rgb(0, 85, 57); */
 
   h1 {
     margin-left: 1.9rem;
-    color: rgb(0, 90, 60);
+    color: rgb(1, 63, 42);
     ${customMedia.lessThan("smTablet")`
       margin-left: 1.2rem !important;
       font-size:15px !important;
@@ -207,7 +207,7 @@ const NavBarStartIcon = styled.div`
         flex: 0.4;
     `};
   .navLogoRightLine {
-    background-color: rgb(5, 185, 125);
+    background-color: #272142;
     outline: none;
     border: none;
     width: 2px;
@@ -226,14 +226,14 @@ const NavLinksContainer = styled.div`
     `};
 `;
 const NavBarDateBox = styled.div`
-  color: rgba(0, 128, 85, 0.568);
+  color: rgb(1, 63, 42, 0.7);
   font-family: "Bebas Neue", cursive;
   font-size: 0.9rem;
   ${customMedia.lessThan("smTablet")`
          font-size: 0.4rem;
     `};
   span {
-    color: rgb(0, 128, 85) !important;
+    color: rgb(1, 63, 42) !important;
     font-size: 2rem;
     ${customMedia.lessThan("smTablet")`
          font-size: 1rem;
@@ -258,8 +258,7 @@ const NavBarEndContainer = styled.div`
 
   Button {
     margin-right: 1rem;
-    background-color: rgb(5, 185, 125);
-    border: 2px solid rgb(5, 185, 125);
+    background-color: rgb(1, 63, 42, 0.3);
     color: #fff;
     font-weight: 600;
     transition: all 0.5s ease-in-out;
@@ -268,7 +267,6 @@ const NavBarEndContainer = styled.div`
     &:hover {
       background-color: #fff;
       color: rgb(5, 185, 125);
-      border: 2px solid rgb(5, 185, 125);
     }
     ${customMedia.lessThan("smTablet")`
          font-size: 0.55rem;

@@ -6,12 +6,15 @@ import {
   Tab,
   Tabs,
   makeStyles,
+  Avatar,
+  Badge,
+  IconButton,
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { db } from "../../firebase";
+import { db, storage } from "../../firebase";
 import AddingTeamModal from "./Dialog";
 import TeamCard from "./TeamCard";
 import { useAuth } from "../../context/AuthContext";
@@ -113,16 +116,14 @@ const defaultMaterialTheme = createMuiTheme({
   },
 });
 
-function TeamTodo({ UrlTeamName }) {
+function TeamTodo({ UrlTeamName, setDiscussionLock }) {
   const [openMaker, setOpenMaker] = useState(false);
   const [make, setMake] = useState(false);
   const [selectedDate, handleDateChange] = useState(new Date());
   const [inputTodo, setInputTodo] = useState("");
   const [userName, setUserName] = useState("");
   const [name, setName] = useState("");
-  const [skill, setSkill] = useState("");
   const [email, setEmail] = useState("");
-  const [otherContact, setOtherContact] = useState("");
   const [thisIsAdmin, setThisIsAdmin] = useState(false);
   const [deleteTeam, setDeleteTeam] = useState(false);
   const [error, setError] = useState(false);
@@ -143,6 +144,9 @@ function TeamTodo({ UrlTeamName }) {
   const [openJoinSnackBar, setOpenJoinSnackBar] = useState(false);
   const [openDeleteSnackBar, setOpenDeleteSnackBar] = useState(false);
   const [currentTeamName, setCurrentTeamName] = useState("");
+  const [profileImage, setProfileImage] = useState("");
+  const [profilePath, setProfilePath] = useState("");
+  const [openSnack, setOpenSnack] = useState(false);
 
   const handleInputChange = (value) => {
     setInputTodo(value);
@@ -205,15 +209,75 @@ function TeamTodo({ UrlTeamName }) {
   const handleSaveProfile = () => {
     if (name !== "" && email !== "") {
       setProfileError(false);
-      db.collection("users").doc(currentUser.uid).collection("profile").add({
-        name: name,
-        email: email,
-        other: otherContact,
-        skill: skill,
-      });
+      db.collection("users")
+        .doc(currentUser.uid)
+        .collection("profile")
+        .add({
+          name: name,
+          email: email,
+          profileImage: profileImage,
+        })
+        .then(
+          db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("profile")
+            .onSnapshot((snapshot) => {
+              const profile = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                profileImage: doc.data().profileImage,
+              }));
+
+              if (profile[0].profileImage !== "") {
+                var desertRef = storage.refFromURL(profile[0].profileImage);
+                desertRef
+                  .delete()
+                  .then(function () {
+                    console.log("File deleted successfully");
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+
+                db.collection("users")
+                  .doc(currentUser.uid)
+                  .collection("profile")
+                  .doc(profile[0].id)
+                  .set(
+                    { name: name, email: email, profileImage: profileImage },
+                    { merge: true }
+                  );
+              }
+            })
+        );
     } else {
       setProfileError(true);
     }
+  };
+
+  const onSelectFile = async (event) => {
+    var path = (window.URL || window.webkitURL).createObjectURL(
+      event.target.files[0]
+    );
+    setProfilePath(path.slice(5));
+    setOpenSnack(true);
+    try {
+      const image = event.target.files[0];
+      const uploadTask = await storage
+        .ref(`profileImages/${image.name}`)
+        .put(image);
+      storage
+        .ref("profileImages")
+        .child(image.name)
+        .getDownloadURL()
+        .then((url) => {
+          console.log(url);
+          setProfileImage(url);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    setOpenSnack(false);
   };
 
   React.useEffect(() => {
@@ -293,13 +357,15 @@ function TeamTodo({ UrlTeamName }) {
           id: doc.id,
           name: doc.data().name,
         }));
+
         profile.filter((p) => {
           if (p.name !== "") {
             setUserName(p.name);
             setProfileSetter(false);
-            setFirstLoader(false);
+            setDiscussionLock(false);
           }
         });
+        setFirstLoader(false);
       });
   }, []);
 
@@ -319,14 +385,34 @@ function TeamTodo({ UrlTeamName }) {
         <div className="profileImageBox">
           <img className="profileSetterImage" src={profileSetterImage} />
           <p className="profileHeading">
-            To use this feature <br /> Please set your profile first.
+            Please set your basic profile first. <br />
+            You can set your full profile also in profile section.
+            <br />
+            You can also access discussion section after this.
           </p>
-          <Button className="addButton" onClick={() => handleSaveProfile()}>
-            Save
-          </Button>
         </div>
 
         <div className="profileBox">
+          <div className="avatarBox">
+            <input
+              hidden
+              id="profile-image-file"
+              type="file"
+              accept="image/*"
+              onChange={(e) => onSelectFile(e)}
+            />
+            <IconButton
+              className="avatarEdit"
+              onClick={() => {
+                document.getElementById("profile-image-file").click();
+              }}
+            >
+              <CreateIcon />
+            </IconButton>
+
+            <Avatar className="avatar" src={profileImage} alt={name} />
+          </div>
+
           <div className="inputFieldProfile">
             <label className="profileLabel">Name:</label>
             <input
@@ -348,28 +434,9 @@ function TeamTodo({ UrlTeamName }) {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-
-          <div className="inputFieldProfile">
-            <label className="profileLabel">Other:</label>
-            <input
-              value={otherContact}
-              className="todoInputProfile"
-              type="text"
-              placeholder="..."
-              onChange={(e) => setOtherContact(e.target.value)}
-            />
-          </div>
-
-          <div className="inputFieldProfile">
-            <label className="profileLabel">Skill:</label>
-            <input
-              value={skill}
-              className="todoInputProfile"
-              type="text"
-              placeholder="..."
-              onChange={(e) => setSkill(e.target.value)}
-            />
-          </div>
+          <Button className="addButton" onClick={() => handleSaveProfile()}>
+            Save
+          </Button>
           {profileError ? (
             <p style={{ color: "red" }}>Fill Name and Email correctly</p>
           ) : (
@@ -686,6 +753,14 @@ function TeamTodo({ UrlTeamName }) {
           open={openDeleteSnackBar}
           handleClose={() => openDeleteSnackBar(false)}
           text={`Team ${currentTeamName} deleted`}
+        />
+      )}
+      {openSnack && (
+        <SnackBar
+          open={openSnack}
+          handleClose={() => setOpenSnack(false)}
+          text={"Uploading..."}
+          material={true}
         />
       )}
     </div>

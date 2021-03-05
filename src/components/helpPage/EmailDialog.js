@@ -17,6 +17,7 @@ export default function AddingTeamModal({ open, handleClose, setSent }) {
   const [senderEmail, setSenderEmail] = useState("");
 
   const handleSend = (e) => {
+    console.log(e);
     e.preventDefault();
     emailjs
       .sendForm(

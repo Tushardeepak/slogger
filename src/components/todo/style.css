@@ -203,9 +203,11 @@
 }
 .profileHeading {
   flex: 0.3;
+  padding-top: 2rem;
   color: #fff;
   font-weight: 500;
   text-align: center;
+  font-size: small !important;
 }
 
 .profileBox {
@@ -215,6 +217,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 1rem;
   overflow: hidden;
 }
@@ -250,6 +253,22 @@
 .todoInput::placeholder {
   color: rgb(3, 185, 124);
   font-size: 1rem !important;
+}
+.avatarBox {
+  position: relative;
+  height: 7rem !important;
+  width: 7rem !important;
+}
+.avatarEdit {
+  position: absolute !important;
+  bottom: 0px;
+  right: 0px;
+  z-index: 10000;
+  background-color: rgba(6, 212, 144, 0.8) !important;
+}
+.avatar {
+  height: 7rem !important;
+  width: 7rem !important;
 }
 
 /*:::::::::::::::Discussion::::::::::::::::*/

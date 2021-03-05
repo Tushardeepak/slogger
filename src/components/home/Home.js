@@ -22,6 +22,7 @@ import { generateMedia } from "styled-media-query";
 import Discussion from "../todo/Discussion";
 import { db } from "../../firebase";
 import SnackBar from "../snackbar/SnackBar";
+import Profile from "../profile/Profile";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -95,6 +96,7 @@ function Home(props) {
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const [userName, setUserName] = React.useState("");
+  const [discussionLock, setDiscussionLock] = React.useState(true);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -115,13 +117,20 @@ function Home(props) {
           if (p.name !== "") {
             setUserName(p.name);
             setOpen(true);
+            setDiscussionLock(false);
           }
         });
       });
   }, []);
 
   return (
-    <div style={{ width: "100%", height: "100vh", overflow: "hidden" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        overflow: "hidden",
+      }}
+    >
       <HomeContainer>
         <NavBar style={{ position: "fixed" }} page={1} />
         <Paper className="mainPaper" elevation={5}>
@@ -146,24 +155,35 @@ function Home(props) {
               />
               <Tab className={classes.label} label="TEAM" {...a11yProps(1)} />
               <Tab
+                disabled={discussionLock}
                 className={classes.label}
                 label={!isSmall ? "Chat" : "DISCUSSION"}
                 {...a11yProps(2)}
               />
-              <Tab className={classes.label} label="SLOG" {...a11yProps(3)} />
+              <Tab
+                className={classes.label}
+                label="Profile"
+                {...a11yProps(3)}
+              />
             </Tabs>
           </AppBar>
           <TabPanel style={{ width: "100%" }} value={value} index={0}>
             <PersonalTodo />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <TeamTodo UrlTeamName={props.match.params.teamName} />
+            <TeamTodo
+              UrlTeamName={props.match.params.teamName}
+              setDiscussionLock={setDiscussionLock}
+            />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Discussion UrlTeamName={props.match.params.teamName} />
+            <Discussion
+              UrlTeamName={props.match.params.teamName}
+              userName={userName}
+            />
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <SlogPage />
+            <Profile />
           </TabPanel>
         </Paper>
         <svg
