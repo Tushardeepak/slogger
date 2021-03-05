@@ -83,6 +83,10 @@ export default function AddingTeamModal({
       teamName: inputTeamName,
       timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
+
+    db.collection("teams").doc(inputTeamName).collection("members").add({
+      id: currentUser.uid,
+    });
     setCurrentTeamName(inputTeamName);
     history.push(`/${inputTeamName}`);
     handleClose();
@@ -94,6 +98,9 @@ export default function AddingTeamModal({
       teamName: inputTeamName,
       admin: currentUser.uid,
       timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    db.collection("teams").doc(inputTeamName).collection("members").add({
+      id: currentUser.uid,
     });
     setCurrentTeamName(inputTeamName);
     history.push(`/${inputTeamName}`);

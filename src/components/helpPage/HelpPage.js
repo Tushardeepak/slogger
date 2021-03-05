@@ -224,7 +224,7 @@ function HelpPage() {
                   }}
                 >
                   <Typography className={classes.heading}>
-                    How to use: Slog Section
+                    How to use: Discussion Section
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails
@@ -234,15 +234,46 @@ function HelpPage() {
                   }}
                 >
                   <Typography>
-                    1) Get the latest news of the day.
+                    1) Select the team.
                     <br />
-                    2) You can also search any term on which you want the latest
-                    news, it can be anything person, place or thing.
+                    2) Start typing the message in th input box at bottom right.
                     <br />
-                    3) You can get any city weather report, it will persist the
-                    last location you searched.
+                    3) Your messages can be seen by every member of that
+                    particular team.
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                  style={{
+                    background: "rgb(0, 90, 60, 0.2)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <Typography className={classes.heading}>
+                    How to use: Profile Section
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails
+                  style={{
+                    background: " rgb(0, 90, 60)",
+                    color: "white",
+                  }}
+                >
+                  <Typography>
+                    1) First setup your profile.
                     <br />
-                    4) It also have a stopwatch, use it as you want.
+                    2) On the right side you can select a team to get its all
+                    members details.
+                    <br />
+                    3) You can also endorse any group member once for their good
+                    work.
+                    <br />
+                    4) Your endorsements can be seen at the last of your profile
+                    in left.
                   </Typography>
                 </AccordionDetails>
               </Accordion>

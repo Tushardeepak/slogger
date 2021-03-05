@@ -1,0 +1,226 @@
+.profilePageContainer {
+  height: 74vh;
+  display: flex;
+  overflow: hidden;
+}
+.profilePageMyProfile {
+  padding: 10px;
+  border-radius: 10px;
+  overflow-y: scroll !important;
+  flex: 0.35;
+  height: 74vh !important;
+  border-right: 2px solid rgba(0, 141, 94, 0.295);
+}
+.profilePageTopBar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 11rem !important;
+  overflow: hidden !important;
+}
+.profilePageBadgeBox {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: medium;
+  font-weight: 500;
+  color: rgba(0, 141, 94, 0.795);
+  overflow: hidden !important;
+}
+.profilePageBadges {
+  display: flex;
+  align-items: center;
+}
+.mid {
+  margin: 0 1rem;
+}
+.profilePageSingleBadge {
+  padding-right: 10px;
+}
+.gold {
+  color: gold;
+}
+.silver {
+  color: rgb(158, 158, 158);
+}
+.brozn {
+  color: burlywood;
+}
+.profilePageProfileEdit {
+  margin-top: 1rem !important;
+  transform: scale(0.7);
+  background-color: #2ec592 !important;
+  width: 50%;
+  color: #fff !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease-in-out !important;
+}
+.profilePageProfileEdit:hover {
+  background-color: #2ec593d8 !important;
+}
+.profilePageInputBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2rem;
+  padding: 10px;
+  margin: 10px;
+  overflow: hidden;
+}
+.profilePageInputBox label {
+  color: #165c45;
+  font-size: small;
+}
+.profilePageInput {
+  border-bottom: 2px solid rgba(0, 141, 94, 0.295) !important;
+  outline: none;
+  border: none;
+  width: 80%;
+  color: #165c45;
+  padding: 5px 5px;
+  font-size: medium;
+  background-color: #fff;
+}
+.profilePageInput::placeholder {
+  color: #165c45c2;
+  padding: 5px 10px;
+  font-size: X-small;
+}
+.skillListAndLinkBox {
+  height: auto;
+}
+.skillContainer {
+  height: auto;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+.skillContainer p {
+  flex: 0.2;
+  padding-left: 10px;
+  color: #165c45;
+  font-size: small;
+}
+.skillBox {
+  flex: 0.8;
+  display: grid;
+  grid-template-columns: 4fr 4fr 4fr;
+  grid-gap: 5px;
+}
+.skill {
+  background-color: #2ec592;
+  padding: 5px;
+  font-size: 12px;
+  text-align: center;
+  vertical-align: center;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+}
+.linkContainer {
+  margin: 20px 0;
+  height: auto;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 10px;
+}
+.linkContainer a {
+  text-decoration: none;
+}
+.linkIcon {
+  color: #2ec592;
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+}
+.otherProfileSection {
+  height: 74vh;
+  flex: 0.65;
+  padding: 0 2rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.otherProfileSection p {
+  font-size: small;
+  color: #2ec592;
+}
+
+.EndContainer {
+  margin: 1rem 10px;
+  height: auto;
+  min-height: 5rem;
+  border-radius: 2rem !important;
+  padding: 10px;
+}
+.EndTopContainer {
+  display: flex;
+  height: auto;
+}
+.EndProfileImage {
+  height: 3.5rem !important;
+  width: 3.5rem !important;
+}
+.EndCircle {
+  height: 3.5rem !important;
+  width: 3.5rem !important;
+}
+.EndNameContainer {
+  padding: 5px;
+  flex: 1;
+  margin-top: -5px;
+}
+.EndNameContainer p {
+  display: flex;
+  align-items: center;
+  font-size: small;
+  color: #40856e !important;
+}
+.EndIcon {
+  border-left: 2px solid #cdf1e5;
+  padding-left: 0.5rem;
+  margin-left: 0.5rem;
+  font-size: small !important;
+  padding-right: 5px;
+  color: #40856e !important;
+}
+
+.EndEndContainer {
+  height: auto;
+  padding: 10px;
+  margin-right: 10px;
+}
+.EndLinkContainer {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+.EndEndContainer p {
+  font-size: 11px;
+}
+.endorsementHeading {
+  color: #40856e !important;
+  font-size: medium;
+  text-align: center;
+}
+
+@media only screen and (max-width: 900px) {
+  .profilePageContainer {
+    display: flex;
+    flex-direction: column !important;
+    overflow: hidden;
+  }
+  .profilePageMyProfile {
+    border: none;
+    margin-bottom: 1rem;
+    flex: 0.4;
+    border-bottom: 2px solid rgba(0, 141, 94, 0.295);
+  }
+  .otherProfileSection {
+    padding: 0 1rem;
+  }
+}

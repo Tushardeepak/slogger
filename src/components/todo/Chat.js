@@ -107,20 +107,27 @@ const TodoMainCard = styled.div`
 const TodoTextBox = styled.div`
   background-color: rgb(231, 250, 243);
   border-radius: 15px 0px 15px 15px;
-  margin-left: 40%;
+  margin: 2px 0;
+  margin-left: 35%;
   width: 60%;
+
   padding: 0.2rem 0.5rem;
   word-break: "break-all";
   height: auto;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 `;
 
 const TodoTextBoxReceived = styled.div`
   background-color: rgb(231, 250, 243);
   border-radius: 0px 15px 15px 15px;
+  margin: 2px;
   width: 60%;
   padding: 0.2rem 0.5rem;
   word-break: "break-all";
   height: auto;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 `;
 const TodoActions = styled.div`
   display: flex;

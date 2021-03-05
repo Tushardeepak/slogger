@@ -4,9 +4,9 @@ import { generateMedia } from "styled-media-query";
 import styled from "styled-components";
 import homePageIcon from "../../assets/images/homeBannerIcon.png";
 import homeBannerVideo from "../../assets/videos/HomeBannerVideo.mp4";
-import quesVideo from "../../assets/videos/quesVideo.mp4";
 import personalTodoImg from "../../assets/images/personalTodoImg.svg";
-import newsImg from "../../assets/images/newsImg.svg";
+import discussionImg from "../../assets/images/discussionImg.svg";
+import profileImg from "../../assets/images/profileImg.svg";
 import teamTodoImg from "../../assets/images/teamTodoImg.svg";
 import { Button } from "@material-ui/core";
 import "./style.css";
@@ -18,13 +18,18 @@ function Slogger() {
   const history = useHistory();
   const { currentUser } = useAuth();
   return (
-    <div style={{ height: "auto" }}>
+    <div style={{ height: "auto", fontFamily: "Times New Roman" }}>
       <NavBar page={0} />
       <Banner>
         <video autoPlay loop muted className="video">
           <source src={homeBannerVideo} type="video/mp4"></source>
         </video>
-        <img src={homePageIcon} />
+
+        <img src={homePageIcon} style={{ height: "200px", width: "500px" }} />
+        <div className="questionInner">
+          <h1 className="t1">One stop solution for Work Management</h1>
+          <h1 className="t2">and Team Management</h1>
+        </div>
         <Button
           onClick={
             currentUser != null
@@ -35,69 +40,71 @@ function Slogger() {
           {currentUser != null ? "Go to Dashboard" : "Get started"}
         </Button>
       </Banner>
-      <div className="questionContainer">
-        <div className="questionBox">
-          <div className="questionVideo">
-            <video autoPlay loop muted className="quesVideo">
-              <source src={quesVideo} type="video/mp4"></source>
-            </video>
-          </div>
-          <div className="questionInner">
-            <h1 className="t1">Can't manage your time?</h1>
-            <h1 className="t2">Having trouble in Team Management ?</h1>
-            <h1 className="t3">Don't know how to use complex technologies ?</h1>
-          </div>
-        </div>
-      </div>
-      <div className="weGotYou">
-        <h1>Personal Section</h1>
-        <hr></hr>
-      </div>
-      <div className="personalTodoSection">
-        <div className="personalTodoTextBox">
-          <h1 className="t1">1) Make your own todo list</h1>
-          <h1 className="t2">2) Filter those which are completed</h1>
-          <h1 className="t3">3) Get a visual representation of your work</h1>
-        </div>
-        <img src={personalTodoImg} className="personalTodoImg" />
-      </div>
-      <div
-        style={{
-          background: "rgb(27,0,147,0.8)",
-          // background:
-          //   "linear-gradient(43deg, rgba(27,0,147,1) 0%, rgba(39,33,66,1) 100%)",
-        }}
-      >
+      <div className="bubbleBox">
         <div className="weGotYou">
-          <h1 style={{ color: "#fff" }}>Team Section</h1>
-          <hr style={{ background: "#fff" }}></hr>
+          <h1>Personal Section</h1>
+          <hr></hr>
+        </div>
+        <div className="personalTodoSection">
+          <div className="personalTodoTextBox">
+            <h1 className="t1">1) Make your own todo list</h1>
+            <h1 className="t2">2) Filter those which are completed</h1>
+            <h1 className="t3">3) Get a visual representation of your work</h1>
+          </div>
+          <img src={personalTodoImg} className="personalTodoImg" />
+        </div>
+      </div>
+      <div className="bubbleBoxOpp">
+        <div className="weGotYou">
+          <h1>Team Section</h1>
+          <hr></hr>
         </div>
 
-        <div className="teamTodoSection">
-          <img src={teamTodoImg} className="teamTodoImg" />
-          <div className="teamTodoTextBox">
-            <h1 style={{ color: "#fff" }}>1) Make your own teams</h1>
-            <h1 style={{ color: "#fff" }}>2) Join teams</h1>
-            <h1 style={{ color: "#fff" }}>3) Assign work to teammates</h1>
-            <h1 style={{ color: "#fff" }}>4) Check when the work is done</h1>
-            <h1 style={{ color: "#fff" }}>5) Add images to any work</h1>
+        <div className="personalTodoSection">
+          <img
+            src={teamTodoImg}
+            className="personalTodoImg"
+            style={{ flex: 0.4 }}
+          />
+          <div className="personalTodoTextBox" style={{ flex: 0.6 }}>
+            <h1>1) Make your own teams</h1>
+            <h1>2) Join teams</h1>
+            <h1>3) Assign work to teammates</h1>
+            <h1>4) Check when the work is done</h1>
+            <h1>5) Add images to any work</h1>
           </div>
         </div>
       </div>
-      <div className="weGotYou">
-        <h1>Slog Section</h1>
-        <hr></hr>
-      </div>
-
-      <div className="slogSection">
-        <div className="slogTodoTextBox">
-          <h1 className="t1">1) Get latest news</h1>
-          <h1 className="t2">2) Get links of the original site</h1>
-          <h1 className="t3">3) Search news on any topic</h1>
-          <h1 className="t3">4) Get weather report of any location</h1>
-          <h1 className="t3">5) Stopwatch </h1>
+      <div className="bubbleBox">
+        <div className="weGotYou">
+          <h1>Discussion Section</h1>
+          <hr></hr>
         </div>
-        <img src={newsImg} className="teamTodoImg" />
+
+        <div className="personalTodoSection">
+          <div className="personalTodoTextBox">
+            <h1 className="t1">1) Discuss with your teammates</h1>
+            <h1 className="t2">2) One discussion room for every team</h1>
+            <h1 className="t3">3) Help other to solve their doubts</h1>
+          </div>
+          <img src={discussionImg} className="personalTodoImg" />
+        </div>
+      </div>
+      <div className="bubbleBoxOpp">
+        <div className="weGotYou">
+          <h1>Profile Section</h1>
+          <hr></hr>
+        </div>
+
+        <div className="personalTodoSection">
+          <div className="personalTodoTextBox">
+            <h1 className="t1">1) Make you profile</h1>
+            <h1 className="t2">2) Add bio, skills and contact info</h1>
+            <h1 className="t3">3) Get profile for other team members</h1>
+            <h1 className="t3">4) Endorse them for their good work</h1>
+          </div>
+          <img src={profileImg} className="personalTodoImg" />
+        </div>
       </div>
       <FooterContainer>
         <span

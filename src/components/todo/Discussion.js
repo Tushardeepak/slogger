@@ -110,7 +110,7 @@ const defaultMaterialTheme = createMuiTheme({
   },
 });
 
-function Discussion({ UrlTeamName }) {
+function Discussion({ UrlTeamName, userName }) {
   const [teams, setTeams] = useState([]);
   const [joinedTeams, setJoinedTeams] = useState([]);
   const { currentUser } = useAuth();
@@ -119,14 +119,6 @@ function Discussion({ UrlTeamName }) {
   const classes = useStyles();
   const [sendTerm, setSendTerm] = useState("");
   const [chatList, setChatList] = useState([]);
-  const [profileSetter, setProfileSetter] = useState(true);
-  const [name, setName] = useState("");
-  const [skill, setSkill] = useState("");
-  const [email, setEmail] = useState("");
-  const [otherContact, setOtherContact] = useState("");
-  const [userName, setUserName] = useState("");
-  const [profileError, setProfileError] = useState(false);
-  const [loader, setLoader] = useState(true);
   const [deleteTeam, setDeleteTeam] = useState(false);
   const [admin, setAdmin] = useState("");
 
@@ -147,20 +139,6 @@ function Discussion({ UrlTeamName }) {
         discussionTime: date.toISOString(),
       });
       setSendTerm("");
-    }
-  };
-
-  const handleSaveProfile = () => {
-    if (name !== "" && email !== "") {
-      setProfileError(false);
-      db.collection("users").doc(currentUser.uid).collection("profile").add({
-        name: name,
-        email: email,
-        other: otherContact,
-        skill: skill,
-      });
-    } else {
-      setProfileError(true);
     }
   };
 
@@ -210,25 +188,6 @@ function Discussion({ UrlTeamName }) {
   }, [UrlTeamName]);
 
   React.useEffect(() => {
-    db.collection("users")
-      .doc(currentUser.uid)
-      .collection("profile")
-      .onSnapshot((snapshot) => {
-        const profile = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          name: doc.data().name,
-        }));
-        profile.filter((p) => {
-          if (p.name !== "") {
-            setUserName(p.name);
-            setProfileSetter(false);
-            setLoader(false);
-          }
-        });
-      });
-  }, []);
-
-  React.useEffect(() => {
     db.collection("teams").onSnapshot((snapshot) => {
       const tempTeamList = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -244,82 +203,7 @@ function Discussion({ UrlTeamName }) {
     });
   }, [UrlTeamName]);
 
-  return loader ? (
-    <p>Loading...</p>
-  ) : profileSetter ? (
-    <div
-      style={{
-        width: "100%",
-        height: "70vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div className="profileContainer">
-        <div className="profileImageBox">
-          <img className="profileSetterImage" src={profileSetterImage} />
-          <p className="profileHeading">
-            To use this feature <br /> Please set your profile first.
-          </p>
-          <Button className="addButton" onClick={() => handleSaveProfile()}>
-            Save
-          </Button>
-        </div>
-
-        <div className="profileBox">
-          <div className="inputFieldProfile">
-            <label className="profileLabel">Name:</label>
-            <input
-              value={name}
-              className="todoInputProfile"
-              type="text"
-              placeholder="..."
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-
-          <div className="inputFieldProfile">
-            <label className="profileLabel">Email:</label>
-            <input
-              value={email}
-              className="todoInputProfile"
-              type="text"
-              placeholder="..."
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div className="inputFieldProfile">
-            <label className="profileLabel">Other:</label>
-            <input
-              value={otherContact}
-              className="todoInputProfile"
-              type="text"
-              placeholder="..."
-              onChange={(e) => setOtherContact(e.target.value)}
-            />
-          </div>
-
-          <div className="inputFieldProfile">
-            <label className="profileLabel">Skill:</label>
-            <input
-              value={skill}
-              className="todoInputProfile"
-              type="text"
-              placeholder="..."
-              onChange={(e) => setSkill(e.target.value)}
-            />
-          </div>
-          {profileError ? (
-            <p style={{ color: "red" }}>Fill Name and Email correctly</p>
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
-    </div>
-  ) : (
+  return (
     <div>
       <TeamTodoContainer>
         <TeamTodoLeftContainer>
@@ -557,7 +441,6 @@ const TeamTodoLeftRightBox = styled.div`
 const TeamTodoRightContainer = styled.div`
   border-radius: 20px;
   margin: 0 0.5rem;
-  background: rgb(29, 143, 2, 0.13);
   flex: 0.5;
   overflow-y: scroll;
   padding: 0 1rem;
