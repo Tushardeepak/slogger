@@ -766,7 +766,7 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
       {openDeleteSnackBar && (
         <SnackBar
           open={openDeleteSnackBar}
-          handleClose={() => openDeleteSnackBar(false)}
+          handleClose={() => setOpenDeleteSnackBar(false)}
           text={`Team ${currentTeamName} deleted`}
         />
       )}

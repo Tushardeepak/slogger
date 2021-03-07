@@ -299,18 +299,6 @@ function Discussion({ UrlTeamName, userName }) {
               <input
                 value={sendTerm}
                 type="text"
-                style={{
-                  flex: "0.85",
-                  border: "none",
-                  background: "none",
-                  padding: "0 0.5rem",
-                  height: "2rem",
-                  outline: "none",
-                  borderBottom: "2px solid rgb(5, 185, 125)",
-                  margin: "0.5rem",
-                  color: "rgb(3, 185, 124)",
-                  fontSize: "1rem",
-                }}
                 onKeyDown={(e) => handleSubmitEnter(e)}
                 onChange={(e) => setSendTerm(e.target.value)}
                 placeholder="Type..."
@@ -478,6 +466,22 @@ const TodoRightUpBox = styled.div`
   margin: 0.2rem 0;
   width: 48%;
   background-color: rgb(3, 185, 124, 0.2);
+
+  input {
+    flex: 0.85;
+    border: none;
+    background: none;
+    padding: 0 0.5rem;
+    height: 2rem;
+    outline: none;
+    border-bottom: 2px solid rgb(5, 185, 125);
+    margin: 0.5rem;
+    color: rgb(3, 185, 124);
+    font-size: 1rem;
+    @media (max-width: 600px) {
+      font-size: 1.1rem !important;
+    }
+  }
 
   ${customMedia.lessThan("smTablet")`
     border:none;
