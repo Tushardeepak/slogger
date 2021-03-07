@@ -374,7 +374,7 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
 
   return firstLoader ? (
     <p>Loading...</p>
-  ) : !profileSetter ? (
+  ) : profileSetter ? (
     <div
       style={{
         width: "100%",
