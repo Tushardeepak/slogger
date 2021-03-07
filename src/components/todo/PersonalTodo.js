@@ -10,6 +10,8 @@ import {
   makeStyles,
   Tab,
   Tabs,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import AddIcon from "@material-ui/icons/Add";
@@ -32,6 +34,7 @@ import firebase from "firebase";
 import { generateMedia } from "styled-media-query";
 import { useHistory } from "react-router-dom";
 import "./heightMedia.css";
+import SidebarPersonal from "./sidebar/SidebarPersonal";
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -115,6 +118,8 @@ function PersonalTodo() {
   const [todoList, setTodoList] = useState([]);
   const [todoLength, setTodoLength] = useState(0);
   const history = useHistory();
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   const { currentUser } = useAuth();
 
@@ -190,65 +195,69 @@ function PersonalTodo() {
 
   return (
     <TodoContainer>
-      <TodoLeftContainer>
-        <TodoLeftUpBox>
-          <div className="inputField inputFieldPersonal">
-            <CreateIcon className="todoIcon" />
-            <input
-              value={inputTodo}
-              className="todoInputPersonal"
-              type="text"
-              placeholder="Write here..."
-              onChange={(e) => handleInputChange(e.target.value)}
-              onKeyDown={(e) => handleSubmitEnter(e)}
-            />
-          </div>
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <div className="dateBox">
-              <ThemeProvider theme={defaultMaterialTheme}>
-                <DateTimePicker
-                  variant="inline"
-                  // label="Add time"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  style={{
-                    width: "100%",
-                    textAlign: "center",
-                    cursor: "pointer",
-                  }}
-                  InputProps={{
-                    endAdornment: <AlarmIcon className="AlarmIcon" />,
-                    disableUnderline: true,
-                  }}
-                />
-              </ThemeProvider>
+      {!isSmall ? (
+        <SidebarPersonal />
+      ) : (
+        <TodoLeftContainer>
+          <TodoLeftUpBox>
+            <div className="inputField inputFieldPersonal">
+              <CreateIcon className="todoIcon" />
+              <input
+                value={inputTodo}
+                className="todoInputPersonal"
+                type="text"
+                placeholder="Write here..."
+                onChange={(e) => handleInputChange(e.target.value)}
+                onKeyDown={(e) => handleSubmitEnter(e)}
+              />
             </div>
-          </MuiPickersUtilsProvider>
-          <Button
-            disabled={loader}
-            endIcon={<AddIcon />}
-            className={loader ? "AddButtonDisabled" : "AddButton"}
-            onClick={() => handleSubmit()}
-          >
-            ADD
-          </Button>
-        </TodoLeftUpBox>
-        <TodoLeftDownBox>
-          {todoLength !== 0 ? (
-            <DonutChart todoLength={todoLength} />
-          ) : (
-            <h3
-              style={{
-                fontWeight: 600,
-                padding: "1rem",
-                color: "rgba(0, 141, 94, 0.695)",
-              }}
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <div className="dateBox">
+                <ThemeProvider theme={defaultMaterialTheme}>
+                  <DateTimePicker
+                    variant="inline"
+                    // label="Add time"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      cursor: "pointer",
+                    }}
+                    InputProps={{
+                      endAdornment: <AlarmIcon className="AlarmIcon" />,
+                      disableUnderline: true,
+                    }}
+                  />
+                </ThemeProvider>
+              </div>
+            </MuiPickersUtilsProvider>
+            <Button
+              disabled={loader}
+              endIcon={<AddIcon />}
+              className={loader ? "AddButtonDisabled" : "AddButton"}
+              onClick={() => handleSubmit()}
             >
-              NO ITEMS
-            </h3>
-          )}
-        </TodoLeftDownBox>
-      </TodoLeftContainer>
+              ADD
+            </Button>
+          </TodoLeftUpBox>
+          <TodoLeftDownBox>
+            {todoLength !== 0 ? (
+              <DonutChart todoLength={todoLength} />
+            ) : (
+              <h3
+                style={{
+                  fontWeight: 600,
+                  padding: "1rem",
+                  color: "rgba(0, 141, 94, 0.695)",
+                }}
+              >
+                NO ITEMS
+              </h3>
+            )}
+          </TodoLeftDownBox>
+        </TodoLeftContainer>
+      )}
 
       <TodoRightContainer>
         <AppBar className={classes.AppBar} position="static">
@@ -370,7 +379,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const NoTodo = styled.div`
@@ -395,7 +404,7 @@ const TodoContainer = styled.div`
 
   ${customMedia.lessThan("smTablet")`
       flex-direction:column;
-      
+      height: 81.5%;
     `};
 `;
 
@@ -548,7 +557,7 @@ const TodoRightContainer = styled.div`
   overflow-y: scroll !important;
 
   ${customMedia.lessThan("smTablet")`
-  margin-top:-1rem;
        padding:0;
+       flex: 1;
     `};
 `;

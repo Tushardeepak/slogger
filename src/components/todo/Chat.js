@@ -42,6 +42,7 @@ function Chat({ senderId, text, date, name, admin }) {
               height: "auto",
               fontSize: "small",
               margin: "0.2rem 0",
+              fontFamily: "Times New Roman",
             }}
           >
             {text}
@@ -70,6 +71,7 @@ function Chat({ senderId, text, date, name, admin }) {
               height: "auto",
               fontSize: "small",
               margin: "0.2rem 0",
+              fontFamily: "Times New Roman",
             }}
           >
             {text}
@@ -91,7 +93,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const TodoMainCard = styled.div`
@@ -108,6 +110,7 @@ const TodoTextBox = styled.div`
   background-color: rgb(231, 250, 243);
   border-radius: 15px 0px 15px 15px;
   margin: 2px 0;
+  margin-right: 5px;
   margin-left: 35%;
   width: 60%;
 

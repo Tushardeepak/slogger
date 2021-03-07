@@ -1,24 +1,51 @@
-.profilePageContainer {
-  height: 74vh;
+.addItemsPersonal {
+  border: 2px solid rgb(5, 185, 125) !important;
+  background-color: rgb(5, 185, 125) !important;
+  color: #fff !important;
+  width: 97% !important;
+  margin: 10px 0 !important;
+  font-weight: 600 !important;
+}
+.addItemsTeams {
+  border: 2px solid rgb(5, 185, 125) !important;
+  background-color: rgb(5, 185, 125) !important;
+  color: #fff !important;
+  width: 97% !important;
+  margin: 15px 0 !important;
+  font-weight: 600 !important;
+}
+.addItemsProfile {
+  border: 2px solid rgb(5, 185, 125) !important;
+  background-color: rgb(5, 185, 125) !important;
+  color: #fff !important;
+  width: 95% !important;
+  margin: 15px 0 !important;
+  margin-left: 5px !important;
+  font-weight: 600 !important;
+}
+
+/* :::::::::::::::::::::::::::::: */
+
+.sidebarProfileContainer {
+  height: 100vh;
   display: flex;
   overflow: hidden;
 }
-.profilePageMyProfile {
+.sidebarProfileMyProfile {
   padding: 10px;
   border-radius: 10px;
   overflow-y: scroll !important;
-  flex: 0.35;
-  height: 74vh !important;
-  border-right: 2px solid rgba(0, 141, 94, 0.295);
+  flex: 1 !important;
+  height: 100vh !important;
 }
-.profilePageTopBar {
+.sidebarProfileTopBar {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 11rem !important;
   overflow: hidden !important;
 }
-.profilePageBadgeBox {
+.sidebarProfileBadgeBox {
   margin: 1rem 0;
   display: flex;
   align-items: center;
@@ -28,14 +55,14 @@
   color: rgba(0, 141, 94, 0.795);
   overflow: hidden !important;
 }
-.profilePageBadges {
+.sidebarProfileBadges {
   display: flex;
   align-items: center;
 }
 .mid {
   margin: 0 1rem;
 }
-.profilePageSingleBadge {
+.sidebarProfileSingleBadge {
   padding-right: 10px;
 }
 .gold {
@@ -47,7 +74,7 @@
 .brozn {
   color: burlywood;
 }
-.profilePageProfileEdit {
+.sidebarProfileProfileEdit {
   margin-top: 1rem !important;
   transform: scale(0.7);
   background-color: #2ec592 !important;
@@ -56,10 +83,10 @@
   font-weight: 600 !important;
   transition: all 0.2s ease-in-out !important;
 }
-.profilePageProfileEdit:hover {
+.sidebarProfileProfileEdit:hover {
   background-color: #2ec593d8 !important;
 }
-.profilePageInputBox {
+.sidebarProfileInputBox {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -68,11 +95,11 @@
   margin: 10px;
   overflow: hidden;
 }
-.profilePageInputBox label {
+.sidebarProfileInputBox label {
   color: #165c45;
   font-size: small;
 }
-.profilePageInput {
+.sidebarProfileInput {
   border-bottom: 2px solid rgba(0, 141, 94, 0.295) !important;
   outline: none;
   border: none;
@@ -83,7 +110,7 @@
   background-color: #fff;
   font-family: "Times New Roman", Times, serif;
 }
-.profilePageInput::placeholder {
+.sidebarProfileInput::placeholder {
   color: #165c45c2;
   padding: 5px 10px;
   font-size: X-small;
@@ -144,46 +171,43 @@
   padding: 0 2rem;
   overflow-y: scroll;
   overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 .otherProfileSection p {
   font-size: small;
   color: #2ec592;
 }
 
-.EndContainer {
-  margin: 1rem 10px;
+.sidebarEndContainer {
+  margin: 1rem 20px;
   height: auto;
   min-height: 5rem;
   border-radius: 2rem !important;
   padding: 10px;
 }
-.EndTopContainer {
+.sidebarEndTopContainer {
   display: flex;
   height: auto;
 }
-.EndProfileImage {
+.sidebarEndProfileImage {
   height: 3.5rem !important;
   width: 3.5rem !important;
 }
-.EndCircle {
+.sidebarEndCircle {
   height: 3.5rem !important;
   width: 3.5rem !important;
 }
-.EndNameContainer {
+.sidebarEndNameContainer {
   padding: 5px;
   flex: 1;
   margin-top: -5px;
 }
-.EndNameContainer p {
+.sidebarEndNameContainer p {
   display: flex;
   align-items: center;
   font-size: small;
   color: #40856e !important;
 }
-.EndIcon {
+.sidebarEndIcon {
   border-left: 2px solid #cdf1e5;
   padding-left: 0.5rem;
   margin-left: 0.5rem;
@@ -192,18 +216,18 @@
   color: #40856e !important;
 }
 
-.EndEndContainer {
+.sidebarEndEndContainer {
   height: auto;
   padding: 10px;
   margin-right: 10px;
 }
-.EndLinkContainer {
+.sidebarEndLinkContainer {
   align-self: flex-end;
   display: flex;
   align-items: center;
   padding: 10px;
 }
-.EndEndContainer p {
+.sidebarEndEndContainer p {
   font-size: 11px;
 }
 .endorsementHeading {
@@ -212,23 +236,4 @@
   text-align: center;
 }
 
-@media only screen and (max-width: 600px) {
-  .profilePageContainer {
-    margin-right: -10px;
-    display: flex;
-    flex-direction: column !important;
-    overflow: hidden;
-    height: 81.5%;
-  }
-  .profilePageMyProfile {
-    border: none;
-    margin-bottom: 1rem;
-    flex: 0.4;
-    border-bottom: 2px solid rgba(0, 141, 94, 0.295);
-  }
-  .otherProfileSection {
-    height: 88vh;
-    flex: 1;
-    padding: 0 0.5rem;
-  }
-}
+/* :::::::::::::::::::::::::::::: */

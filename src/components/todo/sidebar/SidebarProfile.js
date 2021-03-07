@@ -1,31 +1,50 @@
-import {
-  Avatar,
-  Button,
-  IconButton,
-  MenuItem,
-  Paper,
-  Select,
-  useMediaQuery,
-  useTheme,
-} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import CloseIcon from "@material-ui/icons/Close";
+import Slide from "@material-ui/core/Slide";
+import "./sidebar.css";
+import { useHistory } from "react-router";
+import { useAuth } from "../../../context/AuthContext";
 import CreateIcon from "@material-ui/icons/Create";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
-import selectTeam from "../../assets/images/selectTeam.svg";
-import React, { useState, useEffect } from "react";
-import { db, storage } from "../../firebase";
-import { useAuth } from "../../context/AuthContext";
-import SnackBar from "../snackbar/SnackBar";
-import "./profile.css";
-import MemberCard from "./MemberCard";
+import { db, storage } from "../../../firebase";
+import { Avatar, Paper } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 import EmailIcon from "@material-ui/icons/Email";
 import DeleteIcon from "@material-ui/icons/Delete";
-import SidebarProfile from "../todo/sidebar/SidebarProfile";
+import SnackBar from "../../snackbar/SnackBar";
 
-function Profile() {
+const useStyles = makeStyles((theme) => ({
+  appBar: {
+    position: "relative",
+    color: "#fff",
+    background: "rgba(0, 145, 96, 0.9)",
+    boxShadow: "none",
+  },
+  title: {
+    marginLeft: theme.spacing(2),
+    flex: 1,
+  },
+}));
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="right" ref={ref} {...props} />;
+});
+
+export default function SidebarProfile() {
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const history = useHistory();
+  const { currentUser, logOut } = useAuth();
   const [profileImage, setProfileImage] = useState("");
   const [profilePath, setProfilePath] = useState("");
   const [openSnack, setOpenSnack] = useState(false);
@@ -45,9 +64,19 @@ function Profile() {
   const [allMemberIdList, setAllMemberIdList] = useState([]);
   const [team, handleChangeTeam] = React.useState("");
   const [endorsementList, setEndorsementList] = useState([]);
-  const { currentUser } = useAuth();
-  const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const handleSignOut = async () => {
+    await logOut();
+    history.push("/signUp");
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleSaveProfile = () => {
     const _skillList = skills.split(",");
@@ -194,32 +223,6 @@ function Profile() {
       });
   }, []);
 
-  React.useEffect(() => {
-    var _teams = [];
-    db.collection("users")
-      .doc(currentUser.uid)
-      .collection("userTeams")
-      .orderBy("timeStamp", "desc")
-      .onSnapshot((snapshot) => {
-        _teams = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          teamName: doc.data().teamName,
-          admin: doc.data().admin,
-        }));
-      });
-    db.collection("users")
-      .doc(currentUser.uid)
-      .collection("joinTeams")
-      .orderBy("timeStamp", "desc")
-      .onSnapshot((snapshot) => {
-        const _joinedTeams = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          teamName: doc.data().teamName,
-        }));
-        setTeams([..._teams, ..._joinedTeams]);
-      });
-  }, []);
-
   useEffect(() => {
     db.collection("users")
       .doc(currentUser.uid)
@@ -238,12 +241,43 @@ function Profile() {
   }, []);
 
   return (
-    <div className="profilePageContainer">
-      {!isSmall ? (
-        <SidebarProfile />
-      ) : (
-        <div className="profilePageMyProfile">
-          <div className="profilePageTopBar">
+    <div>
+      <Button className="addItemsProfile" onClick={handleClickOpen}>
+        My profile
+      </Button>
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title}>
+              Slogger
+            </Typography>
+            {/* <Button
+              autoFocus
+              color="inherit"
+              onClick={() => history.push("/help")}
+            >
+              Help
+            </Button>
+            <Button autoFocus color="inherit" onClick={() => handleSignOut()}>
+              Log out
+            </Button> */}
+          </Toolbar>
+        </AppBar>
+        <div className="sidebarProfileMyProfile">
+          <div className="sidebarProfileTopBar">
             <div className="avatarBox">
               <input
                 hidden
@@ -269,108 +303,111 @@ function Profile() {
             </div>
 
             <Button
-              className="profilePageProfileEdit"
+              className="sidebarProfileProfileEdit"
               onClick={() => handleSaveProfile()}
             >
               {profileSetter ? "done" : "edit"}
             </Button>
           </div>
-          <div className="profilePageInputBox">
+          <div className="sidebarProfileInputBox">
             <label>Name:</label>
             <input
               disabled={!profileSetter}
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="profilePageInput"
+              className="sidebarProfileInput"
               placeholder="Full name..."
             />
           </div>
-          <div className="profilePageInputBox">
+          <div className="sidebarProfileInputBox">
             <label>Email:</label>
             <input
               disabled={!profileSetter}
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="profilePageInput"
+              className="sidebarProfileInput"
               placeholder="Email given on slogger..."
             />
           </div>
-          <div className="profilePageInputBox">
+          <div className="sidebarProfileInputBox">
             <label>Contact:</label>
             <input
               disabled={!profileSetter}
               type="text"
               value={contact}
               onChange={(e) => setContact(e.target.value)}
-              className="profilePageInput"
+              className="sidebarProfileInput"
               placeholder="Phone number..."
             />
           </div>
-          <div className="profilePageInputBox" style={{ height: "auto" }}>
+          <div className="sidebarProfileInputBox" style={{ height: "auto" }}>
             <label>Bio:</label>
             <textarea
-              style={{ resize: "none", padding: "7px" }}
+              style={{
+                resize: "none",
+                padding: "7px",
+              }}
               rows="5"
               cols="5"
               disabled={!profileSetter}
               type="text"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              className="profilePageInput"
+              className="sidebarProfileInput"
               placeholder="Say something about yourself..."
             />
           </div>
           {profileSetter ? (
             <>
-              <div className="profilePageInputBox">
+              <div className="sidebarProfileInputBox">
                 <label>Skills:</label>
                 <input
                   type="text"
                   value={skills}
                   onChange={(e) => setSkills(e.target.value)}
-                  className="profilePageInput"
+                  className="sidebarProfileInput"
                   placeholder="Skills with comma separated..."
                 />
               </div>
-              <div className="profilePageInputBox">
+              <div className="sidebarProfileInputBox">
                 <label>Facebook Link:</label>
                 <input
                   type="text"
                   value={facebook}
                   onChange={(e) => setFacebook(e.target.value)}
-                  className="profilePageInput"
+                  className="sidebarProfileInput"
                   placeholder="Give your profile page URL..."
                 />
               </div>
-              <div className="profilePageInputBox">
+              <div className="sidebarProfileInputBox">
                 <label>Instagram Link:</label>
                 <input
                   type="text"
                   value={instagram}
                   onChange={(e) => setInstagram(e.target.value)}
-                  className="profilePageInput"
+                  className="sidebarProfileInput"
                   placeholder="Give your profile page URL..."
                 />
               </div>
-              <div className="profilePageInputBox">
+              <div className="sidebarProfileInputBox">
                 <label>Github Link:</label>
                 <input
                   type="text"
                   value={github}
                   onChange={(e) => setGithub(e.target.value)}
-                  className="profilePageInput"
+                  className="sidebarProfileInput"
                   placeholder="Give your profile page URL..."
                 />
               </div>
-              <div className="profilePageInputBox">
+              <div className="sidebarProfileInputBox">
                 <label>Linkedin Link:</label>
                 <input
                   type="text"
                   value={linkedin}
                   onChange={(e) => setLinkedin(e.target.value)}
-                  className="profilePageInput"
+                  className="sidebarProfileInput"
                   placeholder="Give your profile page URL..."
                 />
               </div>
@@ -422,26 +459,26 @@ function Profile() {
               </div>
               <p className="endorsementHeading">My Endorsements</p>
               {endorsementList?.map((data) => (
-                <Paper elevation={3} className="EndContainer">
-                  <div className="EndTopContainer">
-                    <div className="EndCircle">
+                <Paper elevation={3} className="sidebarEndContainer">
+                  <div className="sidebarEndTopContainer">
+                    <div className="sidebarEndCircle">
                       <Avatar
-                        className="EndProfileImage"
+                        className="sidebarEndProfileImage"
                         alt={data.name}
                         src={data.profileImage}
                       />
                     </div>
-                    <div className="EndNameContainer">
+                    <div className="sidebarEndNameContainer">
                       <p>
-                        <PersonIcon className="EndIcon" />
+                        <PersonIcon className="sidebarEndIcon" />
                         {data.name}
                       </p>
                       <p>
-                        <EmailIcon className="EndIcon" />
+                        <EmailIcon className="sidebarEndIcon" />
                         {data.email}
                       </p>
                     </div>
-                    <div className="EndLinkContainer">
+                    <div className="sidebarEndLinkContainer">
                       <DeleteIcon
                         className="memberIcon"
                         style={{ cursor: "pointer" }}
@@ -450,7 +487,10 @@ function Profile() {
                     </div>
                   </div>
 
-                  <div className="EndEndContainer" style={{ color: "#40856e" }}>
+                  <div
+                    className="sidebarEndEndContainer"
+                    style={{ color: "#40856e" }}
+                  >
                     <p>{data.endorsement}</p>
                   </div>
                 </Paper>
@@ -466,60 +506,7 @@ function Profile() {
             />
           )}
         </div>
-      )}
-      <div className="otherProfileSection">
-        <p>Select Team :</p>
-        <Select
-          value={team}
-          onChange={(e) => handleChangeTeam(e.target.value)}
-          disableUnderline
-          style={{
-            background: "#d1faec",
-            borderRadius: 10,
-            width: "100%",
-            padding: "5px 10px",
-          }}
-        >
-          {teams?.map((team) => (
-            <MenuItem
-              key={team.id}
-              value={team.teamName}
-              style={{
-                color: "#2ec592",
-              }}
-              onClick={() => getAllMembers(team.teamName)}
-            >
-              {team.teamName}
-            </MenuItem>
-          ))}
-        </Select>
-        {allMemberIdList.length === 0 ? (
-          <img
-            src={selectTeam}
-            style={{
-              height: "13rem",
-              width: "13rem",
-              objectFit: "contain",
-              margin: "5rem",
-            }}
-          />
-        ) : (
-          allMemberIdList?.map((memberId) =>
-            memberId.id === currentUser.uid ? (
-              ""
-            ) : (
-              <MemberCard
-                id={memberId.id}
-                name={name}
-                email={email}
-                profileImage={profileImage}
-              />
-            )
-          )
-        )}
-      </div>
+      </Dialog>
     </div>
   );
 }
-
-export default Profile;

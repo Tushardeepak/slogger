@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button, useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useState } from "react";
 import styled from "styled-components";
 import "./style.css";
@@ -10,7 +10,6 @@ import signUpVideo from "../../assets/videos/Gaulois.mp4";
 import signUpImage from "../../assets/images/signUpMainLogo.png";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import LockIcon from "@material-ui/icons/Lock";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import CustomTooltip from "../CustomTooltip";
@@ -29,6 +28,8 @@ function SignUp() {
   const [loader, setLoader] = useState(false);
   const { signUp, signIn, currentUser } = useAuth();
   const history = useHistory();
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleChange = (set, value) => {
     set(value);
@@ -38,9 +39,9 @@ function SignUp() {
   const handleSignUp = async () => {
     if (
       email === "" ||
-      password === "" ||
+      password.length < 6 ||
       // firstName === "" ||
-      confirmPassword === "" ||
+      confirmPassword.length < 6 ||
       password !== confirmPassword
     ) {
       setError(true);
@@ -196,17 +197,7 @@ function SignUp() {
               )}
             </div>
           </SignUpForm>
-          <div
-            style={{
-              position: "absolute",
-              bottom: "2rem",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-            }}
-            className="footer"
-          >
+          <div className="footer">
             <p style={{ color: "rgba(3, 185, 124, 0.608)", padding: "0 3rem" }}>
               Not a Slogger?{" "}
               <span
@@ -358,24 +349,14 @@ function SignUp() {
                     textAlign: "center",
                   }}
                 >
-                  Alaric: Please fill form correctly.
+                  Alaric: Please give a valid email and min 6 digit password
                 </p>
               ) : (
                 ""
               )}
             </div>
           </SignUpForm>
-          <div
-            style={{
-              position: "absolute",
-              bottom: "2rem",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-            }}
-            className="footer"
-          >
+          <div className="footer">
             <p style={{ color: "rgba(3, 185, 124, 0.608)", padding: "0 3rem" }}>
               Already a Slogger?{" "}
               <span
@@ -401,7 +382,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const SignUpContainer = styled.div`
@@ -416,7 +397,7 @@ const SignUpContainer = styled.div`
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #fff;
+    background-color: #fefcfe;
     z-index: 1000;
     opacity: 1;
     display: flex;
@@ -542,6 +523,9 @@ const SignUpForm = styled.div`
     display: flex;
     align-items: center;
     overflow: hidden;
+    ${customMedia.lessThan("tablet")`
+      padding: 0.5rem 1rem;
+    `};
   }
   .inputSignUp {
     width: 100%;
@@ -565,12 +549,12 @@ const SignUpForm = styled.div`
   }
   .inputSignUp {
     ${customMedia.lessThan("tablet")`
-      font-size:8px !important;
+      font-size:12px !important;
     `};
   }
   .inputSignUp::placeholder {
     ${customMedia.lessThan("tablet")`
-      font-size:8px !important;
+      font-size:12px !important;
     `};
   }
   .shortScreen {

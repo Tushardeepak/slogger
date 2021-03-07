@@ -35,6 +35,7 @@ import "./heightMedia.css";
 import profileSetterImage from "../../assets/images/profileSetterImage.svg";
 import Chat from "./Chat";
 import SendIcon from "@material-ui/icons/Send";
+import SidebarTeams from "./sidebar/SidebarTeams";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -203,37 +204,45 @@ function Discussion({ UrlTeamName, userName }) {
     });
   }, [UrlTeamName]);
 
+  const emptyFunction = () => {};
+
   return (
     <div>
       <TeamTodoContainer>
-        <TeamTodoLeftContainer className="heightControl">
-          <TeamTodoLeftLeftBox>
-            <h3 style={{ overflow: "hidden" }}>My Teams</h3>
-            <MyTeamContainer>
-              {teams.map((team) => (
-                <TeamCard
-                  key={team.id}
-                  id={team.id}
-                  teamName={team.teamName}
-                  UrlTeamName={UrlTeamName}
-                ></TeamCard>
-              ))}
-            </MyTeamContainer>
-          </TeamTodoLeftLeftBox>
-          <TeamTodoLeftRightBox>
-            <h3 style={{ overflow: "hidden" }}>Joined Teams</h3>
-            <MyTeamContainer>
-              {joinedTeams.map((team) => (
-                <TeamCard
-                  key={team.id}
-                  id={team.id}
-                  teamName={team.teamName}
-                  UrlTeamName={UrlTeamName}
-                ></TeamCard>
-              ))}
-            </MyTeamContainer>
-          </TeamTodoLeftRightBox>
-        </TeamTodoLeftContainer>
+        {!isSmall ? (
+          <SidebarTeams UrlTeamName={UrlTeamName} />
+        ) : (
+          <TeamTodoLeftContainer>
+            <TeamTodoLeftLeftBox>
+              <h3 style={{ overflow: "hidden" }}>My Teams</h3>
+              <MyTeamContainer>
+                {teams.map((team) => (
+                  <TeamCard
+                    sidebarClose={emptyFunction}
+                    key={team.id}
+                    id={team.id}
+                    teamName={team.teamName}
+                    UrlTeamName={UrlTeamName}
+                  ></TeamCard>
+                ))}
+              </MyTeamContainer>
+            </TeamTodoLeftLeftBox>
+            <TeamTodoLeftRightBox>
+              <h3 style={{ overflow: "hidden" }}>Joined Teams</h3>
+              <MyTeamContainer>
+                {joinedTeams.map((team) => (
+                  <TeamCard
+                    sidebarClose={emptyFunction}
+                    key={team.id}
+                    id={team.id}
+                    teamName={team.teamName}
+                    UrlTeamName={UrlTeamName}
+                  ></TeamCard>
+                ))}
+              </MyTeamContainer>
+            </TeamTodoLeftRightBox>
+          </TeamTodoLeftContainer>
+        )}
         {/* ::::::::::::::::: */}
         {UrlTeamName === undefined ? (
           <TeamTodoRightContainer
@@ -286,7 +295,7 @@ function Discussion({ UrlTeamName, userName }) {
               ))
             )}
 
-            <TodoRightDownBox>
+            <TodoRightUpBox>
               <input
                 value={sendTerm}
                 type="text"
@@ -320,7 +329,7 @@ function Discussion({ UrlTeamName, userName }) {
               >
                 Send
               </Button>
-            </TodoRightDownBox>
+            </TodoRightUpBox>
           </TeamTodoRightContainer>
         )}
 
@@ -336,7 +345,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const TeamTodoContainer = styled.div`
@@ -346,8 +355,9 @@ const TeamTodoContainer = styled.div`
   position: absolute;
   display: flex;
   ${customMedia.lessThan("smTablet")`
-    flex:0.7;
+    flex:1;
       flex-direction:column;
+      height: 81.5%;
   `}
 `;
 
@@ -444,9 +454,13 @@ const TeamTodoRightContainer = styled.div`
   flex: 0.5;
   overflow-y: scroll;
   padding: 0 1rem;
-  margin-bottom: 4rem;
+  margin-top: 4rem;
+  margin-bottom: 1rem;
   ${customMedia.lessThan("smTablet")`
-    margin-bottom: 1rem !important;
+  margin:0 0.5rem;
+  padding:0;
+    margin-top: 4rem;
+    flex:1 !important;
   `}
   .teamNoTodoImage {
     ${customMedia.lessThan("smTablet")`
@@ -455,9 +469,9 @@ const TeamTodoRightContainer = styled.div`
   }
 `;
 
-const TodoRightDownBox = styled.div`
+const TodoRightUpBox = styled.div`
   position: absolute;
-  bottom: 0;
+  top: 0;
   display: flex;
   align-items: center;
   border-radius: 10px;
@@ -467,8 +481,10 @@ const TodoRightDownBox = styled.div`
 
   ${customMedia.lessThan("smTablet")`
     border:none;
-    width: 90% !important;
+    width: 100% !important;
     transform:scale(0.9);
+    top: 4rem;
+    margin-left:-1rem;
   `}
 `;
 const ChatScreen = styled.div`

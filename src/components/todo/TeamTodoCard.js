@@ -203,6 +203,7 @@ function TeamTodoCard({
             height: "auto",
             // lineHeight: "30px",
             marginTop: "-5px",
+            fontFamily: "Times New Roman",
           }}
         >
           {text}
@@ -238,7 +239,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const TodoMainCard = styled.div`

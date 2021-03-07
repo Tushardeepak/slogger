@@ -150,7 +150,7 @@
   font-size: 11px;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 600px) {
   .memberTopContainer {
     flex-direction: column;
   }

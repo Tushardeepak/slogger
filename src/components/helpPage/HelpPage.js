@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -10,10 +10,11 @@ import styled from "styled-components";
 import NavBar from "../navBar/NavBar";
 import videoFaq from "../../assets/videos/faqVideo.mp4";
 import { useAuth } from "../../context/AuthContext";
-import { Button } from "@material-ui/core";
+import { Button, useMediaQuery } from "@material-ui/core";
 import EmailDialog from "./EmailDialog";
 import EmailIcon from "@material-ui/icons/Email";
 import SnackBar from "../snackbar/SnackBar";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,16 +25,23 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
   },
+  title: {
+    marginLeft: theme.spacing(2),
+    flex: 1,
+  },
 }));
 
 function HelpPage() {
   const classes = useStyles();
-  const { resetPassword } = useAuth();
+  const { resetPassword, logOut } = useAuth();
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
   const [email, setEmail] = useState("");
   const [openEmail, setOpenEmail] = useState(false);
   const [sent, setSent] = useState(false);
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+  const history = useHistory();
 
   const handleChange = (set, value) => {
     set(value);
@@ -41,6 +49,11 @@ function HelpPage() {
   };
   const handleClose = () => {
     setOpenEmail(false);
+  };
+
+  const handleSignOut = async () => {
+    await logOut();
+    history.push("/signUp");
   };
 
   const handlePasswordChange = async () => {
@@ -59,7 +72,42 @@ function HelpPage() {
   return (
     <div>
       <HelpPageContainer>
-        <NavBar page={1} home={true} />
+        {!isSmall ? (
+          <div
+            style={{
+              width: "92%",
+              height: "56px",
+              color: "#fff",
+              background: "rgba(0, 145, 96, 0.9)",
+              paddingLeft: "15px",
+              paddingRight: "15px",
+              display: "flex",
+              alignItems: "center",
+              position: "absolute",
+              top: 0,
+              zIndex: 100,
+              boxShadow:
+                "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
+            }}
+          >
+            <Typography variant="h6" className={classes.title}>
+              Slogger
+            </Typography>
+            <Button
+              autoFocus
+              color="inherit"
+              onClick={() => history.push("/home")}
+            >
+              Home
+            </Button>
+            <Button autoFocus color="inherit" onClick={() => handleSignOut()}>
+              Log out
+            </Button>
+          </div>
+        ) : (
+          <NavBar page={1} home={true} />
+        )}
+
         <HelpPageLeftBox>
           <video autoPlay loop muted className="video">
             <source src={videoFaq} type="video/mp4"></source>
@@ -396,7 +444,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const HelpPageContainer = styled.div`

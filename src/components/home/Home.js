@@ -5,6 +5,7 @@ import {
   Paper,
   Tab,
   Tabs,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
@@ -63,6 +64,10 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     color: "#000",
   },
+  title: {
+    marginLeft: theme.spacing(2),
+    flex: 1,
+  },
   Tabs: {
     display: "flex",
     justifyContent: "space-between",
@@ -103,6 +108,10 @@ function Home(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const handleSignOut = async () => {
+    await logOut();
+    history.push("/signUp");
+  };
 
   React.useEffect(() => {
     db.collection("users")
@@ -132,8 +141,43 @@ function Home(props) {
       }}
     >
       <HomeContainer>
-        <NavBar style={{ position: "fixed" }} page={1} />
+        {!isSmall ? (
+          <div
+            style={{
+              width: "92%",
+              height: "56px",
+              color: "#fff",
+              background: "rgba(0, 145, 96, 0.2)",
+              paddingLeft: "15px",
+              paddingRight: "15px",
+              display: "flex",
+              alignItems: "center",
+              position: "static",
+              boxShadow:
+                "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px",
+            }}
+          >
+            <Typography variant="h6" className={classes.title}>
+              Slogger
+            </Typography>
+            <Button
+              autoFocus
+              color="inherit"
+              onClick={() => history.push("/help")}
+            >
+              Help
+            </Button>
+            <Button autoFocus color="inherit" onClick={() => handleSignOut()}>
+              Log out
+            </Button>
+          </div>
+        ) : (
+          <NavBar style={{ position: "fixed" }} page={1} />
+        )}
+
         <Paper className="mainPaper" elevation={5}>
+          {!isSmall ? "" : ""}
+
           <AppBar className={classes.AppBar} position="static">
             <Tabs
               classes={{
@@ -227,7 +271,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const HomeContainer = styled.div`
@@ -240,7 +284,6 @@ const HomeContainer = styled.div`
 
   ${customMedia.lessThan("smTablet")`
           padding: 0;
-          padding-top:3rem;
     `};
 
   .mainPaper {

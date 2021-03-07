@@ -12,12 +12,14 @@ function TeamCard({
   deleteBtn,
   setOpenDeleteSnackBar,
   setCurrentTeamName,
+  sidebarClose,
 }) {
   const [openDelete, setOpenDelete] = React.useState(false);
   const history = useHistory();
 
   const handleTeamChange = () => {
-    history.push(`/${teamName}`);
+    history.push(`/home/${teamName}`);
+    sidebarClose();
   };
 
   const handleDelete = () => {
