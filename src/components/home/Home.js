@@ -160,14 +160,10 @@ function Home(props) {
             <Typography variant="h6" className={classes.title}>
               Slogger
             </Typography>
-            <Button
-              autoFocus
-              color="inherit"
-              onClick={() => history.push("/help")}
-            >
+            <Button color="inherit" onClick={() => history.push("/help")}>
               Help
             </Button>
-            <Button autoFocus color="inherit" onClick={() => handleSignOut()}>
+            <Button color="inherit" onClick={() => handleSignOut()}>
               Log out
             </Button>
           </div>

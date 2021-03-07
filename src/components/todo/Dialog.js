@@ -88,7 +88,7 @@ export default function AddingTeamModal({
       id: currentUser.uid,
     });
     setCurrentTeamName(inputTeamName);
-    history.push(`/${inputTeamName}`);
+    history.push(`/home/${inputTeamName}`);
     handleClose();
     openSnackbar(true);
   };
@@ -103,7 +103,7 @@ export default function AddingTeamModal({
       id: currentUser.uid,
     });
     setCurrentTeamName(inputTeamName);
-    history.push(`/${inputTeamName}`);
+    history.push(`/home/${inputTeamName}`);
     handleClose();
     openSnackbar(true);
   };

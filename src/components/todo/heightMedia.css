@@ -49,4 +49,10 @@
   .heightControl {
     display: none !important;
   }
+  input {
+    font-size: 1rem !important;
+  }
+  input::placeholder {
+    font-size: 1rem !important;
+  }
 }
