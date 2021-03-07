@@ -229,6 +229,10 @@ const TodoLeftUpBox = styled.div`
   border-bottom: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
   flex-direction: column;
+  @media (max-height: 400px) {
+    flex: 1 !important;
+    border: none;
+  }
 
   .inputField {
     width: 90%;
@@ -312,4 +316,7 @@ const TodoLeftUpBox = styled.div`
 const TodoLeftDownBox = styled.div`
   overflow: hidden;
   flex: 0.5 !important;
+  @media (max-height: 400px) {
+    display: none;
+  }
 `;
