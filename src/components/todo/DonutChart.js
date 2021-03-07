@@ -108,7 +108,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const ChartContainer = styled.div`
@@ -118,8 +118,7 @@ const ChartContainer = styled.div`
   align-items: center;
 
   ${customMedia.lessThan("smTablet")`
-  margin-top:-3rem;
-    transform:scale(0.4)
+  margin-top:2rem;
     `};
 `;
 

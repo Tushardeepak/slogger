@@ -158,7 +158,7 @@ function DeleteUserTeamModal({
     setUserSideDelete(true);
     setOpenDeleteSnackBar(true);
     setCurrentTeamName(teamName);
-    history.push("/");
+    history.push("/home");
   };
 
   const databaseDelete = () => {

@@ -18,7 +18,7 @@ function App() {
             <Route exact path="/" component={Slogger} />
             <Route exact path="/help" component={HelpPage} />
             <PrivateRoute exact path="/home" component={Home} />
-            <PrivateRoute path="/:teamName" component={Home} />
+            <PrivateRoute path="/home/:teamName" component={Home} />
           </Switch>
         </AuthProvider>
       </Router>

@@ -41,6 +41,7 @@ import profileSetterImage from "../../assets/images/profileSetterImage.svg";
 import { useHistory } from "react-router-dom";
 import "./heightMedia.css";
 import SnackBar from "../snackbar/SnackBar";
+import SidebarTeams from "./sidebar/SidebarTeams";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -369,9 +370,11 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
       });
   }, []);
 
+  const emptyFunction = () => {};
+
   return firstLoader ? (
     <p>Loading...</p>
-  ) : profileSetter ? (
+  ) : !profileSetter ? (
     <div
       style={{
         width: "100%",
@@ -379,9 +382,13 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        textAlign: "center",
+        color: "rgba(0, 141, 94, 0.595)",
       }}
     >
-      <div className="profileContainer">
+      To use this feature,
+      <br /> Set your profile in Profile section
+      {/* <div className="profileContainer">
         <div className="profileImageBox">
           <img className="profileSetterImage" src={profileSetterImage} />
           <p className="profileHeading">
@@ -443,57 +450,64 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
             ""
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   ) : (
     <div>
       <TeamTodoContainer>
-        <TeamTodoLeftContainer className="heightControl">
-          <TeamTodoLeftLeftBox>
-            <Button
-              className="addButton1"
-              onClick={() => handleClickMakeTeam()}
-            >
-              Make a team
-            </Button>
-            <h3 style={{ overflow: "hidden" }}>My Teams</h3>
-            <MyTeamContainer>
-              {teams.map((team) => (
-                <TeamCard
-                  key={team.id}
-                  id={team.id}
-                  teamName={team.teamName}
-                  UrlTeamName={UrlTeamName}
-                  deleteBtn={true}
-                  setOpenDeleteSnackBar={setOpenDeleteSnackBar}
-                  setCurrentTeamName={setCurrentTeamName}
-                ></TeamCard>
-              ))}
-            </MyTeamContainer>
-          </TeamTodoLeftLeftBox>
-          <TeamTodoLeftRightBox>
-            <Button
-              className="addButton1"
-              onClick={() => handleClickJoinTeam()}
-            >
-              Join a team
-            </Button>
-            <h3 style={{ overflow: "hidden" }}>Joined Teams</h3>
-            <MyTeamContainer>
-              {joinedTeams.map((team) => (
-                <TeamCard
-                  key={team.id}
-                  id={team.id}
-                  teamName={team.teamName}
-                  UrlTeamName={UrlTeamName}
-                  deleteBtn={true}
-                  setOpenDeleteSnackBar={setOpenDeleteSnackBar}
-                  setCurrentTeamName={setCurrentTeamName}
-                ></TeamCard>
-              ))}
-            </MyTeamContainer>
-          </TeamTodoLeftRightBox>
-        </TeamTodoLeftContainer>
+        {!isSmall ? (
+          <SidebarTeams UrlTeamName={UrlTeamName} />
+        ) : (
+          <TeamTodoLeftContainer>
+            <TeamTodoLeftLeftBox>
+              <Button
+                className="addButton1"
+                onClick={() => handleClickMakeTeam()}
+              >
+                Make a team
+              </Button>
+              <h3 style={{ overflow: "hidden" }}>My Teams</h3>
+              <MyTeamContainer>
+                {teams.map((team) => (
+                  <TeamCard
+                    sidebarClose={emptyFunction}
+                    key={team.id}
+                    id={team.id}
+                    teamName={team.teamName}
+                    UrlTeamName={UrlTeamName}
+                    deleteBtn={true}
+                    setOpenDeleteSnackBar={setOpenDeleteSnackBar}
+                    setCurrentTeamName={setCurrentTeamName}
+                  ></TeamCard>
+                ))}
+              </MyTeamContainer>
+            </TeamTodoLeftLeftBox>
+            <TeamTodoLeftRightBox>
+              <Button
+                className="addButton1"
+                onClick={() => handleClickJoinTeam()}
+              >
+                Join a team
+              </Button>
+              <h3 style={{ overflow: "hidden" }}>Joined Teams</h3>
+              <MyTeamContainer>
+                {joinedTeams.map((team) => (
+                  <TeamCard
+                    sidebarClose={emptyFunction}
+                    key={team.id}
+                    id={team.id}
+                    teamName={team.teamName}
+                    UrlTeamName={UrlTeamName}
+                    deleteBtn={true}
+                    setOpenDeleteSnackBar={setOpenDeleteSnackBar}
+                    setCurrentTeamName={setCurrentTeamName}
+                  ></TeamCard>
+                ))}
+              </MyTeamContainer>
+            </TeamTodoLeftRightBox>
+          </TeamTodoLeftContainer>
+        )}
+
         <TeamTodoRightContainer>
           {thisIsAdmin ? (
             <TodoRightUpBox>
@@ -549,18 +563,19 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
               </div>
             </TodoRightUpBox>
           ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "rgb(5, 185, 125)",
-                padding: "1.4rem 0rem",
-                borderBottom: "2px solid rgba(0, 141, 94, 0.295)",
-              }}
-            >
-              <h1>SLOGGER</h1>
-            </div>
+            ""
+            // <div
+            //   style={{
+            //     display: "flex",
+            //     justifyContent: "center",
+            //     alignItems: "center",
+            //     color: "rgb(5, 185, 125)",
+            //     padding: "1.4rem 0rem",
+            //     borderBottom: "2px solid rgba(0, 141, 94, 0.295)",
+            //   }}
+            // >
+            //   <h1>SLOGGER</h1>
+            // </div>
           )}
           {teamsTodoList.length === 0 ? (
             thisIsAdmin ? (
@@ -773,7 +788,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const TeamTodoContainer = styled.div`
@@ -782,8 +797,9 @@ const TeamTodoContainer = styled.div`
   position: absolute;
   display: flex;
   ${customMedia.lessThan("smTablet")`
-  flex:0.7;
+  flex:1;
     flex-direction:column;
+    height: 81.5%;
 `}
 `;
 
@@ -878,9 +894,14 @@ const TeamTodoRightContainer = styled.div`
   flex: 0.5;
   overflow-y: scroll;
   padding: 0 1rem;
+  ${customMedia.lessThan("smTablet")`
+  flex:1;
+  padding: 0 0.2rem;
+`}
   .teamNoTodoImage {
     ${customMedia.lessThan("smTablet")`
     height:100% !important;
+    flex: 1;
   `}
   }
 `;
@@ -923,13 +944,14 @@ const TodoRightUpBox = styled.div`
 
     ${customMedia.lessThan("smTablet")`
     margin-left:0.5rem;
+    font-size: 1rem !important;
     `};
   }
   input::placeholder {
     color: rgb(3, 185, 124);
     font-size: 0.7rem;
     ${customMedia.lessThan("smTablet")`
-      
+      font-size: 1rem;
     `};
   }
   .todoIcon {
@@ -958,13 +980,15 @@ const TodoRightUpBox = styled.div`
     padding: 0.4rem;
     margin: 0.2rem 0;
     margin-right: 0.2rem;
+    font-size: 0.7rem !important;
     display: flex;
     align-items: center;
     cursor: pointer;
     overflow: hidden;
     ${customMedia.lessThan("smTablet")`
-    padding: 0.1rem 0.5rem;
+    padding: 0.5rem 0.5rem;
          margin:0.1rem 0;
+         font-size:0.7rem !important;
     `};
   }
   .AddButton {

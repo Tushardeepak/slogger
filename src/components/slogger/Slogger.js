@@ -17,6 +17,13 @@ import "../todo/heightMedia.css";
 function Slogger() {
   const history = useHistory();
   const { currentUser } = useAuth();
+
+  React.useEffect(() => {
+    if (currentUser !== null) {
+      history.push("/home");
+    }
+  }, []);
+
   return (
     <div style={{ height: "auto", fontFamily: "Times New Roman" }}>
       <NavBar page={0} />
@@ -198,7 +205,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const Banner = styled.div`

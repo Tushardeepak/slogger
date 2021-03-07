@@ -8,11 +8,7 @@ function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={(props) => {
-        return currentUser ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/slogger" />
-        );
+        return currentUser ? <Component {...props} /> : <Redirect to="/" />;
       }}
     ></Route>
   );

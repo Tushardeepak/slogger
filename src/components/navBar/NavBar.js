@@ -118,7 +118,7 @@ const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
   tablet: "960px",
-  smTablet: "740px",
+  smTablet: "600px",
 });
 
 const NavBarContainer = styled.div`
@@ -139,7 +139,7 @@ const NavBarContainer = styled.div`
   /* box-shadow: 0px 5px 5px rgb(0, 85, 57); */
 
   h1 {
-    margin-left: 1.9rem;
+    margin-left: 1rem;
     color: rgb(1, 63, 42);
     ${customMedia.lessThan("smTablet")`
       margin-left: 1.2rem !important;
@@ -174,7 +174,7 @@ const NavBarContainer0Page = styled.div`
 `;
 
 const NavBar0StartIcon = styled.div`
-  flex: 0.2;
+  flex: 0.21;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -184,7 +184,7 @@ const NavBar0StartIcon = styled.div`
     `};
 `;
 const NavBarStartIcon = styled.div`
-  flex: 0.2;
+  flex: 0.21;
   display: flex;
   align-items: center;
   cursor: pointer;
