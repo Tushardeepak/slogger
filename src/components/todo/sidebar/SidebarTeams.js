@@ -262,6 +262,7 @@ const TeamTodoLeftLeftBox = styled.div`
     width: 100%;
     text-transform: uppercase;
     margin: 0.3rem 0;
+    font-size: 0.7rem;
   }
 `;
 const MyTeamContainer = styled.div`
@@ -293,5 +294,6 @@ const TeamTodoLeftRightBox = styled.div`
     width: 100%;
     text-transform: uppercase;
     margin: 0.3rem 0;
+    font-size: 0.7rem;
   }
 `;

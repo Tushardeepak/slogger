@@ -13,6 +13,7 @@ function TeamCard({
   setOpenDeleteSnackBar,
   setCurrentTeamName,
   sidebarClose,
+  discussion,
 }) {
   const [openDelete, setOpenDelete] = React.useState(false);
   const history = useHistory();
@@ -38,31 +39,43 @@ function TeamCard({
       <Button
         className="TeamButtons"
         style={{
-          width: "98%",
+          flex: discussion ? 1 : 0.95,
+          width: "100%",
           height: "auto",
           color: "rgb(0, 94, 62)",
           fontWeight: 600,
           backgroundColor: "rgba(7, 190, 129, 0.534)",
-          margin: "0.3rem",
-          padding: "0.5rem",
-          borderRadius: "15px",
+          margin: "0.1rem",
+          padding: "0.3rem",
+          borderRadius: discussion ? "5px" : "5px 0 0 5px",
           textAlign: "center",
           wordBreak: "break-all",
           border: "2px solid rgb(0, 94, 62)",
+          marginRight: 0,
         }}
         onClick={() => handleTeamChange()}
       >
         {teamName}
       </Button>
       {deleteBtn ? (
-        <DeleteIcon
+        <Button
           style={{
-            fontSize: "20px",
-            color: "rgb(2, 112, 75)",
-            cursor: "pointer",
+            flex: 0.05,
+            background: "rgb(2, 112, 75)",
+            border: "2px solid rgb(2, 112, 75)",
+            borderRadius: "0 5px 5px 0",
+            maxWidth: "0.5rem",
           }}
-          onClick={() => handleDelete()}
-        />
+        >
+          <DeleteIcon
+            style={{
+              fontSize: "20px",
+              color: "#fff",
+              cursor: "pointer",
+            }}
+            onClick={() => handleDelete()}
+          />
+        </Button>
       ) : (
         ""
       )}
@@ -83,31 +96,42 @@ function TeamCard({
       <Button
         className="TeamButtons"
         style={{
-          width: "98%",
+          flex: discussion ? 1 : 0.95,
+          width: "100%",
           height: "auto",
           color: "rgb(0, 94, 62)",
           fontWeight: 600,
           backgroundColor: "rgba(7, 190, 129, 0.534)",
-          margin: "0.3rem",
-          padding: "0.5rem",
-          borderRadius: "15px",
+          margin: "0.1rem",
+          padding: "0.3rem",
+          borderRadius: discussion ? "5px" : "5px 0 0 5px",
           textAlign: "center",
           wordBreak: "break-all",
           border: "2px solid rgba(7, 190, 129, 0.534)",
+          marginRight: 0,
         }}
         onClick={() => handleTeamChange()}
       >
         {teamName}
       </Button>
       {deleteBtn ? (
-        <DeleteIcon
+        <Button
           style={{
-            fontSize: "20px",
-            color: "rgb(2, 112, 75)",
-            cursor: "pointer",
+            flex: 0.05,
+            background: "rgb(2, 112, 75)",
+            border: "2px solid rgb(2, 112, 75)",
+            borderRadius: "0 5px 5px 0",
           }}
-          onClick={() => handleDelete()}
-        />
+        >
+          <DeleteIcon
+            style={{
+              fontSize: "20px",
+              color: "#fff",
+              cursor: "pointer",
+            }}
+            onClick={() => handleDelete()}
+          />
+        </Button>
       ) : (
         ""
       )}

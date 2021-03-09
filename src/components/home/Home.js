@@ -274,7 +274,7 @@ const HomeContainer = styled.div`
   width: 100%;
   height: 100vh;
   background-color: rgb(5, 185, 125, 0.835);
-  padding: 4rem 3.8%;
+  padding: 4rem 2%;
   padding-bottom: 1rem;
   overflow: hidden !important;
 
@@ -284,7 +284,7 @@ const HomeContainer = styled.div`
 
   .mainPaper {
     position: relative;
-    width: 93%;
+    width: 96%;
     height: 86%;
     border-radius: 20px;
     ${customMedia.lessThan("smTablet")`

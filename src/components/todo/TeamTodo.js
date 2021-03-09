@@ -804,7 +804,7 @@ const TeamTodoContainer = styled.div`
 `;
 
 const TeamTodoLeftContainer = styled.div`
-  flex: 0.5;
+  flex: 0.45;
   border-right: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
   overflow: hidden;
@@ -838,6 +838,7 @@ const TeamTodoLeftLeftBox = styled.div`
     `}
   }
   h3 {
+    font-size: 0.7rem;
     color: rgb(5, 185, 125);
     font-weight: 600;
     text-align: center;
@@ -878,6 +879,7 @@ const TeamTodoLeftRightBox = styled.div`
     `}
   }
   h3 {
+    font-size: 0.7rem;
     color: rgb(5, 185, 125);
     font-weight: 600;
     text-align: center;
@@ -891,7 +893,7 @@ const TeamTodoLeftRightBox = styled.div`
   }
 `;
 const TeamTodoRightContainer = styled.div`
-  flex: 0.5;
+  flex: 0.55;
   overflow-y: scroll;
   padding: 0 1rem;
   ${customMedia.lessThan("smTablet")`

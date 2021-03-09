@@ -223,6 +223,7 @@ function Discussion({ UrlTeamName, userName }) {
                     id={team.id}
                     teamName={team.teamName}
                     UrlTeamName={UrlTeamName}
+                    discussion={true}
                   ></TeamCard>
                 ))}
               </MyTeamContainer>
@@ -237,6 +238,7 @@ function Discussion({ UrlTeamName, userName }) {
                     id={team.id}
                     teamName={team.teamName}
                     UrlTeamName={UrlTeamName}
+                    discussion={true}
                   ></TeamCard>
                 ))}
               </MyTeamContainer>

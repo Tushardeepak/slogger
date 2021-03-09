@@ -1,4 +1,5 @@
 .memberContainer {
+  width: 100%;
   margin: 1rem 0;
   height: auto;
   min-height: 7rem;
@@ -151,6 +152,9 @@
 }
 
 @media only screen and (max-width: 600px) {
+  .memberContainer {
+    width: 90%;
+  }
   .memberTopContainer {
     flex-direction: column;
   }
