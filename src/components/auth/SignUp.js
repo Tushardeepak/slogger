@@ -421,7 +421,7 @@ const Alaric = styled.div`
   min-width: 10rem;
   padding-left: 2rem;
   align-items: center;
-  font-size: 3vw;
+  font-size: 2.3vw;
   color: rgba(0, 128, 85, 0.568);
   font-family: "Bebas Neue", cursive;
   letter-spacing: 0.2rem;

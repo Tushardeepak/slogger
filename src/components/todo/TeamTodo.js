@@ -42,6 +42,7 @@ import { useHistory } from "react-router-dom";
 import "./heightMedia.css";
 import SnackBar from "../snackbar/SnackBar";
 import SidebarTeams from "./sidebar/SidebarTeams";
+import VideoCallIcon from "@material-ui/icons/VideoCall";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -388,69 +389,6 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
     >
       To use this feature,
       <br /> Set your profile in Profile section
-      {/* <div className="profileContainer">
-        <div className="profileImageBox">
-          <img className="profileSetterImage" src={profileSetterImage} />
-          <p className="profileHeading">
-            Please set your basic profile first. <br />
-            You can set your full profile also in profile section.
-            <br />
-            You can also access discussion section after this.
-          </p>
-        </div>
-
-        <div className="profileBox">
-          <div className="avatarBox">
-            <input
-              hidden
-              id="profile-image-file"
-              type="file"
-              accept="image/*"
-              onChange={(e) => onSelectFile(e)}
-            />
-            <IconButton
-              className="avatarEdit"
-              onClick={() => {
-                document.getElementById("profile-image-file").click();
-              }}
-            >
-              <CreateIcon />
-            </IconButton>
-
-            <Avatar className="avatar" src={profileImage} alt={name} />
-          </div>
-
-          <div className="inputFieldProfile">
-            <label className="profileLabel">Name:</label>
-            <input
-              value={name}
-              className="todoInputProfile"
-              type="text"
-              placeholder="..."
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-
-          <div className="inputFieldProfile">
-            <label className="profileLabel">Email:</label>
-            <input
-              value={email}
-              className="todoInputProfile"
-              type="text"
-              placeholder="..."
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <Button className="addButton" onClick={() => handleSaveProfile()}>
-            Save
-          </Button>
-          {profileError ? (
-            <p style={{ color: "red" }}>Fill Name and Email correctly</p>
-          ) : (
-            ""
-          )}
-        </div>
-      </div> */}
     </div>
   ) : (
     <div>
@@ -513,13 +451,13 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
             <TodoRightUpBox>
               <div className="inputField">
                 <CreateIcon className="todoIcon" />
-                <input
+                <textarea
                   value={inputTodo}
                   className="todoInput"
                   type="text"
                   placeholder="Write here..."
                   onChange={(e) => handleInputChange(e.target.value)}
-                  onKeyDown={(e) => handleSubmitEnter(e)}
+                  //onKeyDown={(e) => handleSubmitEnter(e)}
                 />
               </div>
               <div
@@ -560,22 +498,41 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
                 >
                   ADD
                 </Button>
+                <CustomTooltip title="Start meeting" placement="down">
+                  <a
+                    href={`https://slogmeet.web.app/${UrlTeamName}`}
+                    className="meetingLink"
+                  >
+                    <Button disabled={loader} className={"slogMeet"}>
+                      <VideoCallIcon />
+                    </Button>
+                  </a>
+                </CustomTooltip>
               </div>
             </TodoRightUpBox>
           ) : (
-            ""
-            // <div
-            //   style={{
-            //     display: "flex",
-            //     justifyContent: "center",
-            //     alignItems: "center",
-            //     color: "rgb(5, 185, 125)",
-            //     padding: "1.4rem 0rem",
-            //     borderBottom: "2px solid rgba(0, 141, 94, 0.295)",
-            //   }}
-            // >
-            //   <h1>SLOGGER</h1>
-            // </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "rgb(5, 185, 125)",
+                padding: "1.4rem 0rem",
+                borderBottom: "2px solid rgba(0, 141, 94, 0.295)",
+              }}
+            >
+              <h1>SLOGGER</h1>
+              <CustomTooltip title="Join meeting" placement="down">
+                <a
+                  href={`https://slogmeet.web.app/${UrlTeamName}`}
+                  className="meetingJoinLink"
+                >
+                  <Button disabled={loader} className={"slogMeet"}>
+                    <VideoCallIcon />
+                  </Button>
+                </a>
+              </CustomTooltip>
+            </div>
           )}
           {teamsTodoList.length === 0 ? (
             thisIsAdmin ? (
@@ -837,6 +794,9 @@ const TeamTodoLeftLeftBox = styled.div`
       margin-left:0rem;
     `}
   }
+  .addButton1:hover {
+    background-color: rgb(5, 185, 125);
+  }
   h3 {
     color: rgb(5, 185, 125);
     font-weight: 600;
@@ -904,6 +864,37 @@ const TeamTodoRightContainer = styled.div`
     flex: 1;
   `}
   }
+  .meetingLink {
+    width: 30%;
+    margin: 0.2rem 0rem;
+    margin-left: 0.2rem;
+    text-decoration: none;
+    ${customMedia.lessThan("smTablet")`
+     margin: 0.2rem 0.2rem;
+     margin-right:0;
+      padding:0.08rem 0;
+    `};
+  }
+  .meetingJoinLink {
+    width: 12%;
+    margin: 0.2rem 0.5rem;
+    text-decoration: none;
+    ${customMedia.lessThan("smTablet")`
+     margin: 0.2rem 0.2rem;
+     margin-right:0;
+      padding:0.08rem 0;
+    `};
+  }
+  .slogMeet {
+    width: 100%;
+    color: #fff;
+    font-weight: 600;
+    background-color: rgb(5, 185, 125);
+  }
+
+  .slogMeet:hover {
+    background-color: rgb(5, 185, 125);
+  }
 `;
 
 const TodoRightUpBox = styled.div`
@@ -917,37 +908,41 @@ const TodoRightUpBox = styled.div`
 
   .inputField {
     width: 100%;
-    height: 1.7rem;
+    height: 2rem;
     background-color: rgba(3, 185, 124, 0.308);
     border-radius: 5px;
     border: none;
-    padding: 0.2rem 0;
+    padding: 0.5rem 0;
     margin: 0.5rem 0;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0rem;
     display: flex;
     align-items: center;
+    overflow: hidden;
     ${customMedia.lessThan("smTablet")`
          margin:0;
          height: 2rem;
     `};
   }
-  input {
+  .todoInput {
+    overflow: hidden;
     width: 100%;
     height: 100%;
     outline: none;
     border: none;
     background: transparent;
     color: rgb(0, 90, 60);
-    font-size: 0.7rem;
+    font-size: 0.9rem !important;
     flex: 0.95;
-    padding-left: 0rem;
+    padding: 0.5rem;
+    margin: 1rem 0 !important;
+    resize: none;
 
     ${customMedia.lessThan("smTablet")`
     margin-left:0.5rem;
     font-size: 1rem !important;
     `};
   }
-  input::placeholder {
+  .todoInput::placeholder {
     color: rgb(3, 185, 124);
     font-size: 0.7rem;
     ${customMedia.lessThan("smTablet")`

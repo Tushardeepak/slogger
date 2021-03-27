@@ -91,7 +91,7 @@ function Profile() {
                   {
                     name: name,
                     email: email,
-                    bio: bio === "" ? "NoContact" : bio,
+                    bio: bio === "" ? "NoBio" : bio,
                     contact: contact === "" ? "NoContact" : contact,
                     skills: skills === "" ? "NoSkill" : skills,
                     facebook: facebook === "" ? "NoLink" : facebook,
@@ -420,7 +420,9 @@ function Profile() {
                   </a>
                 )}
               </div>
-              <p className="endorsementHeading">My Endorsements</p>
+              <p className="endorsementHeading">
+                {endorsementList?.length === 0 ? "No" : "My"} Endorsements
+              </p>
               {endorsementList?.map((data) => (
                 <Paper elevation={3} className="EndContainer">
                   <div className="EndTopContainer">
@@ -468,8 +470,9 @@ function Profile() {
         </div>
       )}
       <div className="otherProfileSection">
-        <p>Select Team :</p>
+        <p>{teams?.length === 0 ? "No team found" : "Select Team :"}</p>
         <Select
+          disabled={teams?.length === 0 ? true : false}
           value={team}
           onChange={(e) => handleChangeTeam(e.target.value)}
           disableUnderline
