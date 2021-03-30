@@ -80,6 +80,7 @@ function Slogger() {
             <h1>3) Assign work to teammates</h1>
             <h1>4) Check when the work is done</h1>
             <h1>5) Add images to any work</h1>
+            <h1>6) Group video call meetings</h1>
           </div>
         </div>
       </div>

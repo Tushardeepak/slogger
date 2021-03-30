@@ -120,7 +120,8 @@ function SignUp() {
       {authToggle ? (
         <SignUpBox>
           <SignUpForm>
-            <img src={signUpImage} />
+            {/* <img src={signUpImage} /> */}
+            <h2>SLOGGER</h2>
             <div className="signUpFormBottom">
               <CustomTooltip
                 title="Alaric : Enter your email."
@@ -215,7 +216,8 @@ function SignUp() {
       ) : (
         <SignUpBox>
           <SignUpForm>
-            <img src={signUpImage} />
+            {/* <img src={signUpImage} /> */}
+            <h2>SLOGGER</h2>
             <div className="signUpFormBottom">
               {/* <div className="inputFieldSignUp">
                 <CustomTooltip
@@ -421,7 +423,7 @@ const Alaric = styled.div`
   min-width: 10rem;
   padding-left: 2rem;
   align-items: center;
-  font-size: 2.3vw;
+  font-size: 2.1vw;
   color: rgba(0, 128, 85, 0.568);
   font-family: "Bebas Neue", cursive;
   letter-spacing: 0.2rem;
@@ -501,6 +503,12 @@ const SignUpForm = styled.div`
     margin-top: 2rem;
     object-fit: contain;
   }
+  h2 {
+    font-size: 3rem;
+    margin-top: 3rem;
+    color: #008055;
+    font-family: "Shadows Into Light", cursive;
+  }
 
   .signUpFormBottom {
     position: absolute;
@@ -514,7 +522,7 @@ const SignUpForm = styled.div`
   }
   .inputFieldSignUp {
     width: 90%;
-    height: 2rem;
+    height: 1.5rem;
     background-color: rgba(3, 185, 124, 0.308);
     border-radius: 1rem;
     border: none;
