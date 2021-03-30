@@ -97,7 +97,7 @@ const customMedia = generateMedia({
 });
 
 const TodoMainCard = styled.div`
-  margin: 0.7rem 0rem;
+  margin: 0.2rem 0rem;
   width: 100%;
   height: 3rem;
   min-height: 3rem;
@@ -108,7 +108,7 @@ const TodoMainCard = styled.div`
 
 const TodoTextBox = styled.div`
   background-color: rgb(231, 250, 243);
-  border-radius: 15px 0px 15px 15px;
+  border-radius: 10px 0px 10px 10px;
   margin: 2px 0;
   margin-right: 5px;
   margin-left: 35%;
@@ -123,7 +123,7 @@ const TodoTextBox = styled.div`
 
 const TodoTextBoxReceived = styled.div`
   background-color: rgb(231, 250, 243);
-  border-radius: 0px 15px 15px 15px;
+  border-radius: 0px 10px 10px 10px;
   margin: 2px;
   width: 60%;
   padding: 0.2rem 0.5rem;

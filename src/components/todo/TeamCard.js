@@ -1,9 +1,15 @@
-import { Button, useMediaQuery, useTheme } from "@material-ui/core";
+import { Button, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Delete from "./Delete";
+
+const useStyles = makeStyles((theme) => ({
+  Btn: {
+    minWidth: "2.5rem",
+  },
+}));
 
 function TeamCard({
   id,
@@ -19,6 +25,7 @@ function TeamCard({
   const history = useHistory();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+  const classes = useStyles();
 
   const handleTeamChange = () => {
     history.push(`/home/${teamName}`);
@@ -44,7 +51,7 @@ function TeamCard({
           color: "rgb(0, 94, 62)",
           fontWeight: 600,
           backgroundColor: "rgba(7, 190, 129, 0.534)",
-
+          fontSize: "0.7rem",
           padding: "0.3rem",
           borderRadius: discussion ? "5px" : "5px 0 0 5px",
           textAlign: "center",
@@ -58,6 +65,7 @@ function TeamCard({
       </Button>
       {deleteBtn ? (
         <Button
+          classes={{ root: classes.Btn }}
           style={{
             flex: 0.05,
             background: "rgb(2, 112, 75)",
@@ -70,6 +78,7 @@ function TeamCard({
               fontSize: "20px",
               color: "#fff",
               cursor: "pointer",
+              transform: "scale(0.8)",
             }}
             onClick={() => handleDelete()}
           />
@@ -101,6 +110,7 @@ function TeamCard({
           fontWeight: 600,
           backgroundColor: "rgba(7, 190, 129, 0.534)",
           padding: "0.3rem",
+          fontSize: "0.7rem",
           borderRadius: discussion ? "5px" : "5px 0 0 5px",
           textAlign: "center",
           wordBreak: "break-all",
@@ -113,6 +123,7 @@ function TeamCard({
       </Button>
       {deleteBtn ? (
         <Button
+          classes={{ root: classes.Btn }}
           style={{
             flex: 0.05,
             background: "rgb(2, 112, 75)",
@@ -125,6 +136,7 @@ function TeamCard({
               fontSize: "20px",
               color: "#fff",
               cursor: "pointer",
+              transform: "scale(0.8)",
             }}
             onClick={() => handleDelete()}
           />

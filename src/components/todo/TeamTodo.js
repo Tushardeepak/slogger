@@ -1,15 +1,4 @@
-import {
-  Button,
-  useMediaQuery,
-  useTheme,
-  AppBar,
-  Tab,
-  Tabs,
-  makeStyles,
-  Avatar,
-  Badge,
-  IconButton,
-} from "@material-ui/core";
+import { Button, useMediaQuery, useTheme, makeStyles } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -37,7 +26,6 @@ import TeamTodoCard from "./TeamTodoCard";
 import noTeamTodoImage from "../../assets/images/noTeamTodo.svg";
 import noTodoJoinTeam from "../../assets/images/noTodoJoinTeam.svg";
 import deletedTeam from "../../assets/images/deletedTeam.svg";
-import profileSetterImage from "../../assets/images/profileSetterImage.svg";
 import { useHistory } from "react-router-dom";
 import "./heightMedia.css";
 import SnackBar from "../snackbar/SnackBar";
@@ -107,6 +95,11 @@ const useStyles = makeStyles((theme) => ({
   },
   flexContainer: {
     borderBottom: "2px solid rgba(196, 196, 196, 0.5)",
+  },
+  addBtn: {
+    minWidth: "1.5rem",
+    padding: 0,
+    height: "1.5rem",
   },
 }));
 
@@ -185,101 +178,6 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
       setInputTodo("");
       setLoader(false);
     }
-  };
-
-  const handleSubmitEnter = async (event) => {
-    if (
-      (inputTodo !== "" && event.code === "Enter") ||
-      event.code === "NumpadEnter"
-    ) {
-      db.collection("teams").doc(UrlTeamName).collection("teamTodos").add({
-        todoText: inputTodo,
-        todoTime: selectedDate.toISOString(),
-        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-        admin: currentUser.uid,
-        checked: false,
-        assignedTo: "",
-        todoImage: "",
-        comment: "",
-        checkedBy: "",
-      });
-      setInputTodo("");
-      setLoader(false);
-    }
-  };
-
-  const handleSaveProfile = () => {
-    if (name !== "" && email !== "") {
-      setProfileError(false);
-      db.collection("users")
-        .doc(currentUser.uid)
-        .collection("profile")
-        .add({
-          name: name,
-          email: email,
-          profileImage: profileImage,
-        })
-        .then(
-          db
-            .collection("users")
-            .doc(currentUser.uid)
-            .collection("profile")
-            .onSnapshot((snapshot) => {
-              const profile = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                profileImage: doc.data().profileImage,
-              }));
-
-              if (profile[0].profileImage !== "") {
-                var desertRef = storage.refFromURL(profile[0].profileImage);
-                desertRef
-                  .delete()
-                  .then(function () {
-                    console.log("File deleted successfully");
-                  })
-                  .catch(function (error) {
-                    console.log(error);
-                  });
-
-                db.collection("users")
-                  .doc(currentUser.uid)
-                  .collection("profile")
-                  .doc(profile[0].id)
-                  .set(
-                    { name: name, email: email, profileImage: profileImage },
-                    { merge: true }
-                  );
-              }
-            })
-        );
-    } else {
-      setProfileError(true);
-    }
-  };
-
-  const onSelectFile = async (event) => {
-    var path = (window.URL || window.webkitURL).createObjectURL(
-      event.target.files[0]
-    );
-    setProfilePath(path.slice(5));
-    setOpenSnack(true);
-    try {
-      const image = event.target.files[0];
-      const uploadTask = await storage
-        .ref(`profileImages/${image.name}`)
-        .put(image);
-      storage
-        .ref("profileImages")
-        .child(image.name)
-        .getDownloadURL()
-        .then((url) => {
-          console.log(url);
-          setProfileImage(url);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-    setOpenSnack(false);
   };
 
   React.useEffect(() => {
@@ -398,13 +296,23 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
         ) : (
           <TeamTodoLeftContainer>
             <TeamTodoLeftLeftBox>
-              <Button
-                className="addButton1"
-                onClick={() => handleClickMakeTeam()}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  overflow: "hidden",
+                }}
               >
-                Make a team
-              </Button>
-              <h3 style={{ overflow: "hidden" }}>My Teams</h3>
+                <h3>My Teams</h3>
+                <Button
+                  classes={{ root: classes.addBtn }}
+                  className="addButton1"
+                  onClick={() => handleClickMakeTeam()}
+                >
+                  <AddIcon className="addIcon" />
+                </Button>
+              </div>
+
               <MyTeamContainer>
                 {teams.map((team) => (
                   <TeamCard
@@ -421,13 +329,22 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
               </MyTeamContainer>
             </TeamTodoLeftLeftBox>
             <TeamTodoLeftRightBox>
-              <Button
-                className="addButton1"
-                onClick={() => handleClickJoinTeam()}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  overflow: "hidden",
+                }}
               >
-                Join a team
-              </Button>
-              <h3 style={{ overflow: "hidden" }}>Joined Teams</h3>
+                <h3>Joined Teams</h3>
+                <Button
+                  classes={{ root: classes.addBtn }}
+                  className="addButton1"
+                  onClick={() => handleClickJoinTeam()}
+                >
+                  <AddIcon className="addIcon" />
+                </Button>
+              </div>
               <MyTeamContainer>
                 {joinedTeams.map((team) => (
                   <TeamCard
@@ -479,6 +396,7 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
                             width: "100%",
                             textAlign: "center",
                             cursor: "pointer",
+                            fontSize: "0.7rem",
                           }}
                           InputProps={{
                             endAdornment: <AlarmIcon className="AlarmIcon" />,
@@ -492,7 +410,7 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
 
                 <Button
                   disabled={loader}
-                  endIcon={<AddIcon />}
+                  endIcon={<AddIcon className="addIcon" />}
                   className={loader ? "AddButtonDisabled" : "AddButton"}
                   onClick={() => handleSubmit()}
                 >
@@ -503,7 +421,7 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
                     href={`https://slogmeet.web.app/${UrlTeamName}`}
                     className="meetingLink"
                   >
-                    <Button disabled={loader} className={"slogMeet"}>
+                    <Button disabled={loader} className="slogMeet">
                       <VideoCallIcon />
                     </Button>
                   </a>
@@ -521,17 +439,23 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
                 borderBottom: "2px solid rgba(0, 141, 94, 0.295)",
               }}
             >
-              <h1>SLOGGER</h1>
-              <CustomTooltip title="Join meeting" placement="down">
-                <a
-                  href={`https://slogmeet.web.app/${UrlTeamName}`}
-                  className="meetingJoinLink"
-                >
-                  <Button disabled={loader} className={"slogMeet"}>
-                    <VideoCallIcon />
-                  </Button>
-                </a>
-              </CustomTooltip>
+              <h1 style={{ fontSize: "1rem" }}>SLOGGER</h1>
+              {UrlTeamName !== undefined && (
+                <CustomTooltip title="Join meeting" placement="top">
+                  <a
+                    href={`https://slogmeet.web.app/${UrlTeamName}`}
+                    className="meetingJoinLink"
+                  >
+                    <Button
+                      disabled={loader}
+                      className="slogMeet"
+                      style={{ width: "10%", transform: "scale(0.7)" }}
+                    >
+                      <VideoCallIcon />
+                    </Button>
+                  </a>
+                </CustomTooltip>
+              )}
             </div>
           )}
           {teamsTodoList.length === 0 ? (
@@ -749,8 +673,8 @@ const customMedia = generateMedia({
 });
 
 const TeamTodoContainer = styled.div`
-  width: 98.5%;
-  height: 87%;
+  width: 100%;
+  height: 89%;
   position: absolute;
   display: flex;
   ${customMedia.lessThan("smTablet")`
@@ -758,10 +682,13 @@ const TeamTodoContainer = styled.div`
     flex-direction:column;
     height: 81.5%;
 `}
+  .addIcon {
+    transform: scale(0.7);
+  }
 `;
 
 const TeamTodoLeftContainer = styled.div`
-  flex: 0.5;
+  flex: 0.45;
   border-right: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
   overflow: hidden;
@@ -782,11 +709,11 @@ const TeamTodoLeftLeftBox = styled.div`
   padding: 0.5rem;
 
   .addButton1 {
-    width: 95.5%;
+    width: 20% !important;
     color: #fff;
-    font-weight: 600;
-    background-color: rgb(5, 185, 125);
+    background-color: rgb(5, 185, 125, 0.8);
     margin: 0.5rem;
+    font-size: 0.9rem;
     overflow: hidden;
     ${customMedia.lessThan("smTablet")`
       width:97% !important;
@@ -798,16 +725,16 @@ const TeamTodoLeftLeftBox = styled.div`
     background-color: rgb(5, 185, 125);
   }
   h3 {
-    color: rgb(5, 185, 125);
-    font-weight: 600;
-    text-align: center;
+    color: rgb(5, 185, 125, 0.8);
+    text-align: end;
+    font-size: 0.9rem;
     width: 100%;
     text-transform: uppercase;
     margin: 0.3rem 0;
     ${customMedia.lessThan("smTablet")`
       font-size:10px;
       margin-top:-0.4rem;
-    `}
+    `};
   }
 `;
 const MyTeamContainer = styled.div`
@@ -825,11 +752,11 @@ const TeamTodoLeftRightBox = styled.div`
   padding: 0.5rem;
 
   .addButton1 {
-    width: 95.5%;
+    width: 20% !important;
     color: #fff;
-    font-weight: 600;
-    background-color: rgb(5, 185, 125);
+    background-color: rgb(5, 185, 125, 0.8);
     margin: 0.5rem;
+    font-size: 0.9rem;
     overflow: hidden;
     ${customMedia.lessThan("smTablet")`
       width:97% !important;
@@ -837,11 +764,14 @@ const TeamTodoLeftRightBox = styled.div`
       margin-left:0rem;
     `}
   }
+  .addButton1:hover {
+    background-color: rgb(5, 185, 125);
+  }
   h3 {
-    color: rgb(5, 185, 125);
-    font-weight: 600;
-    text-align: center;
+    color: rgb(5, 185, 125, 0.8);
+    text-align: end;
     width: 100%;
+    font-size: 0.9rem;
     text-transform: uppercase;
     margin: 0.3rem 0;
     ${customMedia.lessThan("smTablet")`
@@ -851,11 +781,12 @@ const TeamTodoLeftRightBox = styled.div`
   }
 `;
 const TeamTodoRightContainer = styled.div`
-  flex: 0.5;
+  flex: 0.55;
   overflow-y: scroll;
   padding: 0 1rem;
   ${customMedia.lessThan("smTablet")`
   flex:1;
+  width:94%;
   padding: 0 0.2rem;
 `}
   .teamNoTodoImage {
@@ -870,9 +801,7 @@ const TeamTodoRightContainer = styled.div`
     margin-left: 0.2rem;
     text-decoration: none;
     ${customMedia.lessThan("smTablet")`
-     margin: 0.2rem 0.2rem;
-     margin-right:0;
-      padding:0.08rem 0;
+     width: 50% !important;
     `};
   }
   .meetingJoinLink {
@@ -880,16 +809,15 @@ const TeamTodoRightContainer = styled.div`
     margin: 0.2rem 0.5rem;
     text-decoration: none;
     ${customMedia.lessThan("smTablet")`
-     margin: 0.2rem 0.2rem;
-     margin-right:0;
-      padding:0.08rem 0;
+     width: 17% !important;
     `};
   }
   .slogMeet {
+    height: 2rem !important;
+    overflow: hidden;
     width: 100%;
     color: #fff;
-    font-weight: 600;
-    background-color: rgb(5, 185, 125);
+    background-color: rgb(5, 185, 125, 0.8);
   }
 
   .slogMeet:hover {
@@ -901,6 +829,7 @@ const TodoRightUpBox = styled.div`
   display: flex;
   flex-direction: column;
   border-bottom: 2px solid rgba(0, 141, 94, 0.295);
+  width: 98%;
 
   ${customMedia.lessThan("smTablet")`
     border:none;
@@ -968,7 +897,7 @@ const TodoRightUpBox = styled.div`
   }
   .dateBox {
     width: 88%;
-    height: 1.5rem;
+    height: 1.2rem;
     background-color: rgba(3, 185, 124, 0.308);
     border: none;
     border-radius: 5px;
@@ -988,15 +917,17 @@ const TodoRightUpBox = styled.div`
   }
   .AddButton {
     width: 95.5%;
+    font-size: 0.7rem !important;
+    height: 2rem !important;
+    overflow: hidden;
     color: #fff;
-    font-weight: 600;
-    background-color: rgb(5, 185, 125);
+    background-color: rgb(5, 185, 125, 0.8);
     margin: 0.2rem 0;
 
     ${customMedia.lessThan("smTablet")`
-     margin: 0.2rem 0.2rem;
+     margin: 0.1rem 0.2rem;
      margin-right:0;
-      padding:0.08rem 0;
+      padding:0;
     `};
   }
 
@@ -1004,11 +935,12 @@ const TodoRightUpBox = styled.div`
     background-color: rgb(5, 185, 125);
   }
   .AddButtonDisabled {
+    height: 2rem !important;
+    overflow: hidden;
     opacity: 0.7;
     width: 95.5%;
     color: #fff;
-    font-weight: 600;
-    background-color: rgb(5, 185, 125);
+    background-color: rgb(5, 185, 125, 0.8);
     margin: 0.2rem;
   }
 `;

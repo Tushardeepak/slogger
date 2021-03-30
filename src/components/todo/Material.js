@@ -10,6 +10,9 @@ import "./style.css";
 import "./heightMedia.css";
 import { db, storage } from "../../firebase";
 import SnackBar from "../snackbar/SnackBar";
+import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
+import { useMediaQuery, useTheme } from "@material-ui/core";
+import ImageIcon from "@material-ui/icons/Image";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="" ref={ref} {...props} />;
@@ -29,10 +32,12 @@ export default function Material({
   const [editComment, setEditComment] = useState(comment);
   const [done, setDone] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   const setText = (e) => {
     setEditComment(e.target.value);
-    setDone(false);
+    setDone(true);
   };
 
   const handleSet = () => {
@@ -114,18 +119,17 @@ export default function Material({
                   style={{
                     overflow: "hidden",
                     width: "10rem",
-                    fontSize: "0.7rem",
+                    fontSize: "0.5rem",
                     height: "1.5rem",
                     color: "#fff",
-                    fontWeight: 600,
-                    backgroundColor: "rgb(5, 185, 125)",
+                    backgroundColor: "rgb(5, 185, 125, 0.8)",
                     marginBottom: "0.5rem",
                   }}
                   onClick={() => {
                     document.getElementById("profile-image-file").click();
                   }}
                 >
-                  Upload Image
+                  {isSmall ? "Upload Image" : <PhotoCameraIcon />}
                 </Button>
               </div>
             ) : (
@@ -171,16 +175,15 @@ export default function Material({
                     style={{
                       overflow: "hidden",
                       width: "10rem",
-                      fontSize: "0.7rem",
+                      fontSize: "0.5rem",
                       height: "1.5rem",
                       color: "#fff",
-                      fontWeight: 600,
-                      backgroundColor: "rgb(5, 185, 125)",
+                      backgroundColor: "rgb(5, 185, 125, 0.8)",
 
                       marginBottom: "0.5rem",
                     }}
                   >
-                    View Image
+                    {isSmall ? "View Image" : <ImageIcon />}
                   </Button>
                 </a>
               ) : (
@@ -205,8 +208,8 @@ export default function Material({
               height: "1.5rem",
               color: "#fff",
               fontWeight: 600,
-              backgroundColor: "rgb(5, 185, 125)",
-              margin: "0.5rem 0",
+              backgroundColor: "rgb(5, 185, 125, 0.8)",
+              marginTop: "0.5rem",
             }}
             onClick={() => handleSet()}
           >
@@ -224,7 +227,7 @@ export default function Material({
       )}
       <DialogActions>
         <Button
-          className="addButtonModal"
+          className="closeMaterialModal"
           onClick={handleClose}
           color="primary"
         >

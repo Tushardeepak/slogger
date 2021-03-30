@@ -112,6 +112,7 @@ const customMedia = generateMedia({
 });
 
 const ChartContainer = styled.div`
+  margin-top: 1rem;
   position: relative;
   display: flex;
   justify-content: center;

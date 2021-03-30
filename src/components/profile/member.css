@@ -2,6 +2,7 @@
   margin: 1rem 0;
   height: auto;
   min-height: 7rem;
+  width: 95% !important;
   border-radius: 2rem !important;
   border-right: 5px solid rgb(2, 90, 61);
   border-bottom: 5px solid rgb(2, 90, 61);

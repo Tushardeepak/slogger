@@ -10,7 +10,7 @@ import HelpPage from "./components/helpPage/HelpPage";
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Router>
         <AuthProvider>
           <Switch>

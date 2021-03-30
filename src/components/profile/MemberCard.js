@@ -106,10 +106,13 @@ function MemberCard({ id, name, email, profileImage }) {
             <EmailIcon className="memberIcon" />
             {member.email}
           </p>
-          <p>
-            <CallIcon className="memberIcon" />
-            {member.contact}
-          </p>
+          {member.contact !== "NoContact" && (
+            <p>
+              <CallIcon className="memberIcon" />
+
+              {member.contact}
+            </p>
+          )}
         </div>
         <div className="memberLinkContainer">
           {member.facebook !== "NoLink" ? (
@@ -144,17 +147,15 @@ function MemberCard({ id, name, email, profileImage }) {
       </div>
       {!openEndorsement ? (
         <>
-          {skillList[0] !== "NoSkill" ? (
+          {skillList[0] !== "NoSkill" && (
             <div className="memberSkillContainer">
               {skillList?.map((skill) => (
                 <div className="skill">{skill}</div>
               ))}
             </div>
-          ) : (
-            ""
           )}
           <div className="memberBioContainer">
-            <p>{member.bio}</p>
+            {member.bio !== "NoBio" && <p>{member.bio}</p>}
           </div>
           <div className="endorsementBtnContainer">
             <div className="endorsementBtnSpaceBox"></div>

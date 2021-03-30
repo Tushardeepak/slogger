@@ -298,18 +298,17 @@ function Discussion({ UrlTeamName, userName }) {
             )}
 
             <TodoRightUpBox>
-              <input
+              <textarea
                 value={sendTerm}
                 type="text"
-                onKeyDown={(e) => handleSubmitEnter(e)}
+                // onKeyDown={(e) => handleSubmitEnter(e)}
                 onChange={(e) => setSendTerm(e.target.value)}
                 placeholder="Type..."
               />
               <Button
-                endIcon={<SendIcon />}
+                // endIcon={<SendIcon />}
                 style={{
                   background: "rgb(5, 185, 125)",
-                  flex: "0.15",
                   color: "#fff",
                   height: "2rem",
                   marginRight: "0.5rem",
@@ -340,8 +339,8 @@ const customMedia = generateMedia({
 
 const TeamTodoContainer = styled.div`
   position: relative;
-  width: 98.5%;
-  height: 87%;
+  width: 100%;
+  height: 89%;
   position: absolute;
   display: flex;
   ${customMedia.lessThan("smTablet")`
@@ -352,7 +351,7 @@ const TeamTodoContainer = styled.div`
 `;
 
 const TeamTodoLeftContainer = styled.div`
-  flex: 0.5;
+  flex: 0.45;
   border-right: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
   overflow: hidden;
@@ -389,6 +388,7 @@ const TeamTodoLeftLeftBox = styled.div`
     color: rgb(5, 185, 125);
     font-weight: 600;
     text-align: center;
+    font-size: 0.9rem;
     width: 100%;
     text-transform: uppercase;
     margin: 0.3rem 0;
@@ -430,6 +430,7 @@ const TeamTodoLeftRightBox = styled.div`
     font-weight: 600;
     text-align: center;
     width: 100%;
+    font-size: 0.9rem;
     text-transform: uppercase;
     margin: 0.3rem 0;
     ${customMedia.lessThan("smTablet")`
@@ -441,11 +442,11 @@ const TeamTodoLeftRightBox = styled.div`
 const TeamTodoRightContainer = styled.div`
   border-radius: 20px;
   margin: 0 0.5rem;
-  flex: 0.5;
+  flex: 0.55;
   overflow-y: scroll;
   padding: 0 1rem;
   margin-top: 4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   ${customMedia.lessThan("smTablet")`
   margin:0 0.5rem;
   padding:0;
@@ -466,11 +467,12 @@ const TodoRightUpBox = styled.div`
   align-items: center;
   border-radius: 10px;
   margin: 0.2rem 0;
-  width: 48%;
+  width: 52%;
   background-color: rgb(3, 185, 124, 0.2);
 
-  input {
-    flex: 0.85;
+  textarea {
+    resize: none;
+    flex: 1;
     border: none;
     background: none;
     padding: 0 0.5rem;
@@ -479,18 +481,26 @@ const TodoRightUpBox = styled.div`
     border-bottom: 2px solid rgb(5, 185, 125);
     margin: 0.5rem;
     color: rgb(3, 185, 124);
-    font-size: 1rem;
+    font-size: 0.8rem;
     @media (max-width: 600px) {
       font-size: 1.1rem !important;
     }
+  }
+
+  textarea::placeholder {
+    color: rgb(3, 185, 124);
+    font-size: 0.8rem;
+    ${customMedia.lessThan("smTablet")`
+      font-size: 1rem;
+    `};
   }
 
   ${customMedia.lessThan("smTablet")`
     border:none;
     width: 100% !important;
     transform:scale(0.9);
-    top: 4rem;
-    margin-left:-1rem;
+    top: 2.5rem;
+    margin-left:-0.9rem;
   `}
 `;
 const ChatScreen = styled.div`

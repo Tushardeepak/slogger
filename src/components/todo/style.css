@@ -31,6 +31,18 @@
 .addButtonModal:hover {
   background-color: rgb(5, 185, 125) !important;
 }
+.closeMaterialModal {
+  width: 20% !important;
+  color: #fff !important;
+  background-color: rgb(5, 185, 125, 0.8) !important;
+  margin: 0.5rem !important;
+  margin-top: 0;
+  overflow: hidden !important;
+  height: 2rem !important;
+}
+.closeMaterialModal:hover {
+  background-color: rgb(5, 185, 125, 0.8) !important;
+}
 .addButtonDisabled {
   width: 95.5% !important;
   color: #fff !important;
@@ -175,6 +187,8 @@
 }
 .commentTextBox {
   padding: 0.5rem;
+  outline: none;
+  resize: none;
 }
 
 .profileContainer {
@@ -276,7 +290,7 @@
 .messageTime {
   font-size: xx-small;
   color: rgba(0, 99, 66, 0.7);
-  margin-left: 70%;
+  margin-left: 75%;
 }
 .senderName {
   font-size: xx-small;

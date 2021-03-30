@@ -2,26 +2,34 @@
   border: 2px solid rgb(5, 185, 125) !important;
   background-color: rgb(5, 185, 125) !important;
   color: #fff !important;
-  width: 97% !important;
+  width: 96% !important;
+  height: 1.5rem !important;
   margin: 10px 0 !important;
-  font-weight: 600 !important;
+  font-weight: 300 !important;
+  font-size: 0.7rem !important;
+  overflow: hidden;
 }
 .addItemsTeams {
   border: 2px solid rgb(5, 185, 125) !important;
   background-color: rgb(5, 185, 125) !important;
   color: #fff !important;
-  width: 97% !important;
-  margin: 15px 0 !important;
-  font-weight: 600 !important;
+  width: 96% !important;
+  height: 1.5rem !important;
+  margin: 10px 0 !important;
+  font-weight: 300 !important;
+  font-size: 0.7rem !important;
+  overflow: hidden;
 }
 .addItemsProfile {
   border: 2px solid rgb(5, 185, 125) !important;
   background-color: rgb(5, 185, 125) !important;
   color: #fff !important;
-  width: 95% !important;
-  margin: 15px 0 !important;
-  margin-left: 5px !important;
-  font-weight: 600 !important;
+  width: 97% !important;
+  height: 1.5rem !important;
+  margin: 10px 0 !important;
+  font-weight: 300 !important;
+  font-size: 0.7rem !important;
+  overflow: hidden;
 }
 
 /* :::::::::::::::::::::::::::::: */

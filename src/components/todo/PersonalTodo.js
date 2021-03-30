@@ -4,9 +4,6 @@ import CreateIcon from "@material-ui/icons/Create";
 import {
   AppBar,
   Button,
-  Grid,
-  IconButton,
-  InputAdornment,
   makeStyles,
   Tab,
   Tabs,
@@ -88,22 +85,21 @@ const useStyles = makeStyles((theme) => ({
   Tabs: {
     display: "flex",
     justifyContent: "space-between",
+    padding: 0,
+    minHeight: "1rem",
   },
   indicator: {
     backgroundColor: "rgb(5, 185, 125)",
     height: 3,
     borderRadius: "7px",
-    width: "10.2rem",
+    width: "9rem",
   },
   label: {
     fontStyle: "normal",
     fontWeight: "500",
-    fontSize: "0.8rem",
-    // lineHeight: "2.3rem",
+    fontSize: "0.6rem",
     color: "#565656",
     textTransform: "uppercase",
-    // padding: "1.8rem 4.2rem",
-    padding: "0.3rem",
   },
   flexContainer: {
     borderBottom: "2px solid rgba(196, 196, 196, 0.5)",
@@ -200,7 +196,7 @@ function PersonalTodo() {
       ) : (
         <TodoLeftContainer>
           <TodoLeftUpBox>
-            <div className="inputField inputFieldPersonal">
+            <div className="inputField">
               <CreateIcon className="todoIcon" />
               <input
                 value={inputTodo}
@@ -240,6 +236,7 @@ function PersonalTodo() {
             >
               ADD
             </Button>
+            <p className="openSchedular">Open Advance Schedular</p>
           </TodoLeftUpBox>
           <TodoLeftDownBox>
             {todoLength !== 0 ? (
@@ -290,7 +287,7 @@ function PersonalTodo() {
           </Tabs>
         </AppBar>
         <TabPanel
-          style={{ width: "100%", overflowY: "scroll", marginBottom: "1.5rem" }}
+          style={{ width: "100%", overflowY: "scroll", marginBottom: "0.5rem" }}
           value={value}
           index={0}
         >
@@ -331,7 +328,7 @@ function PersonalTodo() {
         <TabPanel
           value={value}
           index={1}
-          style={{ width: "100%", overflowY: "scroll", marginBottom: "1.5rem" }}
+          style={{ width: "100%", overflowY: "scroll", marginBottom: "0.5rem" }}
         >
           {todoList
             .filter((check) => {
@@ -351,7 +348,7 @@ function PersonalTodo() {
         <TabPanel
           value={value}
           index={2}
-          style={{ width: "100%", overflowY: "scroll", marginBottom: "1.5rem" }}
+          style={{ width: "100%", overflowY: "scroll", marginBottom: "0.5rem" }}
         >
           {todoList
             .filter((check) => {
@@ -396,8 +393,8 @@ const NoTodo = styled.div`
 `;
 
 const TodoContainer = styled.div`
-  width: 98.5%;
-  height: 87%;
+  width: 100%;
+  height: 89%;
   position: absolute;
   display: flex;
   overflow: hidden;
@@ -409,7 +406,7 @@ const TodoContainer = styled.div`
 `;
 
 const TodoLeftContainer = styled.div`
-  flex: 0.35;
+  flex: 0.31;
   height: 100%;
   width: 100%;
   border-right: 2px solid rgba(0, 141, 94, 0.295);
@@ -436,11 +433,18 @@ const TodoLeftUpBox = styled.div`
     border:none;
   `};
 
+  .openSchedular {
+    color: rgb(5, 185, 125, 0.8);
+    cursor: pointer;
+    text-align: center;
+    margin-top: 1rem;
+  }
+
   .inputField {
     width: 90%;
     height: 2rem;
     background-color: rgba(3, 185, 124, 0.308);
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     border: none;
     padding: 1rem;
     padding-left: 0.5rem;
@@ -500,13 +504,13 @@ const TodoLeftUpBox = styled.div`
   }
   .dateBox {
     overflow: hidden;
-    width: 88%;
-    height: 2rem;
+    width: 87.5%;
+    height: 1rem;
     background-color: rgba(3, 185, 124, 0.308);
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     border: none;
     padding: 1rem;
-    margin: 0.5rem;
+    margin: 0rem 0.5rem;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -516,10 +520,10 @@ const TodoLeftUpBox = styled.div`
     `};
   }
   .AddButton {
-    width: 95.5%;
+    width: 96%;
     color: #fff;
     font-weight: 600;
-    background-color: rgb(5, 185, 125);
+    background-color: rgb(5, 185, 125, 0.8);
     margin: 0.5rem;
     overflow: hidden;
     ${customMedia.lessThan("smTablet")`
@@ -548,7 +552,7 @@ const TodoLeftDownBox = styled.div`
 `;
 
 const TodoRightContainer = styled.div`
-  flex: 0.65;
+  flex: 0.69;
   height: 100%;
   width: 100%;
   padding: 0 1.5rem;

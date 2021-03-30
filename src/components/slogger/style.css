@@ -147,6 +147,7 @@
 
 .bubbleBox {
   margin: 4rem 15rem;
+  margin-left: 7rem;
   border-radius: 0 100px 0px 100px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   font-family: "Times New Roman" !important;
@@ -155,6 +156,7 @@
 .bubbleBoxOpp {
   font-family: "Times New Roman" !important;
   margin: 4rem 15rem;
+  margin-right: 7rem;
   border-radius: 100px 0px 100px 0px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

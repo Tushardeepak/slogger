@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import styled from "styled-components";
-import navIcon from "../../assets/images/navIcon.png";
 import { generateMedia } from "styled-media-query";
 import "../todo/heightMedia.css";
 
@@ -60,7 +59,6 @@ function NavBar({ page, home }) {
   return page === 1 ? (
     <NavBarContainer>
       <NavBarStartIcon onClick={() => history.push("/")}>
-        {/* <img src={navIcon} className="navIcon" alt="SLOGGER" /> */}
         <h1>SLOGGER</h1>
         <hr className="navLogoRightLine" />
       </NavBarStartIcon>
@@ -127,7 +125,7 @@ const NavBarContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 3rem;
+  height: 2.5rem;
   top: 0rem;
   left: 0;
   position: fixed;
@@ -139,8 +137,10 @@ const NavBarContainer = styled.div`
   /* box-shadow: 0px 5px 5px rgb(0, 85, 57); */
 
   h1 {
+    font-size: 1.2rem;
     margin-left: 1rem;
     color: rgb(1, 63, 42);
+    font-family: "Shadows Into Light", cursive;
     ${customMedia.lessThan("smTablet")`
       margin-left: 1.2rem !important;
       font-size:15px !important;
@@ -165,8 +165,10 @@ const NavBarContainer0Page = styled.div`
   -webkit-backdrop-filter: blur(10px) !important;
 
   h2 {
+    font-size: 1.2rem;
     margin-left: 2rem;
     color: #272142;
+    font-family: "Shadows Into Light", cursive;
     ${customMedia.lessThan("smTablet")`
       margin-left: 0.5rem;
     `};
@@ -174,7 +176,6 @@ const NavBarContainer0Page = styled.div`
 `;
 
 const NavBar0StartIcon = styled.div`
-  flex: 0.21;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -184,25 +185,10 @@ const NavBar0StartIcon = styled.div`
     `};
 `;
 const NavBarStartIcon = styled.div`
-  flex: 0.21;
   display: flex;
   align-items: center;
   cursor: pointer;
-  .navIcon {
-    width: 10rem;
-    height: 2.5rem;
-    padding: 1.5rem;
-    padding-left: 1.3rem;
-    object-fit: contain;
 
-    ${customMedia.lessThan("smTablet")`
-      width: 6rem;
-      height: 2rem;
-      padding:0;
-      padding-left: 0.5rem;
-      
-    `};
-  }
   ${customMedia.lessThan("smTablet")`
         flex: 0.4;
     `};
@@ -220,7 +206,7 @@ const NavBarStartIcon = styled.div`
   }
 `;
 const NavLinksContainer = styled.div`
-  flex: 0.75;
+  flex: 1;
   ${customMedia.lessThan("smTablet")`
         flex: 0.25;
     `};
@@ -228,26 +214,25 @@ const NavLinksContainer = styled.div`
 const NavBarDateBox = styled.div`
   color: rgb(1, 63, 42, 0.7);
   font-family: "Bebas Neue", cursive;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   ${customMedia.lessThan("smTablet")`
          font-size: 0.4rem;
     `};
   span {
     color: rgb(1, 63, 42) !important;
-    font-size: 2rem;
+    font-size: 0.9rem;
     ${customMedia.lessThan("smTablet")`
          font-size: 1rem;
     `};
   }
   sup {
-    font-size: 1rem !important;
+    font-size: 0.7rem !important;
     ${customMedia.lessThan("smTablet")`
          font-size: 0.4rem !important;
     `};
   }
 `;
 const NavBarEndContainer = styled.div`
-  flex: 0.3;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -260,23 +245,19 @@ const NavBarEndContainer = styled.div`
     margin-right: 1rem;
     background-color: rgb(1, 63, 42, 0.3);
     color: #fff;
-    font-weight: 600;
-    transition: all 0.5s ease-in-out;
-    border-radius: 0.5rem;
-    font-size: 0.65rem;
+    transition: all 0.3s ease-in-out;
+    font-size: 0.55rem;
     &:hover {
       background-color: #fff;
       color: rgb(5, 185, 125);
     }
     ${customMedia.lessThan("smTablet")`
-         font-size: 0.55rem;
          margin-right: 0.2rem;
          padding:0.2rem 0;
     `};
   }
 `;
 const NavBarEndContainer0Page = styled.div`
-  flex: 0.3;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -287,19 +268,16 @@ const NavBarEndContainer0Page = styled.div`
   Button {
     margin-right: 2rem;
     background-color: transparent;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     color: #272142;
-    font-weight: 600;
-    transition: all 0.5s ease-in-out;
-    border-radius: 0.5rem;
-    font-size: 0.85rem;
+    transition: all 0.3s ease-in-out;
+    font-size: 0.7rem;
     &:hover {
       background-color: transparent;
       color: #272142;
-      border: 2px solid #272142;
+      border: 1px solid #272142;
     }
     ${customMedia.lessThan("smTablet")`
-         font-size: 0.55rem;
          margin-right: 0.5rem;
     `};
   }

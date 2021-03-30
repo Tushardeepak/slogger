@@ -8,10 +8,10 @@ import { db, storage } from "../../firebase";
 import moment from "moment";
 import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
-import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import { Button, IconButton, useMediaQuery, useTheme } from "@material-ui/core";
 import Material from "./Material";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import DoneIcon from "@material-ui/icons/Done";
 
 function TeamTodoCard({
   id,
@@ -30,6 +30,7 @@ function TeamTodoCard({
   const [localCheck, setLocalCheck] = useState(checked);
   const [assignedTo, setAssignedTo] = useState();
   const [openMaterial, setOpenMaterial] = useState(false);
+  const [assignChange, setAssignChange] = useState(false);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -43,6 +44,7 @@ function TeamTodoCard({
 
   const handleInputChange = (value) => {
     setAssignedTo(value);
+    setAssignChange(true);
   };
 
   const handleDelete = (id) => {
@@ -91,6 +93,7 @@ function TeamTodoCard({
       { merge: true }
     );
     setAssignedTo("");
+    setAssignChange(false);
   };
 
   const emptyFunction = () => {};
@@ -129,14 +132,14 @@ function TeamTodoCard({
                 }
                 // onKeyDown={(e) => handleSubmitEnter(e)}
               />
-              {admin === currentUser.uid ? (
-                <GroupAddIcon
-                  className="todoIcon"
-                  onClick={() => handleAssignedSubmit()}
-                />
-              ) : (
-                ""
-              )}
+              {admin === currentUser.uid
+                ? assignChange && (
+                    <DoneIcon
+                      className="assignIcon"
+                      onClick={() => handleAssignedSubmit()}
+                    />
+                  )
+                : ""}
             </div>
           </div>
           <div
@@ -164,8 +167,7 @@ function TeamTodoCard({
                     fontSize: "0.65rem",
                     height: "1.2rem",
                     color: "#fff",
-                    fontWeight: 600,
-                    backgroundColor: "rgb(5, 185, 125)",
+                    backgroundColor: "rgb(5, 185, 125,0.8)",
                     marginLeft: "0.7rem",
                     marginTop: "-0.4rem",
                   }}
@@ -181,8 +183,7 @@ function TeamTodoCard({
                     fontSize: "0.65rem",
                     height: "1.2rem",
                     color: "#fff",
-                    fontWeight: 600,
-                    backgroundColor: "rgb(5, 185, 125)",
+                    backgroundColor: "rgb(5, 185, 125,0.8)",
                     marginBottom: "0.7rem",
                   }}
                   onClick={() => setOpenMaterial(true)}
@@ -296,13 +297,12 @@ const TodoTextBox = styled.div`
     `};
   }
 
-  .todoIcon {
+  .assignIcon {
     color: rgb(3, 185, 124);
     font-size: 1.2rem;
     flex: 0.1;
     padding-right: 0.3rem;
     cursor: pointer;
-    transform: rotateY(180deg) !important;
     ${customMedia.lessThan("smTablet")`
          flex:0.2;
          font-size: 1.5rem;
