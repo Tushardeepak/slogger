@@ -266,3 +266,15 @@
     width: auto;
   }
 }
+@media (max-height: 700px) {
+  .bannerText {
+    margin-top: -8rem;
+    font-size: 0.6rem !important;
+  }
+  .contentBox {
+    margin: 0;
+  }
+  .serviceBox {
+    width: 90%;
+  }
+}
