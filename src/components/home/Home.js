@@ -276,7 +276,7 @@ const HomeContainer = styled.div`
   overflow: hidden !important;
 
   ${customMedia.lessThan("smTablet")`
-          padding: 0;
+      padding: 0;
     `};
 
   .mainPaper {
@@ -287,7 +287,7 @@ const HomeContainer = styled.div`
     ${customMedia.lessThan("smTablet")`
     width: 100%;
     height: 100%;
-    border-radius: 0px;
+    border-radius: 15px 15px 0 0;
     `};
   }
 

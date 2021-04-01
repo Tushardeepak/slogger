@@ -78,12 +78,30 @@ function NavBar({ page, home }) {
       </NavLinksContainer>
       <NavBarEndContainer>
         {home ? (
-          <Button onClick={() => history.push("/home")}>home</Button>
+          <Button
+            disableFocusRipple
+            disableRipple
+            onClick={() => history.push("/home")}
+          >
+            home
+          </Button>
         ) : (
-          <Button onClick={() => history.push("/help")}>help</Button>
+          <Button
+            disableFocusRipple
+            disableRipple
+            onClick={() => history.push("/help")}
+          >
+            help
+          </Button>
         )}
 
-        <Button onClick={() => handleSignOut()}>Log Out</Button>
+        <Button
+          disableFocusRipple
+          disableRipple
+          onClick={() => handleSignOut()}
+        >
+          Log Out
+        </Button>
       </NavBarEndContainer>
     </NavBarContainer>
   ) : (
@@ -96,13 +114,37 @@ function NavBar({ page, home }) {
       <NavBarEndContainer0Page>
         {currentUser !== null ? (
           <>
-            <Button onClick={() => history.push("/help")}>help</Button>
-            <Button onClick={() => handleSignOut()}>log out</Button>
+            <Button
+              disableFocusRipple
+              disableRipple
+              onClick={() => history.push("/help")}
+            >
+              help
+            </Button>
+            <Button
+              disableFocusRipple
+              disableRipple
+              onClick={() => handleSignOut()}
+            >
+              log out
+            </Button>
           </>
         ) : (
           <>
-            <Button onClick={() => history.push("/help")}>help</Button>
-            <Button onClick={() => handleSignup()}>sign up</Button>
+            <Button
+              disableFocusRipple
+              disableRipple
+              onClick={() => history.push("/help")}
+            >
+              help
+            </Button>
+            <Button
+              disableFocusRipple
+              disableRipple
+              onClick={() => handleSignup()}
+            >
+              sign up
+            </Button>
           </>
         )}
       </NavBarEndContainer0Page>

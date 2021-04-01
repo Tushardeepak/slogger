@@ -1,253 +1,268 @@
-.questionBox {
+.banner {
   width: 100%;
-  height: 80vh;
-  /* background: rgb(27, 0, 147);
-  background: linear-gradient(
-    43deg,
-    rgba(27, 0, 147, 1) 0%,
-    rgba(39, 33, 66, 1) 100%
-  ); */
-  background: none;
-  padding: 0.5rem;
+  height: 100vh;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  overflow: hidden !important;
-  padding-left: 1rem;
-  transform: scale(0.8);
-  border-radius: 1rem;
+  position: relative;
 }
-.questionVideo {
-  height: 70vh;
-  flex: 0.4;
-  background: none;
-  overflow: hidden;
-}
-.quesVideo {
-  object-fit: contain !important;
-  height: 100%;
+
+.video {
+  position: absolute;
+  object-fit: cover;
   width: 100%;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: -3;
+  opacity: 0.2;
 }
-.questionInner {
-  margin: 1rem 0;
+.bannerText {
   text-align: center;
-  overflow: hidden !important;
-}
-.questionInner h1 {
-  margin: 0.5rem 0;
-  color: #2f2949;
   text-transform: uppercase;
-  font-size: 1.3rem;
-  font-weight: 700 !important;
-  overflow: hidden !important;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1rem;
+  margin: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 200;
+  color: #272142;
 }
-.weGotYou {
-  height: 10vh;
+
+.banner img {
+  margin-top: -3rem;
+  object-fit: contain;
+  width: 35%;
+  height: 35%;
+}
+
+.bannerBtn {
+  margin: 0.3rem !important;
+  background-color: #272142 !important;
+  color: #fff !important;
+  padding: 0.5rem 2rem !important;
+  font-size: 0.7rem !important;
+  border: 2px solid #272142 !important;
+  transition: all 0.5s ease-in-out !important;
+}
+.bannerBtn:hover {
+  background-color: transparent !important;
+  color: #272142 !important;
+  border: 2px solid #272142 !important;
+}
+.downSvgSlogger1 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: transparent;
   width: 100%;
-  margin: 0.5rem 0;
-  padding: 0.5rem 0;
-  margin-top: 1rem;
-  overflow: hidden;
-  text-align: center;
+  z-index: -1;
+}
+.downSvgSlogger2 {
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  background-color: transparent;
+  width: 103%;
+  z-index: -2;
+}
+.sloggerBuild {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.sloggerHeadingMain {
+  font-size: 1.7rem;
+  color: #272142;
+}
+.sloggerHeading {
+  margin-left: 0.5rem;
+  font-size: 2.5rem;
+  color: #272142;
+  font-family: "Shadows Into Light", cursive;
+}
+.serviceBox {
+  width: 90%;
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.contentBox {
+  width: 20rem;
+  height: auto;
+  margin: 2rem;
+  margin-right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: "Times New Roman" !important;
 }
-.weGotYou h1 {
-  color: #272142;
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  overflow: hidden !important;
-}
-.weGotYou hr {
+.iconBox {
   background-color: #272142;
-  height: 0.1rem;
-  width: 40%;
-}
-.personalTodoSection {
-  padding: 2rem;
-  display: flex;
-  align-items: center;
-}
-.personalTodoTextBox h1 {
-  color: #272142;
-  font-size: 1.7rem;
-  overflow: hidden !important;
-  font-family: sans-serif;
-  margin: 1rem;
-}
-.personalTodoTextBox {
-  flex: 0.6;
-  height: 100%;
-  width: 100%;
-}
-.personalTodoImg {
-  flex: 0.4;
-  object-fit: contain;
-  height: 100%;
-  width: 100%;
-}
-
-.teamTodoSection {
-  padding: 2rem;
-  display: flex;
-}
-.teamTodoTextBox {
-  flex: 0.6;
-  height: 100%;
-  width: 100%;
-  padding-right: 4rem;
-}
-.teamTodoTextBox h1 {
-  color: #272142;
-  font-size: 2.9rem;
-  overflow: hidden !important;
-  font-family: sans-serif;
-  margin: 1.3rem 0;
-  transform: scale(0.9);
-}
-
-.teamTodoImg {
-  flex: 0.4;
-  object-fit: contain;
-  height: 90%;
-  width: 90%;
-}
-.slogTodoTextBox {
-  flex: 0.7;
-  height: 100%;
-  width: 100%;
-  padding-right: 0rem;
-}
-.slogTodoTextBox h1 {
-  color: #272142;
-  font-size: 2.7rem;
-  overflow: hidden !important;
-  font-family: sans-serif;
-  margin: 1.1rem 0;
-  transform: scale(0.9);
-}
-.questionContainer {
-  background: rgb(27, 0, 147, 0.8);
-  width: 100%;
-  height: 90vh;
+  border-radius: 200px;
+  height: 5rem;
+  width: 5rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.slogSection {
+.icon {
+  color: #fff;
+  height: 2.5rem !important;
+  width: 2.5rem !important;
+}
+.contentHeading {
+  font-size: 1.7rem;
+  color: #272142;
+  margin: 1.5rem;
+  margin-bottom: 0;
+}
+.contentPara {
+  font-size: 1rem;
+  color: #272142;
+  margin: 1.5rem;
+  text-align: center;
+}
+.screenHeading {
+  color: #272142;
+  text-align: center;
+  font-size: 2.7rem;
+  margin-top: 1rem;
+}
+.screenSubHeading {
+  color: #272142;
+  text-align: center;
+  font-size: 1.2rem;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 400;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+.screenContainer {
+  height: auto;
   width: 100%;
-  height: 70vh;
   display: flex;
-  padding: 1rem 4rem;
-  margin-top: -3rem;
-  transform: scale(0.8);
-  margin-left: -3rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+.screenContentBox {
+  width: 35%;
+  height: auto;
+}
+.screenContentBoxReverse {
+  height: auto;
+}
+.screenContentSubHeading {
+  color: #272142d7;
+  font-size: 0.7rem;
+}
+.screenContentHeading {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: #272142;
+  margin-bottom: 2rem;
+}
+.screenContentPara {
+  font-size: 1rem;
+  color: #272142;
+  margin-top: 0.5rem;
+  font-weight: 300;
+}
+.screenImg {
+  object-fit: contain;
+  width: 20rem;
+  height: 20rem;
 }
 
-.bubbleBox {
-  margin: 4rem 15rem;
-  margin-left: 7rem;
-  border-radius: 0 100px 0px 100px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  font-family: "Times New Roman" !important;
+.screenImgBox {
+  width: 35%;
+  height: auto;
 }
 
-.bubbleBoxOpp {
-  font-family: "Times New Roman" !important;
-  margin: 4rem 15rem;
-  margin-right: 7rem;
-  border-radius: 100px 0px 100px 0px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+/* footer */
+
+.footerContainer {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  color: #999;
+  position: relative;
 }
-.bannerImg {
-  height: 200px;
-  width: 500px;
+.footerContainer li {
+  text-decoration: none;
+  list-style: none;
+  line-height: 2.5;
+  cursor: pointer;
 }
-@media only screen and (max-width: 600px) {
-  /* h1 {
-    font-size: 25px !important;
-  }
-  hr {
-    margin: 0.5rem 0;
-    height: 0.1rem !important;
-  }
-  .questionContainer {
-    display: flex;
-    flex-direction: column;
-    height: 70vh;
-  }
-  .questionBox {
-    flex-direction: column;
-  }
-  .personalTodoSection {
-    height: 50vh;
-    display: flex;
-    flex-direction: column;
-    padding: 0rem 0rem;
-    overflow: hidden;
-    margin-top: -8rem;
-  }
+.footerColumn li:hover {
+  color: #999;
+}
+.footerContainer a {
+  text-decoration: none;
+  color: #999;
+}
+.footerColumn {
+  width: 70%;
+  margin: 1rem auto 0;
+  font-size: 0.9rem;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
 
-  .personalTodoTextBox h1 {
-    padding-left: 2rem;
+@media (max-width: 1000px) {
+  .serviceBox {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
   }
-  .personalTodoTextBox {
-    overflow: hidden;
-  }
-  .teamTodoSection {
-    height: 70vh;
-    display: flex;
-    flex-direction: column;
-    padding: 0rem 0rem;
-    padding-left: 1.5rem;
-    margin-top: -9rem;
-  }
-  .teamTodoImg {
-    margin-bottom: 2rem;
-  }
-  .slogSection {
-    height: 70vh;
-    display: flex;
-    flex-direction: column;
-    padding: 0rem 0rem;
-    padding-left: 1.5rem;
-    margin-top: -9rem;
-    margin-left: 0;
-  } */
+}
 
-  .bannerImg {
-    height: 130px !important;
-    width: 330px !important;
+@media (max-width: 700px) {
+  .banner {
+    height: 90vh;
   }
-  .bannerBtn {
-    margin-top: 2rem !important;
+  .video {
+    height: 90vh;
   }
-
-  .questionInner h1 {
+  .serviceBox {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+  .banner img {
+    margin-top: -10rem;
+    width: 80%;
+    height: 80%;
+  }
+  .bannerText {
+    margin-top: -13rem;
+    font-size: 0.6rem !important;
+  }
+  .footerContainer {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  .footerContainer span {
     font-size: 0.8rem !important;
   }
-  .weGotYou {
-    margin-bottom: -4rem;
+  .footerColumn {
+    width: 80%;
+    margin: 0.7rem auto 0;
+    font-size: 0.7rem;
+    grid-template-columns: repeat(2, 1fr);
   }
-  h1 {
-    font-size: 1rem !important;
+  .screenSubHeading {
+    margin-bottom: 5rem;
   }
-  .bubbleBox {
-    height: auto !important;
-    margin: 2rem 0;
-    border-radius: 0px 0px 0px 0px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 0px !important;
-  }
-
-  .bubbleBoxOpp {
-    height: auto !important;
-    margin: 2rem 0;
-    border-radius: 0px 0px 0px 0px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 0px !important;
-  }
-  .personalTodoSection {
-    display: flex;
+  .screenContainer {
     flex-direction: column;
+  }
+  .screenContentBox {
+    width: 80%;
+  }
+  .screenImgBox {
+    width: auto;
   }
 }

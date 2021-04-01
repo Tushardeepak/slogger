@@ -1,41 +1,49 @@
-import React from "react";
-import NavBar from "../navBar/NavBar";
-import { generateMedia } from "styled-media-query";
-import styled from "styled-components";
+//ASSETS
 import homePageIcon from "../../assets/images/homeBannerIcon.png";
 import homeBannerVideo from "../../assets/videos/HomeBannerVideo.mp4";
+import ImportantDevicesRoundedIcon from "@material-ui/icons/ImportantDevicesRounded";
+import EmojiFoodBeverageRoundedIcon from "@material-ui/icons/EmojiFoodBeverageRounded";
+import TrackChangesRoundedIcon from "@material-ui/icons/TrackChangesRounded";
+import MultilineChartRoundedIcon from "@material-ui/icons/MultilineChartRounded";
+import DuoRoundedIcon from "@material-ui/icons/DuoRounded";
+import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import personalTodoImg from "../../assets/images/personalTodoImg.svg";
+import teamTodoImg from "../../assets/images/teamTodoImg.svg";
 import discussionImg from "../../assets/images/discussionImg.svg";
 import profileImg from "../../assets/images/profileImg.svg";
-import teamTodoImg from "../../assets/images/teamTodoImg.svg";
-import { Button } from "@material-ui/core";
-import "./style.css";
-import { useHistory } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import "../todo/heightMedia.css";
+import meetImg from "../../assets/images/meetImg.svg";
 
-function Slogger() {
+//Main
+import React from "react";
+import NavBar from "../navBar/NavBar";
+import "./style.css";
+import { useHistory } from "react-router";
+import { useAuth } from "../../context/AuthContext";
+import { Button, useMediaQuery, useTheme } from "@material-ui/core";
+
+function SloggerNew() {
   const history = useHistory();
   const { currentUser } = useAuth();
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   React.useEffect(() => {
     if (currentUser !== null) {
       history.push("/home");
     }
   }, []);
-
   return (
     <div style={{ height: "auto", fontFamily: "Times New Roman" }}>
       <NavBar page={0} />
-      <Banner>
+      <div className="banner">
         <video autoPlay loop muted className="video">
           <source src={homeBannerVideo} type="video/mp4"></source>
         </video>
 
         <img src={homePageIcon} className="bannerImg" />
-        <div className="questionInner">
-          <h1 className="t1">One stop solution for Work Management</h1>
-          <h1 className="t2">and Team Management</h1>
+        <div className="bannerText">
+          <h3>One stop solution for Work Management</h3>
+          <h3>and Team Management</h3>
         </div>
         <Button
           className="bannerBtn"
@@ -47,75 +55,179 @@ function Slogger() {
         >
           {currentUser != null ? "Go to Dashboard" : "Get started"}
         </Button>
-      </Banner>
-      <div className="bubbleBox">
-        <div className="weGotYou">
-          <h1>Personal Section</h1>
-          <hr></hr>
-        </div>
-        <div className="personalTodoSection">
-          <div className="personalTodoTextBox">
-            <h1 className="t1">1) Make your own todo list</h1>
-            <h1 className="t2">2) Filter those which are completed</h1>
-            <h1 className="t3">3) Get a visual representation of your work</h1>
+        <svg
+          className="downSvgSlogger1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+        >
+          <path
+            fill="#fff"
+            fill-opacity="1"
+            d="M0,224L24,208C48,192,96,160,144,165.3C192,171,240,213,288,224C336,235,384,213,432,218.7C480,224,528,256,576,266.7C624,277,672,267,720,256C768,245,816,235,864,234.7C912,235,960,245,1008,229.3C1056,213,1104,171,1152,165.3C1200,160,1248,192,1296,181.3C1344,171,1392,117,1416,90.7L1440,64L1440,320L1416,320C1392,320,1344,320,1296,320C1248,320,1200,320,1152,320C1104,320,1056,320,1008,320C960,320,912,320,864,320C816,320,768,320,720,320C672,320,624,320,576,320C528,320,480,320,432,320C384,320,336,320,288,320C240,320,192,320,144,320C96,320,48,320,24,320L0,320Z"
+          ></path>
+        </svg>
+        <svg
+          className="downSvgSlogger2"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+        >
+          <path
+            fill="#272142bd"
+            fill-opacity="1"
+            d="M0,224L24,208C48,192,96,160,144,165.3C192,171,240,213,288,224C336,235,384,213,432,218.7C480,224,528,256,576,266.7C624,277,672,267,720,256C768,245,816,235,864,234.7C912,235,960,245,1008,229.3C1056,213,1104,171,1152,165.3C1200,160,1248,192,1296,181.3C1344,171,1392,117,1416,90.7L1440,64L1440,320L1416,320C1392,320,1344,320,1296,320C1248,320,1200,320,1152,320C1104,320,1056,320,1008,320C960,320,912,320,864,320C816,320,768,320,720,320C672,320,624,320,576,320C528,320,480,320,432,320C384,320,336,320,288,320C240,320,192,320,144,320C96,320,48,320,24,320L0,320Z"
+          ></path>
+        </svg>
+      </div>
+      <div className="sloggerBuild">
+        <h2 className="sloggerHeadingMain">
+          Why to use
+          <span className="sloggerHeading">SLOGGER</span>{" "}
+        </h2>
+        <div className="serviceBox">
+          <div className="contentBox">
+            <div className="iconBox">
+              <EmojiFoodBeverageRoundedIcon className="icon" />
+            </div>
+            <h2 className="contentHeading">Easy to use</h2>
+            <p className="contentPara">
+              With slogger you can do various activities to manage your team and
+              work with ease. No complex technologies are used.
+            </p>
           </div>
-          <img src={personalTodoImg} className="personalTodoImg" />
+          <div className="contentBox">
+            <div className="iconBox">
+              <ImportantDevicesRoundedIcon className="icon" />
+            </div>
+            <h2 className="contentHeading">Access anywhere</h2>
+            <p className="contentPara">
+              Download Slogger as an app in your mobile phone or on your
+              desktop. Install option will be shown in browsers.
+            </p>
+          </div>
+          <div className="contentBox">
+            <div className="iconBox">
+              <TrackChangesRoundedIcon className="icon" />
+            </div>
+            <h2 className="contentHeading">Stay focused</h2>
+            <p className="contentPara">
+              As it run as an independent app, It helps you to stay focused on
+              your goals without being distracted by what's in the other tabs.
+            </p>
+          </div>
+          <div className="contentBox">
+            <div className="iconBox">
+              <MultilineChartRoundedIcon className="icon" />
+            </div>
+            <h2 className="contentHeading">Good analysis</h2>
+            <p className="contentPara">
+              Slogger gives a graphical representation of your work, plus it
+              also gives schedular by which you can plan your future activities
+              effectively.
+            </p>
+          </div>
+          <div className="contentBox">
+            <div className="iconBox">
+              <DuoRoundedIcon className="icon" />
+            </div>
+            <h2 className="contentHeading">Fast meetings</h2>
+            <p className="contentPara">
+              With Slogger you can create video/audio call meetings with your
+              team in just a click, that also with unlimited hours and
+              teammates.
+            </p>
+          </div>
+          <div className="contentBox">
+            <div className="iconBox">
+              <LockRoundedIcon className="icon" />
+            </div>
+            <h2 className="contentHeading">Fully secure</h2>
+            <p className="contentPara">
+              All the files and messages are secured with google storage
+              securities. Its safe and reliable.
+            </p>
+          </div>
         </div>
       </div>
-      <div className="bubbleBoxOpp">
-        <div className="weGotYou">
-          <h1>Team Section</h1>
-          <hr></hr>
+      <h2 className="screenHeading">Workflow that just works</h2>
+      <h4 className="screenSubHeading">Artistically Inspired</h4>
+      <div className="screenContainer">
+        <div className="screenContentBox">
+          <h3 className="screenContentSubHeading">FOCUSED WORK</h3>
+          <h3 className="screenContentHeading">Personal section</h3>
+          <h3 className="screenContentPara">1) Make your own todo list</h3>
+          <h3 className="screenContentPara">
+            2) Filter those which are completed
+          </h3>
+          <h3 className="screenContentPara">
+            3) Get a visual representation of your work
+          </h3>
         </div>
-
-        <div className="personalTodoSection">
-          <img
-            src={teamTodoImg}
-            className="personalTodoImg"
-            style={{ flex: 0.4 }}
-          />
-          <div className="personalTodoTextBox" style={{ flex: 0.6 }}>
-            <h1>1) Make your own teams</h1>
-            <h1>2) Join teams</h1>
-            <h1>3) Assign work to teammates</h1>
-            <h1>4) Check when the work is done</h1>
-            <h1>5) Add images to any work</h1>
-            <h1>6) Group video call meetings</h1>
-          </div>
-        </div>
+        <img src={personalTodoImg} className="screenImg" />
       </div>
-      <div className="bubbleBox">
-        <div className="weGotYou">
-          <h1>Discussion Section</h1>
-          <hr></hr>
+      <div className="screenContainer">
+        <div className="screenImgBox">
+          {isSmall ? <img src={teamTodoImg} className="screenImg" /> : ""}
         </div>
-
-        <div className="personalTodoSection">
-          <div className="personalTodoTextBox">
-            <h1 className="t1">1) Discuss with your teammates</h1>
-            <h1 className="t2">2) One discussion room for every team</h1>
-            <h1 className="t3">3) Help other to solve their doubts</h1>
-          </div>
-          <img src={discussionImg} className="personalTodoImg" />
+        <div className="screenContentBoxReverse">
+          <h3 className="screenContentSubHeading">EFFECTIVE MANAGEMENT</h3>
+          <h3 className="screenContentHeading">Team section</h3>
+          <h3 className="screenContentPara">1) Make your own teams</h3>
+          <h3 className="screenContentPara">2) Join teams</h3>
+          <h3 className="screenContentPara">3) Assign work to teammates</h3>
+          <h3 className="screenContentPara">4) Check when the work is done</h3>
+          <h3 className="screenContentPara">5) Add images to any work</h3>
+          <h3 className="screenContentPara">6) Group video call meetings</h3>
         </div>
+        {isSmall ? "" : <img src={teamTodoImg} className="screenImg" />}
       </div>
-      <div className="bubbleBoxOpp">
-        <div className="weGotYou">
-          <h1>Profile Section</h1>
-          <hr></hr>
+      <div className="screenContainer">
+        <div className="screenContentBox">
+          <h3 className="screenContentSubHeading">FAST SOLUTIONS</h3>
+          <h3 className="screenContentHeading">Discussion section</h3>
+          <h3 className="screenContentPara">1) Discuss with your teammates</h3>
+          <h3 className="screenContentPara">
+            2) One discussion room for every team
+          </h3>
+          <h3 className="screenContentPara">
+            3) Help other to solve their doubts
+          </h3>
         </div>
-
-        <div className="personalTodoSection">
-          <div className="personalTodoTextBox">
-            <h1 className="t1">1) Make you profile</h1>
-            <h1 className="t2">2) Add bio, skills and contact info</h1>
-            <h1 className="t3">3) Get profile for other team members</h1>
-            <h1 className="t3">4) Endorse them for their good work</h1>
-          </div>
-          <img src={profileImg} className="personalTodoImg" />
-        </div>
+        <img src={discussionImg} className="screenImg" />
       </div>
-      <FooterContainer>
+      <div className="screenContainer">
+        <div className="screenImgBox">
+          {isSmall ? <img src={profileImg} className="screenImg" /> : ""}
+        </div>
+        <div className="screenContentBoxReverse">
+          <h3 className="screenContentSubHeading">BOOST CONFIDENCE</h3>
+          <h3 className="screenContentHeading">Profile section</h3>
+          <h3 className="screenContentPara">1) Build up your profile</h3>
+          <h3 className="screenContentPara">
+            2) Add bio, skills and contact info
+          </h3>
+          <h3 className="screenContentPara">
+            3) Get profile for other team members
+          </h3>
+          <h3 className="screenContentPara">
+            4) Endorse them for their good work
+          </h3>
+        </div>
+        {isSmall ? "" : <img src={profileImg} className="screenImg" />}
+      </div>
+      <div className="screenContainer">
+        <div className="screenContentBox">
+          <h3 className="screenContentSubHeading">LIGHTING FAST</h3>
+          <h3 className="screenContentHeading">SlogMeet</h3>
+          <h3 className="screenContentPara">
+            1) High quality video/audio meetings
+          </h3>
+          <h3 className="screenContentPara">2) Unlimited hours</h3>
+          <h3 className="screenContentPara">3) Infinite number of teammates</h3>
+          <h3 className="screenContentPara">3) No setup required</h3>
+        </div>
+        <img src={meetImg} className="screenImg" />
+      </div>
+      <div className="footerContainer">
         <span
           style={{ marginLeft: "15%", fontSize: "1.125rem", cursor: "pointer" }}
         >
@@ -195,114 +307,9 @@ function Slogger() {
             </li>
           </ul>
         </div>
-      </FooterContainer>
+      </div>
     </div>
   );
 }
 
-export default Slogger;
-
-const customMedia = generateMedia({
-  lgDesktop: "1350px",
-  mdDesktop: "1150px",
-  tablet: "960px",
-  smTablet: "600px",
-});
-
-const Banner = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .video {
-    position: absolute;
-    object-fit: cover;
-    width: 100%;
-    height: 100vh;
-    left: 0;
-    top: 0;
-    z-index: -1;
-    opacity: 0.2;
-  }
-
-  img {
-    object-fit: contain;
-    width: 50%;
-    height: 50%;
-    ${customMedia.lessThan("smTablet")`
-   width: 80%;
-    height: 80%;
-    margin-top:-5rem;
-  `}
-  }
-
-  Button {
-    margin: 0.5rem;
-    background-color: #272142;
-    color: #fff;
-    font-weight: 600;
-    padding: 0.5rem 2rem;
-    font-size: 1rem;
-    border: 2px solid #272142;
-    transition: all 0.5s ease-in-out;
-    &:hover {
-      background-color: transparent;
-      color: #272142;
-      border: 2px solid #272142;
-    }
-    ${customMedia.lessThan("smTablet")`
-   margin-top:-5rem;
-  `}
-  }
-`;
-
-const FooterContainer = styled.div`
-  padding-top: 2rem;
-  padding-bottom: 4rem;
-  color: #999;
-  position: relative;
-
-  span {
-    ${customMedia.lessThan("tablet")`
-       font-size:0.8rem !important;
-    `}
-  }
-
-  ${customMedia.lessThan("tablet")`
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-    `}
-
-  li {
-    text-decoration: none;
-    list-style: none;
-    line-height: 2.5;
-    cursor: pointer;
-  }
-  .footerColumn li:hover {
-    color: #999;
-  }
-  a {
-    text-decoration: none;
-    color: #999;
-  }
-
-  .footerColumn {
-    width: 70%;
-    margin: 1rem auto 0;
-    font-size: 0.9rem;
-    overflow: auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-
-    ${customMedia.lessThan("tablet")`
-      width: 80%;
-      margin: 0.7rem auto 0;
-      font-size: 0.7rem;
-      grid-template-columns: repeat(2, 1fr);
-    `}
-  }
-`;
+export default SloggerNew;

@@ -10,27 +10,26 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 7px;
 }
 @media only screen and (max-width: 600px) {
   ::-webkit-scrollbar {
-    width: 3px;
+    width: 5px;
   }
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.438);
-  padding: 0 0.5rem;
+  background: rgb(156, 156, 156);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 139, 93);
-  border-radius: 10px;
+  background: rgb(230, 229, 229);
+  border-radius: 2px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 190, 127, 0.473);
+  background: rgb(0, 26, 17);
 }
