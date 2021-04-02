@@ -10,22 +10,23 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
 }
 @media only screen and (max-width: 600px) {
   ::-webkit-scrollbar {
-    width: 5px;
+    width: 3px;
   }
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: rgb(156, 156, 156);
+  /* background: rgb(156, 156, 156); */
+  background: transparent;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(230, 229, 229);
+  background: rgb(201, 200, 200);
   border-radius: 2px;
 }
 

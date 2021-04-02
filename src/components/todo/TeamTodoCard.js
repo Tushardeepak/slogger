@@ -255,6 +255,9 @@ const TodoMainCard = styled.div`
   word-break: "break-all";
   min-height: 4.5rem !important;
   height: auto;
+  ${customMedia.lessThan("smTablet")`
+    width: 98%;
+    `};
 `;
 const TodoStartIcon = styled.div`
   transform: scale(0.8);

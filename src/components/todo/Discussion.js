@@ -347,6 +347,7 @@ const TeamTodoContainer = styled.div`
     flex:1;
       flex-direction:column;
       height: 81.5%;
+      margin-left:-0.1rem;
   `}
 `;
 
@@ -465,7 +466,7 @@ const TodoRightUpBox = styled.div`
   top: 0;
   display: flex;
   align-items: center;
-  border-radius: 10px;
+  border-radius: 5px;
   margin: 0.2rem 0;
   width: 52%;
   background-color: rgb(3, 185, 124, 0.2);

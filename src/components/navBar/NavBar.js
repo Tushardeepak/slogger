@@ -1,4 +1,4 @@
-import { Button, useMediaQuery, useTheme } from "@material-ui/core";
+import { Button, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -6,12 +6,18 @@ import styled from "styled-components";
 import { generateMedia } from "styled-media-query";
 import "../todo/heightMedia.css";
 
+const useStyles = makeStyles((theme) => ({
+  rippleClose: {
+    opacity: 0,
+  },
+}));
 function NavBar({ page, home }) {
   const [sup, setSup] = useState("");
   const { currentUser, logOut } = useAuth();
   const history = useHistory();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+  const classes = makeStyles();
 
   const handleSignOut = async () => {
     await logOut();
@@ -79,16 +85,14 @@ function NavBar({ page, home }) {
       <NavBarEndContainer>
         {home ? (
           <Button
-            disableFocusRipple
-            disableRipple
+            classes={{ root: classes.rippleClose }}
             onClick={() => history.push("/home")}
           >
             home
           </Button>
         ) : (
           <Button
-            disableFocusRipple
-            disableRipple
+            classes={{ root: classes.rippleClose }}
             onClick={() => history.push("/help")}
           >
             help
@@ -96,8 +100,7 @@ function NavBar({ page, home }) {
         )}
 
         <Button
-          disableFocusRipple
-          disableRipple
+          classes={{ root: classes.rippleClose }}
           onClick={() => handleSignOut()}
         >
           Log Out
@@ -115,15 +118,13 @@ function NavBar({ page, home }) {
         {currentUser !== null ? (
           <>
             <Button
-              disableFocusRipple
-              disableRipple
+              classes={{ root: classes.rippleClose }}
               onClick={() => history.push("/help")}
             >
               help
             </Button>
             <Button
-              disableFocusRipple
-              disableRipple
+              classes={{ root: classes.rippleClose }}
               onClick={() => handleSignOut()}
             >
               log out
@@ -132,15 +133,13 @@ function NavBar({ page, home }) {
         ) : (
           <>
             <Button
-              disableFocusRipple
-              disableRipple
+              classes={{ root: classes.rippleClose }}
               onClick={() => history.push("/help")}
             >
               help
             </Button>
             <Button
-              disableFocusRipple
-              disableRipple
+              classes={{ root: classes.rippleClose }}
               onClick={() => handleSignup()}
             >
               sign up

@@ -148,7 +148,7 @@ export default function SidebarTeams({ UrlTeamName }) {
             >
               Make a team
             </Button>
-            <h3 style={{ overflow: "hidden" }}>My Teams</h3>
+            {/* <h3 style={{ overflow: "hidden" }}>My Teams</h3> */}
             <MyTeamContainer>
               {teams.map((team) => (
                 <TeamCard
@@ -171,7 +171,7 @@ export default function SidebarTeams({ UrlTeamName }) {
             >
               Join a team
             </Button>
-            <h3 style={{ overflow: "hidden" }}>Joined Teams</h3>
+            {/* <h3 style={{ overflow: "hidden" }}>Joined Teams</h3> */}
             <MyTeamContainer>
               {joinedTeams.map((team) => (
                 <TeamCard
@@ -250,9 +250,9 @@ const TeamTodoLeftLeftBox = styled.div`
   .addButton1 {
     width: 95.5%;
     color: #fff;
-    font-weight: 600;
     background-color: rgb(5, 185, 125);
     margin: 0.5rem;
+    margin-left: 0;
     overflow: hidden;
   }
   h3 {
@@ -281,9 +281,9 @@ const TeamTodoLeftRightBox = styled.div`
   .addButton1 {
     width: 95.5%;
     color: #fff;
-    font-weight: 600;
     background-color: rgb(5, 185, 125);
     margin: 0.5rem;
+    margin-left: 0;
     overflow: hidden;
   }
   h3 {

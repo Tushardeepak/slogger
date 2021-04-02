@@ -786,12 +786,12 @@ const TeamTodoRightContainer = styled.div`
   padding: 0 1rem;
   ${customMedia.lessThan("smTablet")`
   flex:1;
-  width:94%;
+  
   padding: 0 0.2rem;
 `}
   .teamNoTodoImage {
     ${customMedia.lessThan("smTablet")`
-    height:100% !important;
+    height:70% !important;
     flex: 1;
   `}
   }
@@ -802,6 +802,8 @@ const TeamTodoRightContainer = styled.div`
     text-decoration: none;
     ${customMedia.lessThan("smTablet")`
      width: 50% !important;
+     margin:0.1rem 0rem !important;
+     margin-left: 0.2rem !important;
     `};
   }
   .meetingJoinLink {
@@ -810,6 +812,7 @@ const TeamTodoRightContainer = styled.div`
     text-decoration: none;
     ${customMedia.lessThan("smTablet")`
      width: 17% !important;
+     
     `};
   }
   .slogMeet {
@@ -818,6 +821,9 @@ const TeamTodoRightContainer = styled.div`
     width: 100%;
     color: #fff;
     background-color: rgb(5, 185, 125, 0.8);
+    ${customMedia.lessThan("smTablet")`
+    height: 2.1rem !important;
+    `};
   }
 
   .slogMeet:hover {
@@ -928,6 +934,7 @@ const TodoRightUpBox = styled.div`
      margin: 0.1rem 0.2rem;
      margin-right:0;
       padding:0;
+      height: 2.1rem !important;
     `};
   }
 
@@ -942,5 +949,11 @@ const TodoRightUpBox = styled.div`
     color: #fff;
     background-color: rgb(5, 185, 125, 0.8);
     margin: 0.2rem;
+    ${customMedia.lessThan("smTablet")`
+     margin: 0.1rem 0.2rem;
+     margin-right:0;
+      padding:0;
+      height: 2.1rem !important;
+    `};
   }
 `;

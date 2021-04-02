@@ -402,6 +402,8 @@ const TodoContainer = styled.div`
   ${customMedia.lessThan("smTablet")`
       flex-direction:column;
       height: 81.5%;
+      width: auto;
+      margin-left:-0.1rem;
     `};
 `;
 

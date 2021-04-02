@@ -2,7 +2,7 @@
   border: 2px solid rgb(5, 185, 125) !important;
   background-color: rgb(5, 185, 125) !important;
   color: #fff !important;
-  width: 96% !important;
+  width: 98% !important;
   height: 1.5rem !important;
   margin: 10px 0 !important;
   font-weight: 300 !important;
@@ -59,7 +59,6 @@
   align-items: center;
   justify-content: space-between;
   font-size: medium;
-  font-weight: 500;
   color: rgba(0, 141, 94, 0.795);
   overflow: hidden !important;
 }
@@ -88,7 +87,6 @@
   background-color: #2ec592 !important;
   width: 50%;
   color: #fff !important;
-  font-weight: 600 !important;
   transition: all 0.2s ease-in-out !important;
 }
 .sidebarProfileProfileEdit:hover {
@@ -153,7 +151,6 @@
   vertical-align: center;
   border-radius: 10px;
   color: #fff;
-  font-weight: 600;
 }
 .linkContainer {
   margin: 20px 0;
