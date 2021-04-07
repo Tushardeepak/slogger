@@ -5,15 +5,15 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Slide from "@material-ui/core/Slide";
 import "./style.css";
 import { db, storage } from "../../firebase";
 import { useAuth } from "../../context/AuthContext";
 import firebase from "firebase";
 import { useHistory } from "react-router-dom";
+import { Fade } from "@material-ui/core";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="" ref={ref} {...props} />;
+  return <Fade direction="" ref={ref} {...props} />;
 });
 
 export default function Delete({

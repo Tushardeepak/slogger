@@ -452,7 +452,7 @@ const SignUpBox = styled.div`
       
     `};
   ${customMedia.lessThan("smTablet")`
-      width: 16rem;
+      width: 100%;
       
     `};
 
@@ -491,7 +491,7 @@ const SignUpForm = styled.div`
 
   ${customMedia.lessThan("tablet")`
   margin: 40px auto;
-   width:  calc(40vw + 70px);
+   width:  calc(50vw + 70px);
    height: 90vh;
     `};
 
@@ -524,7 +524,7 @@ const SignUpForm = styled.div`
     width: 90%;
     height: 1.5rem;
     background-color: rgba(3, 185, 124, 0.308);
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     border: none;
     padding: 1rem;
     margin: 0.5rem;
@@ -533,6 +533,7 @@ const SignUpForm = styled.div`
     overflow: hidden;
     ${customMedia.lessThan("tablet")`
       padding: 0.5rem 1rem;
+      height: 1.7rem;
     `};
   }
   .inputSignUp {

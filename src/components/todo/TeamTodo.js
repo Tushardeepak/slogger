@@ -105,9 +105,23 @@ const useStyles = makeStyles((theme) => ({
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
-    primary: green,
-    width: "100%",
-    cursor: "pointer",
+    primary: {
+      main: "rgb(2, 88, 60)",
+    },
+  },
+  width: "100%",
+  cursor: "pointer",
+  overrides: {
+    MuiInputBase: {
+      root: {
+        overflow: "hidden",
+      },
+      input: {
+        color: "rgb(0, 90, 60)",
+        fontSize: "1rem",
+        cursor: "pointer",
+      },
+    },
   },
 });
 
@@ -385,27 +399,28 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
                 }}
               >
                 <MuiPickersUtilsProvider utils={MomentUtils}>
-                  <CustomTooltip title="Enter date" placement="top" arrow>
-                    <div className="dateBox">
-                      <ThemeProvider theme={defaultMaterialTheme}>
-                        <DatePicker
-                          variant="inline"
-                          value={selectedDate}
-                          onChange={handleDateChange}
-                          style={{
-                            width: "100%",
-                            textAlign: "center",
-                            cursor: "pointer",
-                            fontSize: "0.7rem",
-                          }}
-                          InputProps={{
-                            endAdornment: <AlarmIcon className="AlarmIcon" />,
-                            disableUnderline: true,
-                          }}
-                        />
-                      </ThemeProvider>
-                    </div>
-                  </CustomTooltip>
+                  {/* <CustomTooltip title="Enter deadline" placement="top" arrow> */}
+                  <div className="dateBox">
+                    <p>Deadline:</p>
+                    <ThemeProvider theme={defaultMaterialTheme}>
+                      <DatePicker
+                        variant="dialog"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        style={{
+                          width: "100%",
+                          textAlign: "center",
+                          cursor: "pointer",
+                          fontSize: "0.7rem",
+                        }}
+                        InputProps={{
+                          endAdornment: <AlarmIcon className="AlarmIcon" />,
+                          disableUnderline: true,
+                        }}
+                      />
+                    </ThemeProvider>
+                  </div>
+                  {/* </CustomTooltip> */}
                 </MuiPickersUtilsProvider>
 
                 <Button
@@ -681,6 +696,7 @@ const TeamTodoContainer = styled.div`
   flex:1;
     flex-direction:column;
     height: 81.5%;
+    width: 97%;
 `}
   .addIcon {
     transform: scale(0.7);
@@ -835,7 +851,7 @@ const TodoRightUpBox = styled.div`
   display: flex;
   flex-direction: column;
   border-bottom: 2px solid rgba(0, 141, 94, 0.295);
-  width: 98%;
+  width: 100%;
 
   ${customMedia.lessThan("smTablet")`
     border:none;
@@ -913,13 +929,20 @@ const TodoRightUpBox = styled.div`
     font-size: 0.7rem !important;
     display: flex;
     align-items: center;
-    cursor: pointer;
+    cursor: pointer !important;
     overflow: hidden;
     ${customMedia.lessThan("smTablet")`
     padding: 0.5rem 0.5rem;
          margin:0.1rem 0;
          font-size:0.7rem !important;
     `};
+    P {
+      margin-right: 0.7rem;
+      color: rgb(0, 90, 60);
+      ${customMedia.lessThan("smTablet")`
+        font-size:9px;
+    `};
+    }
   }
   .AddButton {
     width: 95.5%;

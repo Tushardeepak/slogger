@@ -19,14 +19,13 @@
   background-color: rgb(5, 185, 125) !important;
 }
 .addButtonModal {
-  width: 95.5% !important;
   color: #fff !important;
   background-color: rgb(5, 185, 125) !important;
   margin: 0.5rem !important;
   overflow: hidden !important;
 }
 .addButtonModal:hover {
-  background-color: rgb(5, 185, 125) !important;
+  background-color: rgb(5, 138, 93) !important;
 }
 .closeMaterialModal {
   width: 20% !important;
@@ -66,7 +65,7 @@
   width: 20rem;
   height: 2rem;
   background-color: rgba(3, 185, 124, 0.308);
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   border: none;
   padding: 1rem;
   padding-left: 0.5rem;
@@ -178,13 +177,19 @@
 }
 
 .materialMainBox {
-  width: 22rem;
   display: flex;
 }
 .commentTextBox {
   padding: 0.5rem;
   outline: none;
   resize: none;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #b1e9d6;
+  color: #02a56f;
+}
+.commentTextBox::placeholder {
+  color: #02a56f;
 }
 
 .profileContainer {
@@ -308,9 +313,6 @@
   }
 }
 @media only screen and (max-width: 600px) {
-  .materialMainBox {
-    flex-direction: column;
-  }
   .messageTime {
     margin-left: 50%;
   }

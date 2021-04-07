@@ -10,7 +10,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import AddIcon from "@material-ui/icons/Add";
 import MomentUtils from "@date-io/moment";
 import { createMuiTheme } from "@material-ui/core";
@@ -21,23 +21,35 @@ import { db } from "../../firebase";
 import { useAuth } from "../../context/AuthContext";
 import TodoCard from "./TodoCard";
 import noTodoImg from "../../assets/images/noTodo.svg";
-import TeamTodo from "./TeamTodo";
-import News from "./SlogPage";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
-import HashLoader from "react-spinners";
 import DonutChart from "./DonutChart";
 import firebase from "firebase";
 import { generateMedia } from "styled-media-query";
 import { useHistory } from "react-router-dom";
 import "./heightMedia.css";
 import SidebarPersonal from "./sidebar/SidebarPersonal";
+import Schedular from "../Schedular/Schedular";
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
-    primary: green,
-    width: "100%",
-    cursor: "pointer",
+    primary: {
+      main: "rgb(2, 88, 60)",
+    },
+  },
+  width: "100%",
+
+  overrides: {
+    MuiInputBase: {
+      root: {
+        overflow: "hidden",
+      },
+      input: {
+        color: "rgb(0, 90, 60)",
+        fontSize: "1.2rem",
+        cursor: "pointer",
+      },
+    },
   },
 });
 
@@ -100,6 +112,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "0.6rem",
     color: "#565656",
     textTransform: "uppercase",
+    paddingTop: "10px",
+    borderRadius: "10px 10px 0 0",
   },
   flexContainer: {
     borderBottom: "2px solid rgba(196, 196, 196, 0.5)",
@@ -107,12 +121,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function PersonalTodo() {
-  const [selectedDate, handleDateChange] = useState(new Date());
+  const [selectedStartDate, handleStartDateChange] = useState(new Date());
+  const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [inputTodo, setInputTodo] = useState("");
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [todoLength, setTodoLength] = useState(0);
+  const [priority, setPriority] = useState(1);
   const history = useHistory();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
@@ -136,12 +152,17 @@ function PersonalTodo() {
       setLoader(true);
       db.collection("users").doc(currentUser.uid).collection("todos").add({
         todoText: inputTodo,
-        todoDate: selectedDate.toISOString(),
+        todoStartDate: selectedStartDate.toISOString(),
+        todoEndDate: selectedEndDate.toISOString(),
         checked: false,
+        priority: priority,
         timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
       setInputTodo("");
       setLoader(false);
+      setPriority(1);
+      handleStartDateChange(new Date());
+      handleEndDateChange(new Date());
     } else {
       setError(true);
     }
@@ -155,12 +176,17 @@ function PersonalTodo() {
       setLoader(true);
       db.collection("users").doc(currentUser.uid).collection("todos").add({
         todoText: inputTodo,
-        todoDate: selectedDate.toISOString(),
+        todoStartDate: selectedStartDate.toISOString(),
+        todoEndDate: selectedEndDate.toISOString(),
         checked: false,
+        priority: priority,
         timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
       setInputTodo("");
       setLoader(false);
+      setPriority(1);
+      handleStartDateChange(new Date());
+      handleEndDateChange(new Date());
     } else {
       setError(true);
     }
@@ -180,8 +206,10 @@ function PersonalTodo() {
         const list = snapshot.docs.map((doc) => ({
           id: doc.id,
           todoText: doc.data().todoText,
-          todoDate: doc.data().todoDate,
+          todoStartDate: doc.data().todoStartDate,
+          todoEndDate: doc.data().todoEndDate,
           checked: doc.data().checked,
+          priority: doc.data().priority,
         }));
         console.log(list);
         setTodoList(list);
@@ -207,27 +235,57 @@ function PersonalTodo() {
                 onKeyDown={(e) => handleSubmitEnter(e)}
               />
             </div>
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-              <div className="dateBox">
-                <ThemeProvider theme={defaultMaterialTheme}>
-                  <DateTimePicker
-                    variant="inline"
-                    // label="Add time"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    style={{
-                      width: "100%",
-                      textAlign: "center",
-                      cursor: "pointer",
-                    }}
-                    InputProps={{
-                      endAdornment: <AlarmIcon className="AlarmIcon" />,
-                      disableUnderline: true,
-                    }}
-                  />
-                </ThemeProvider>
+
+            <div style={{ display: "flex" }}>
+              <div className="dataContainer">
+                <h3 className="timeHeading">Start date</h3>
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                  <div className="dateBox">
+                    <ThemeProvider theme={defaultMaterialTheme}>
+                      <DatePicker
+                        variant="dialog"
+                        //format="DD/MM/YYYY"
+                        value={selectedStartDate}
+                        onChange={handleStartDateChange}
+                        style={{
+                          width: "100%",
+                          textAlign: "center",
+                          cursor: "pointer",
+                        }}
+                        InputProps={{
+                          endAdornment: <AlarmIcon className="AlarmIcon" />,
+                          disableUnderline: true,
+                        }}
+                      />
+                    </ThemeProvider>
+                  </div>
+                </MuiPickersUtilsProvider>
               </div>
-            </MuiPickersUtilsProvider>
+              <div className="dataContainer" style={{ marginLeft: 0 }}>
+                <h3 className="timeHeading">End date</h3>
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                  <div className="dateBox">
+                    <ThemeProvider theme={defaultMaterialTheme}>
+                      <DatePicker
+                        variant="dialog"
+                        value={selectedEndDate}
+                        //  format="DD/MM/YYYY"
+                        onChange={handleEndDateChange}
+                        style={{
+                          width: "100%",
+                          textAlign: "center",
+                          cursor: "pointer",
+                        }}
+                        InputProps={{
+                          endAdornment: <AlarmIcon className="AlarmIcon" />,
+                          disableUnderline: true,
+                        }}
+                      />
+                    </ThemeProvider>
+                  </div>
+                </MuiPickersUtilsProvider>
+              </div>
+            </div>
             <Button
               disabled={loader}
               endIcon={<AddIcon />}
@@ -236,7 +294,28 @@ function PersonalTodo() {
             >
               ADD
             </Button>
-            <p className="openSchedular">Open Advance Schedular</p>
+            <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+              <Button
+                className={priority === 3 ? "selectedTopPriority" : "priority"}
+                onClick={() => setPriority(3)}
+              >
+                Top
+              </Button>
+              <Button
+                className={
+                  priority === 2 ? "selectedEarlyPriority" : "priority"
+                }
+                onClick={() => setPriority(2)}
+              >
+                Early
+              </Button>
+              <Button
+                className={priority === 1 ? "selectedPriority" : "priority"}
+                onClick={() => setPriority(1)}
+              >
+                Easy
+              </Button>
+            </div>
           </TodoLeftUpBox>
           <TodoLeftDownBox>
             {todoLength !== 0 ? (
@@ -284,6 +363,16 @@ function PersonalTodo() {
               {...a11yProps(2)}
               disabled={todoList.length === 0 ? true : false}
             />
+
+            <Tab
+              className={classes.label}
+              label="SCHEDULAR"
+              {...a11yProps(3)}
+              style={{
+                backgroundColor: "rgb(2, 92, 62)",
+                color: "#fff",
+              }}
+            />
           </Tabs>
         </AppBar>
         <TabPanel
@@ -296,8 +385,10 @@ function PersonalTodo() {
               <TodoCard
                 id={todo.id}
                 text={todo.todoText}
-                date={todo.todoDate}
+                todoStartDate={todo.todoStartDate}
+                todoEndDate={todo.todoEndDate}
                 checked={todo.checked}
+                priority={todo.priority}
               />
             ))
           ) : (
@@ -340,8 +431,10 @@ function PersonalTodo() {
               <TodoCard
                 id={todo.id}
                 text={todo.todoText}
-                date={todo.todoDate}
+                todoStartDate={todo.todoStartDate}
+                todoEndDate={todo.todoEndDate}
                 checked={todo.checked}
+                priority={todo.priority}
               />
             ))}
         </TabPanel>
@@ -360,10 +453,15 @@ function PersonalTodo() {
               <TodoCard
                 id={todo.id}
                 text={todo.todoText}
-                date={todo.todoDate}
+                todoStartDate={todo.todoStartDate}
+                todoEndDate={todo.todoEndDate}
                 checked={todo.checked}
+                priority={todo.priority}
               />
             ))}
+        </TabPanel>
+        <TabPanel style={{ width: "100%" }} value={value} index={3}>
+          <Schedular todoList={todoList} />
         </TabPanel>
       </TodoRightContainer>
     </TodoContainer>
@@ -398,24 +496,21 @@ const TodoContainer = styled.div`
   position: absolute;
   display: flex;
   overflow: hidden;
-
   ${customMedia.lessThan("smTablet")`
       flex-direction:column;
       height: 81.5%;
-      width: auto;
-      margin-left:-0.1rem;
-    `};
+      width: 97%;
+  `};
 `;
 
 const TodoLeftContainer = styled.div`
-  flex: 0.31;
+  //flex: 0.31;
   height: 100%;
-  width: 100%;
+  width: 31%;
   border-right: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-
   ${customMedia.lessThan("smTablet")`
   flex: 0.45;
          padding: 0rem;
@@ -426,21 +521,15 @@ const TodoLeftContainer = styled.div`
 
 const TodoLeftUpBox = styled.div`
   flex: 0.5 !important;
+  width: 100%;
   border-bottom: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
   flex-direction: column;
-
+  justify-content: space-evenly;
   ${customMedia.lessThan("smTablet")`
   flex: 0.5;
     border:none;
   `};
-
-  .openSchedular {
-    color: rgb(5, 185, 125, 0.8);
-    cursor: pointer;
-    text-align: center;
-    margin-top: 1rem;
-  }
 
   .inputField {
     width: 90%;
@@ -472,7 +561,6 @@ const TodoLeftUpBox = styled.div`
     flex: 0.9;
     padding-left: 0.5rem;
     overflow: hidden;
-
     ${customMedia.lessThan("smTablet")`
       font-size:0.7rem;
     `};
@@ -496,23 +584,34 @@ const TodoLeftUpBox = styled.div`
   }
   .AlarmIcon {
     color: rgb(3, 185, 124);
-    font-size: 1.5rem;
-    flex: 0.1;
+    font-size: 2rem !important;
+    flex: 0.15;
     padding-right: 0.3rem;
     cursor: pointer;
     ${customMedia.lessThan("smTablet")`
     margin-top:-0px;
     `};
   }
-  .dateBox {
-    overflow: hidden;
-    width: 87.5%;
-    height: 1rem;
+  .timeHeading {
+    flex: 0.5;
+    font-size: 0.7rem;
+    color: rgb(0, 90, 60);
+    font-weight: 300;
+    margin-left: 1rem;
+  }
+  .dataContainer {
     background-color: rgba(3, 185, 124, 0.308);
     border-radius: 0.5rem;
-    border: none;
-    padding: 1rem;
+    width: 50%;
     margin: 0rem 0.5rem;
+    padding-top: 0.5rem;
+  }
+  .dateBox {
+    overflow: hidden;
+    width: 90%;
+    height: 1rem;
+    border: none;
+    padding: 0.5rem 0.7rem;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -524,9 +623,9 @@ const TodoLeftUpBox = styled.div`
   .AddButton {
     width: 96%;
     color: #fff;
-    font-weight: 600;
     background-color: rgb(5, 185, 125, 0.8);
     margin: 0.5rem;
+    margin-bottom: 0;
     overflow: hidden;
     ${customMedia.lessThan("smTablet")`
      margin: 0rem;
@@ -540,9 +639,49 @@ const TodoLeftUpBox = styled.div`
     opacity: 0.7;
     width: 95.5%;
     color: #fff;
-    font-weight: 600;
     background-color: rgb(5, 185, 125);
     margin: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .priority {
+    margin: 0.5rem;
+    border: 2px solid rgb(5, 185, 125);
+    color: rgb(5, 185, 125, 0.8);
+    width: 70%;
+    height: 50% !important;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+  }
+  .selectedTopPriority {
+    margin: 0.5rem;
+    border: 2px solid rgba(185, 5, 5);
+    background-color: rgba(185, 5, 5, 0.8);
+    color: #fff;
+    width: 70%;
+    height: 50% !important;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+  }
+  .selectedEarlyPriority {
+    margin: 0.5rem;
+    border: 2px solid rgba(185, 86, 5);
+    background-color: rgba(185, 86, 5, 0.8);
+    color: #fff;
+    width: 70%;
+    height: 50% !important;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+  }
+  .selectedPriority {
+    margin: 0.5rem;
+    border: 2px solid rgb(5, 185, 125);
+    background-color: rgb(5, 185, 125, 0.8);
+    color: #fff;
+    width: 70%;
+    height: 50% !important;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
   }
 `;
 const TodoLeftDownBox = styled.div`
@@ -554,16 +693,15 @@ const TodoLeftDownBox = styled.div`
 `;
 
 const TodoRightContainer = styled.div`
-  flex: 0.69;
+  // flex: 0.69;
   height: 100%;
-  width: 100%;
+  width: 69%;
   padding: 0 1.5rem;
   display: flex;
   flex-direction: column;
   overflow-y: scroll !important;
-
   ${customMedia.lessThan("smTablet")`
        padding:0;
-       flex: 1;
+       width: 100%;
     `};
 `;

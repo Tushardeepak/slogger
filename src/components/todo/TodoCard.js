@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
@@ -8,15 +8,13 @@ import { db } from "../../firebase";
 import moment from "moment";
 import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
+import EditIcon from "@material-ui/icons/Edit";
+import CalendarModal from "../Schedular/CalendarModal";
 
-function TodoCard({ id, text, date, checked }) {
+function TodoCard({ id, text, todoStartDate, todoEndDate, checked, priority }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
-
-  var timeDifference = new Date().getTimezoneOffset();
-  var date = moment(date).subtract(1, "h");
-  var dateComponent = date.utc().format("DD-MM-YYYY");
-  var timeComponent = date.utc().utcOffset(timeDifference).format("HH:mm");
+  const [openEdit, setOpenEdit] = useState(false);
 
   const handleDelete = (todoId) => {
     db.collection("users")
@@ -39,7 +37,7 @@ function TodoCard({ id, text, date, checked }) {
   return (
     <TodoMainCard>
       <TodoStartIcon>
-        <CustomTooltip title="Double tap" arrow placement="left">
+        <CustomTooltip title="Completed" arrow placement="left">
           {checked ? (
             <CheckBoxIcon
               className="todoStartIcon"
@@ -55,18 +53,32 @@ function TodoCard({ id, text, date, checked }) {
       </TodoStartIcon>
 
       <TodoTextBox>
-        <p
+        <div
           className="todoDate"
           style={{
-            color: "rgba(0, 99, 66, 0.668)",
-            textAlign: "end",
-            paddingBottom: "0.3rem",
+            width: "100%",
+            height: "20px",
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          {dateComponent}
-          {" / "}
-          {timeComponent}
-        </p>
+          <p className="startEndDate">
+            Start Date:
+            <span className="startEndDateSpan">
+              {new Date(todoStartDate).toString().substring(0, 15)}
+            </span>
+          </p>
+          <p className="startEndDate">
+            End Date:
+            <span className="startEndDateSpan">
+              {new Date(todoEndDate).toString().substring(0, 15)}
+            </span>
+          </p>
+          <EditIcon
+            className="editTodoIcon"
+            onClick={() => setOpenEdit(true)}
+          />
+        </div>
         <p
           style={{
             color: "rgba(0, 99, 66, 0.868)",
@@ -76,16 +88,44 @@ function TodoCard({ id, text, date, checked }) {
             verticalAlign: "center",
             height: "auto",
             // lineHeight: "30px",
-            marginTop: "-5px",
             fontFamily: "Times New Roman",
           }}
         >
           {text}
         </p>
       </TodoTextBox>
-      <TodoActions>
+      <TodoActions
+        style={{
+          backgroundColor:
+            priority === 3
+              ? "rgba(185, 5, 5, 0.8)"
+              : priority === 2
+              ? "rgba(185, 86, 5, 0.8)"
+              : "rgba(0, 99, 66, 0.8)",
+        }}
+      >
         <DeleteIcon className="delete" onClick={() => handleDelete(id)} />
       </TodoActions>
+      {openEdit && (
+        <CalendarModal
+          open={openEdit}
+          handleClose={() => setOpenEdit(false)}
+          event={{
+            title: text,
+            backgroundColor:
+              priority === 3
+                ? "rgba(185, 5, 5, 0.8)"
+                : priority === 2
+                ? "rgba(185, 86, 5, 0.8)"
+                : "rgba(0, 99, 66, 0.8)",
+            start: new Date(todoStartDate),
+            end: new Date(todoEndDate),
+            _def: {
+              publicId: id,
+            },
+          }}
+        />
+      )}
     </TodoMainCard>
   );
 }
@@ -103,7 +143,7 @@ const TodoMainCard = styled.div`
   margin: 0.7rem 0rem;
   box-shadow: 0px 1px 5px rgb(0, 129, 86);
   background-color: rgb(231, 250, 243);
-  border-radius: 10px;
+  border-radius: 20px 10px 30px 10px;
   width: 100%;
   height: 3rem;
   min-height: 3rem;
@@ -150,19 +190,44 @@ const TodoTextBox = styled.div`
        font-size:9px;
     `};
   }
+  .startEndDate {
+    flex: 0.5;
+    font-size: 9px;
+    color: rgba(4, 126, 85, 0.868);
+    font-weight: 700;
+    ${customMedia.lessThan("smTablet")`
+       font-size:8px;
+       font-weight: 400;
+    `};
+  }
+  .startEndDateSpan {
+    font-weight: 400;
+    margin-left: 0.5rem;
+    ${customMedia.lessThan("smTablet")`
+          margin-left:0.1rem;
+    `};
+  }
+  .editTodoIcon {
+    color: rgba(4, 126, 85, 0.568);
+    transform: scale(0.7);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  .editTodoIcon:hover {
+    color: rgba(4, 126, 85, 0.868);
+    transform: scale(0.8);
+  }
 `;
 const TodoActions = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   color: #fff;
   flex: 0.05;
   width: 100%;
   height: auto;
   padding: 0.2rem 0.5rem;
-  background-color: rgba(0, 99, 66, 0.868);
-  border-radius: 30px 0px 0px 30px;
-  border-left: 2px solid rgba(0, 99, 66, 0.768);
+  border-radius: 30px 10px 30px 30px;
 
   ${customMedia.lessThan("smTablet")`
       flex: 0.09;

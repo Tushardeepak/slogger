@@ -122,6 +122,12 @@ ul li svg path {
     object-fit: cover;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .signUpVideo {
+    display: none;
+  }
+}
 /* 
 @media screen and (max-height: 600px) {
   .footer {

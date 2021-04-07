@@ -117,7 +117,7 @@ function TeamTodoCard({
       </TodoStartIcon>
 
       <TodoTextBox>
-        <div style={{ display: "flex" }}>
+        {/* <div style={{ display: "flex" }}>
           <div style={{ width: "100%", flex: "0.85" }}>
             <div className="inputField">
               <p className="assignedTo">Assigned to :</p>
@@ -193,7 +193,133 @@ function TeamTodoCard({
               )}
             </div>
           </div>
-        </div>
+        </div> */}
+        {!isSmall ? (
+          <>
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <Button
+                  className="uploadView"
+                  style={{
+                    width: "10%",
+                    fontSize: "0.65rem",
+                    height: "1.2rem",
+                    color: "#fff",
+                    backgroundColor: "rgb(5, 185, 125,0.8)",
+                    marginRight: "1rem",
+                    marginBottom: "0.2rem",
+                  }}
+                  onClick={() => setOpenMaterial(true)}
+                >
+                  Details
+                </Button>
+              </div>
+              <p
+                className="todoDate"
+                style={{
+                  color: "rgba(0, 99, 66, 0.668)",
+                  paddingBottom: "0rem",
+                }}
+              >
+                {date.substring(8, 10)}
+                {"/"}
+                {date.substring(5, 7)}
+                {"/"}
+                {date.substring(0, 4)}
+              </p>
+            </div>
+            <div style={{ width: "100%", flex: 1, marginBottom: "0.5rem" }}>
+              <div className="inputField">
+                <p className="assignedTo">Assigned to :</p>
+                <input
+                  value={assignedTo}
+                  className="todoInput"
+                  type="text"
+                  onChange={
+                    admin === currentUser.uid
+                      ? (e) => handleInputChange(e.target.value)
+                      : () => emptyFunction()
+                  }
+                  // onKeyDown={(e) => handleSubmitEnter(e)}
+                />
+                {admin === currentUser.uid
+                  ? assignChange && (
+                      <DoneIcon
+                        className="assignIcon"
+                        onClick={() => handleAssignedSubmit()}
+                      />
+                    )
+                  : ""}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div style={{ display: "flex" }}>
+            <div style={{ width: "100%", flex: "0.85" }}>
+              <div className="inputField">
+                <p className="assignedTo">Assigned to :</p>
+                <input
+                  value={assignedTo}
+                  className="todoInput"
+                  type="text"
+                  onChange={
+                    admin === currentUser.uid
+                      ? (e) => handleInputChange(e.target.value)
+                      : () => emptyFunction()
+                  }
+                  // onKeyDown={(e) => handleSubmitEnter(e)}
+                />
+                {admin === currentUser.uid
+                  ? assignChange && (
+                      <DoneIcon
+                        className="assignIcon"
+                        onClick={() => handleAssignedSubmit()}
+                      />
+                    )
+                  : ""}
+              </div>
+            </div>
+            <div
+              style={{ flex: "0.15", display: "flex", flexDirection: "column" }}
+            >
+              <p
+                className="todoDate"
+                style={{
+                  color: "rgba(0, 99, 66, 0.668)",
+                  paddingBottom: "0.3rem",
+                }}
+              >
+                {date.substring(8, 10)}
+                {"/"}
+                {date.substring(5, 7)}
+                {"/"}
+                {date.substring(0, 4)}
+              </p>
+              <div>
+                <Button
+                  className="uploadView"
+                  style={{
+                    width: "98%",
+                    fontSize: "0.65rem",
+                    height: "1.2rem",
+                    color: "#fff",
+                    backgroundColor: "rgb(5, 185, 125,0.8)",
+                    marginBottom: "0.7rem",
+                  }}
+                  onClick={() => setOpenMaterial(true)}
+                >
+                  Details
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
         <p
           style={{
             color: "rgba(0, 99, 66, 0.868)",
@@ -228,6 +354,8 @@ function TeamTodoCard({
           comment={comment}
           urlTeamName={urlTeamName}
           checkedBy={checkedBy}
+          todoText={text}
+          todoEndDate={date}
         />
       )}
     </TodoMainCard>
@@ -255,9 +383,9 @@ const TodoMainCard = styled.div`
   word-break: "break-all";
   min-height: 4.5rem !important;
   height: auto;
-  ${customMedia.lessThan("smTablet")`
+  /* ${customMedia.lessThan("smTablet")`
     width: 98%;
-    `};
+    `}; */
 `;
 const TodoStartIcon = styled.div`
   transform: scale(0.8);
@@ -385,7 +513,7 @@ const TodoActions = styled.div`
   height: auto;
   padding: 0.2rem 0.5rem;
   background-color: rgba(0, 99, 66, 0.868);
-  border-radius: 30px 0px 0px 30px;
+  border-radius: 30px 10px 10px 30px;
   border-left: 2px solid rgba(0, 99, 66, 0.768);
 
   ${customMedia.lessThan("smTablet")`

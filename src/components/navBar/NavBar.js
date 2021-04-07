@@ -172,9 +172,9 @@ const NavBarContainer = styled.div`
   position: fixed;
   margin-bottom: 0.5rem;
   color: #fff;
-  background: rgba(0, 145, 96, 0.3);
-  backdrop-filter: blur(0.3px);
-  -webkit-backdrop-filter: blur(0.3px);
+  background: #04ba83;
+  /* backdrop-filter: blur(0.3px);
+  -webkit-backdrop-filter: blur(0.3px); */
   /* box-shadow: 0px 5px 5px rgb(0, 85, 57); */
 
   h1 {

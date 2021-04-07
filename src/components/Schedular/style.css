@@ -1,0 +1,150 @@
+.schedularContainer {
+  height: 73vh;
+}
+.fc .fc-button-primary {
+  background-color: #05b97d !important;
+  border: 2px solid #03855a;
+  height: 2rem;
+  font-size: 0.7rem;
+}
+.fc .fc-toolbar-title {
+  font-size: 1.5rem !important;
+  color: #00774f !important;
+  font-weight: 400;
+}
+.fc .fc-toolbar {
+  justify-content: space-evenly;
+}
+.fc .fc-col-header-cell-cushion {
+  color: #03855a;
+  font-weight: 400;
+}
+.fc .fc-daygrid-day-number {
+  color: #03855a;
+  font-weight: 400;
+}
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: rgba(46, 139, 86, 0.205) !important;
+}
+.fc a {
+  color: #00774f !important;
+  font-weight: 400 !important;
+}
+.fc-h-event {
+  border: none;
+  box-shadow: 2px 2px 5px grey;
+}
+.fc-h-event .fc-event-main {
+  padding-left: 5px;
+  cursor: pointer;
+}
+.fc-h-event:hover .fc-event-main {
+  background-color: rgba(0, 0, 0, 0.226);
+}
+
+/* modal edits */
+.modalTitle {
+  color: #0b9768;
+  margin-bottom: -1rem !important;
+}
+
+.todoTextarea {
+  resize: none;
+  width: 94%;
+  margin-left: 7px;
+  height: 3rem;
+  padding: 0.5rem;
+  background: #b1e9d6;
+  color: #0b9768;
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+}
+
+.alarmModalIcon {
+  color: rgb(3, 185, 124);
+  font-size: 1.5rem !important;
+  padding-right: 0.3rem;
+  cursor: pointer;
+}
+.timeHeading {
+  flex: 0.5;
+  font-size: 0.7rem;
+  color: rgb(0, 90, 60);
+  font-weight: 300;
+  margin-left: 0.5rem;
+}
+.dataContainer {
+  background-color: rgba(3, 185, 124, 0.308);
+  border-radius: 0.5rem;
+  width: 50% !important;
+  margin: 0rem 0.5rem;
+  padding-top: 0.5rem;
+}
+.dateBox {
+  overflow: hidden;
+  width: 90%;
+  height: 1rem;
+  border: none;
+  padding: 0.5rem 0.7rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.priority {
+  margin: 0.5rem !important;
+  border: 2px solid rgb(5, 185, 125) !important;
+  color: rgb(5, 185, 125, 0.8) !important;
+  width: 70% !important;
+  height: 50% !important;
+  overflow: hidden !important;
+  transition: all 0.5s ease-in-out !important;
+}
+.selectedTopPriority {
+  margin: 0.5rem !important;
+  border: 2px solid rgba(185, 5, 5) !important;
+  background-color: rgba(185, 5, 5, 0.8) !important;
+  color: #fff !important;
+  width: 70% !important;
+  height: 50% !important;
+  overflow: hidden !important;
+  transition: all 0.5s ease-in-out !important;
+}
+.selectedEarlyPriority {
+  margin: 0.5rem !important;
+  border: 2px solid rgba(185, 86, 5) !important;
+  background-color: rgba(185, 86, 5, 0.8) !important;
+  color: #fff !important;
+  width: 70% !important;
+  height: 50% !important;
+  overflow: hidden !important;
+  transition: all 0.5s ease-in-out !important;
+}
+.selectedPriority {
+  margin: 0.5rem !important;
+  border: 2px solid rgb(5, 185, 125) !important;
+  background-color: rgb(5, 185, 125, 0.8) !important;
+  color: #fff !important;
+  width: 70% !important;
+  height: 50% !important;
+  overflow: hidden !important;
+  transition: all 0.5s ease-in-out !important;
+}
+
+@media (max-width: 600px) {
+  .fc .fc-button-group {
+    transform: scale(0.8);
+  }
+  .fc .fc-toolbar-title {
+    font-size: 1rem !important;
+    margin: 0 0.5rem;
+  }
+  .dataContainer {
+    width: 98% !important;
+    margin-bottom: 0.5rem;
+  }
+  .alarmModalIcon {
+    margin-top: -0.5rem;
+  }
+}
