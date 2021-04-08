@@ -117,83 +117,6 @@ function TeamTodoCard({
       </TodoStartIcon>
 
       <TodoTextBox>
-        {/* <div style={{ display: "flex" }}>
-          <div style={{ width: "100%", flex: "0.85" }}>
-            <div className="inputField">
-              <p className="assignedTo">Assigned to :</p>
-              <input
-                value={assignedTo}
-                className="todoInput"
-                type="text"
-                onChange={
-                  admin === currentUser.uid
-                    ? (e) => handleInputChange(e.target.value)
-                    : () => emptyFunction()
-                }
-                // onKeyDown={(e) => handleSubmitEnter(e)}
-              />
-              {admin === currentUser.uid
-                ? assignChange && (
-                    <DoneIcon
-                      className="assignIcon"
-                      onClick={() => handleAssignedSubmit()}
-                    />
-                  )
-                : ""}
-            </div>
-          </div>
-          <div
-            style={{ flex: "0.15", display: "flex", flexDirection: "column" }}
-          >
-            <p
-              className="todoDate"
-              style={{
-                color: "rgba(0, 99, 66, 0.668)",
-                paddingBottom: "0.3rem",
-              }}
-            >
-              {date.substring(8, 10)}
-              {"/"}
-              {date.substring(5, 7)}
-              {"/"}
-              {date.substring(0, 4)}
-            </p>
-            <div>
-              {!isSmall ? (
-                <IconButton
-                  className="uploadView"
-                  style={{
-                    width: "98%",
-                    fontSize: "0.65rem",
-                    height: "1.2rem",
-                    color: "#fff",
-                    backgroundColor: "rgb(5, 185, 125,0.8)",
-                    marginLeft: "0.7rem",
-                    marginTop: "-0.4rem",
-                  }}
-                  onClick={() => setOpenMaterial(true)}
-                >
-                  <ErrorOutlineIcon />
-                </IconButton>
-              ) : (
-                <Button
-                  className="uploadView"
-                  style={{
-                    width: "98%",
-                    fontSize: "0.65rem",
-                    height: "1.2rem",
-                    color: "#fff",
-                    backgroundColor: "rgb(5, 185, 125,0.8)",
-                    marginBottom: "0.7rem",
-                  }}
-                  onClick={() => setOpenMaterial(true)}
-                >
-                  Details
-                </Button>
-              )}
-            </div>
-          </div>
-        </div> */}
         {!isSmall ? (
           <>
             <div
@@ -225,6 +148,7 @@ function TeamTodoCard({
                 style={{
                   color: "rgba(0, 99, 66, 0.668)",
                   paddingBottom: "0rem",
+                  fontSize: "0.55rem",
                 }}
               >
                 {date.substring(8, 10)}

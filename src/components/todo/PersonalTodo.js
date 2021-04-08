@@ -691,7 +691,7 @@ const TodoLeftDownBox = styled.div`
   overflow: hidden;
   flex: 0.5 !important;
   ${customMedia.lessThan("smTablet")`
-  flex: 0.5;
+  flex: 1;
     `};
 `;
 
