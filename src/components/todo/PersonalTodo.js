@@ -545,9 +545,9 @@ const TodoLeftUpBox = styled.div`
     overflow: hidden;
     ${customMedia.lessThan("smTablet")`
     margin:0;
-      width: 87%;
-      height:7rem;
-         padding:0.5rem 1rem;
+      // width: 87%;
+      // height:7rem;
+      //    padding:0.5rem 1rem;
     `};
   }
   input {
@@ -598,6 +598,9 @@ const TodoLeftUpBox = styled.div`
     color: rgb(0, 90, 60);
     font-weight: 300;
     margin-left: 1rem;
+    @media (max-height: 400px) {
+      font-size: 3rem;
+    }
   }
   .dataContainer {
     background-color: rgba(3, 185, 124, 0.308);

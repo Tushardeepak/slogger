@@ -327,3 +327,8 @@
     margin: 0 !important;
   }
 }
+@media only screen and (max-height: 400px) {
+  .closeMaterialModal {
+    display: none !important;
+  }
+}

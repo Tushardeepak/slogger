@@ -1,5 +1,5 @@
 @media only screen and (max-height: 600px) {
-  input {
+  /* input {
     font-size: 0.5rem !important;
   }
   input::placeholder {
@@ -7,9 +7,9 @@
   }
   .inputField {
     padding: 0.5rem !important;
-  }
+  } */
 
-  .dateBox {
+  /* .dateBox {
     padding: 0.5rem 0.7rem !important;
   }
   .todoIcon {
@@ -17,9 +17,9 @@
   }
   .AlarmIcon {
     font-size: 1rem !important;
-  }
+  } */
   h3 {
-    font-size: 8px !important;
+    font-size: 10px !important;
     padding: 5px 0 !important;
   }
   h4 {

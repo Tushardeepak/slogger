@@ -10,11 +10,14 @@ import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
 import EditIcon from "@material-ui/icons/Edit";
 import CalendarModal from "../Schedular/CalendarModal";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 
 function TodoCard({ id, text, todoStartDate, todoEndDate, checked, priority }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
   const [openEdit, setOpenEdit] = useState(false);
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleDelete = (todoId) => {
     db.collection("users")
@@ -63,15 +66,19 @@ function TodoCard({ id, text, todoStartDate, todoEndDate, checked, priority }) {
           }}
         >
           <p className="startEndDate">
-            Start Date:
+            Start{isSmall ? " Date:" : ":"}
             <span className="startEndDateSpan">
-              {new Date(todoStartDate).toString().substring(0, 15)}
+              {isSmall
+                ? new Date(todoStartDate).toString().substring(0, 15)
+                : new Date(todoStartDate).toString().substring(0, 11)}
             </span>
           </p>
           <p className="startEndDate">
-            End Date:
+            End{isSmall ? " Date:" : ":"}
             <span className="startEndDateSpan">
-              {new Date(todoEndDate).toString().substring(0, 15)}
+              {isSmall
+                ? new Date(todoStartDate).toString().substring(0, 15)
+                : new Date(todoStartDate).toString().substring(0, 11)}
             </span>
           </p>
           <EditIcon

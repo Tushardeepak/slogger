@@ -12,7 +12,11 @@ import "./sidebar.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useHistory } from "react-router";
 import CreateIcon from "@material-ui/icons/Create";
-import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import {
+  DatePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 import { createMuiTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
@@ -54,7 +58,9 @@ export default function SidebarPersonal() {
   const [open, setOpen] = React.useState(false);
   const { currentUser, logOut } = useAuth();
   const history = useHistory();
-  const [selectedDate, handleDateChange] = useState(new Date());
+  const [selectedStartDate, handleStartDateChange] = useState(new Date());
+  const [selectedEndDate, handleEndDateChange] = useState(new Date());
+  const [priority, setPriority] = useState(1);
   const [inputTodo, setInputTodo] = useState("");
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
@@ -83,8 +89,10 @@ export default function SidebarPersonal() {
       setLoader(true);
       db.collection("users").doc(currentUser.uid).collection("todos").add({
         todoText: inputTodo,
-        todoDate: selectedDate.toISOString(),
+        todoStartDate: selectedStartDate.toISOString(),
+        todoEndDate: selectedEndDate.toISOString(),
         checked: false,
+        priority: priority,
         timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
       setInputTodo("");
@@ -140,21 +148,102 @@ export default function SidebarPersonal() {
             <Typography variant="h6" className={classes.title}>
               Slogger
             </Typography>
-            {/* <Button
-              autoFocus
-              color="inherit"
-              onClick={() => history.push("/help")}
-            >
-              Help
-            </Button>
-            <Button autoFocus color="inherit" onClick={() => handleSignOut()}>
-              Log out
-            </Button> */}
           </Toolbar>
         </AppBar>
         <TodoLeftContainer>
           <TodoLeftUpBox>
-            <div className="inputField inputFieldPersonal">
+            <div className="inputField">
+              <CreateIcon className="todoIcon" />
+              <input
+                value={inputTodo}
+                className="todoInputPersonal"
+                type="text"
+                placeholder="Write here..."
+                onChange={(e) => handleInputChange(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <div className="dataContainerSide">
+                <h3 className="timeHeading">Start date</h3>
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                  <div className="dateBoxSide">
+                    <ThemeProvider theme={defaultMaterialTheme}>
+                      <DatePicker
+                        variant="dialog"
+                        //format="DD/MM/YYYY"
+                        value={selectedStartDate}
+                        onChange={handleStartDateChange}
+                        style={{
+                          width: "100%",
+                          textAlign: "center",
+                          cursor: "pointer",
+                        }}
+                        InputProps={{
+                          endAdornment: <AlarmIcon className="AlarmIcon" />,
+                          disableUnderline: true,
+                        }}
+                      />
+                    </ThemeProvider>
+                  </div>
+                </MuiPickersUtilsProvider>
+              </div>
+              <div className="dataContainerSide">
+                <h3 className="timeHeading">End date</h3>
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                  <div className="dateBoxSide">
+                    <ThemeProvider theme={defaultMaterialTheme}>
+                      <DatePicker
+                        variant="dialog"
+                        value={selectedEndDate}
+                        //  format="DD/MM/YYYY"
+                        onChange={handleEndDateChange}
+                        style={{
+                          width: "100%",
+                          textAlign: "center",
+                          cursor: "pointer",
+                        }}
+                        InputProps={{
+                          endAdornment: <AlarmIcon className="AlarmIcon" />,
+                          disableUnderline: true,
+                        }}
+                      />
+                    </ThemeProvider>
+                  </div>
+                </MuiPickersUtilsProvider>
+              </div>
+            </div>
+            <Button
+              disabled={loader}
+              endIcon={<AddIcon />}
+              className={loader ? "AddButtonDisabled" : "AddButton"}
+              onClick={() => handleSubmit()}
+            >
+              ADD
+            </Button>
+            <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+              <Button
+                className={priority === 3 ? "selectedTopPriority" : "priority"}
+                onClick={() => setPriority(3)}
+              >
+                Top
+              </Button>
+              <Button
+                className={
+                  priority === 2 ? "selectedEarlyPriority" : "priority"
+                }
+                onClick={() => setPriority(2)}
+              >
+                Early
+              </Button>
+              <Button
+                className={priority === 1 ? "selectedPriority" : "priority"}
+                onClick={() => setPriority(1)}
+              >
+                Easy
+              </Button>
+            </div>
+            {/* <div className="inputField inputFieldPersonal">
               <CreateIcon className="todoIcon" />
               <input
                 value={inputTodo}
@@ -192,7 +281,7 @@ export default function SidebarPersonal() {
               onClick={() => handleSubmit()}
             >
               ADD
-            </Button>
+            </Button> */}
           </TodoLeftUpBox>
           <TodoLeftDownBox>
             {todoLength !== 0 ? (
@@ -238,11 +327,12 @@ const TodoLeftUpBox = styled.div`
     width: 90%;
     height: 2rem;
     background-color: rgba(3, 185, 124, 0.308);
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     border: none;
     padding: 1rem;
     padding-left: 0.5rem;
     margin: 0.5rem;
+    margin-bottom: 0;
     display: flex;
     align-items: center;
     overflow: hidden;

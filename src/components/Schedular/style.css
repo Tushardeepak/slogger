@@ -140,11 +140,22 @@
     font-size: 1rem !important;
     margin: 0 0.5rem;
   }
+  .todoTextarea {
+    height: 4rem;
+  }
   .dataContainer {
     width: 98% !important;
     margin-bottom: 0.5rem;
   }
+  .dateBox {
+    height: 2rem;
+  }
   .alarmModalIcon {
     margin-top: -0.5rem;
+  }
+}
+@media (max-height: 400px) {
+  .addButtonModal {
+    display: none !important;
   }
 }

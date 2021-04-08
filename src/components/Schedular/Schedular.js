@@ -78,14 +78,12 @@ function Schedular(props) {
       headerToolbar: {
         left: "prev,next,today",
         center: "title",
-        right: "listYear,timeGridDay,dayGridMonth,timeGridWeek",
+        right: "listYear,dayGridMonth",
         ...props.options,
       },
       views: {
         listYear: { buttonText: "Schedule" },
-        timeGridDay: { buttonText: "Day" },
         dayGridMonth: { buttonText: "Month" },
-        timeGridWeek: { buttonText: "Week" },
       },
       eventClick: function (info) {
         modalFunction(info.event);

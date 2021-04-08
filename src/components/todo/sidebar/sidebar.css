@@ -31,7 +31,30 @@
   font-size: 0.7rem !important;
   overflow: hidden;
 }
-
+.timeHeading {
+  flex: 0.5;
+  font-size: 0.7rem;
+  color: rgb(0, 90, 60);
+  font-weight: 300;
+  margin-left: 1rem;
+}
+.dataContainerSide {
+  background-color: rgba(3, 185, 124, 0.308);
+  border-radius: 0.5rem;
+  width: 97%;
+  margin: 0.5rem 0.5rem;
+  padding-top: 0.5rem;
+}
+.dateBoxSide {
+  overflow: hidden;
+  width: 90%;
+  height: 1rem;
+  border: none;
+  padding: 0.5rem 0.7rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 /* :::::::::::::::::::::::::::::: */
 
 .sidebarProfileContainer {
