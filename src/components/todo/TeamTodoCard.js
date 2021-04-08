@@ -25,6 +25,7 @@ function TeamTodoCard({
   todoImage,
   comment,
   userName,
+  profileImage,
 }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
@@ -280,6 +281,8 @@ function TeamTodoCard({
           checkedBy={checkedBy}
           todoText={text}
           todoEndDate={date}
+          profileImage={profileImage}
+          userName={userName}
         />
       )}
     </TodoMainCard>

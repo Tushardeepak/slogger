@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { db } from "../../firebase";
 import AddingTeamModal from "./Dialog";
@@ -111,7 +111,7 @@ const defaultMaterialTheme = createMuiTheme({
   },
 });
 
-function Discussion({ UrlTeamName, userName }) {
+function Discussion({ UrlTeamName, userName, profileImage }) {
   const [teams, setTeams] = useState([]);
   const [joinedTeams, setJoinedTeams] = useState([]);
   const { currentUser } = useAuth();
@@ -136,10 +136,13 @@ function Discussion({ UrlTeamName, userName }) {
         discussionText: sendTerm,
         timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
         senderId: currentUser.uid,
+        senderProfileImage: profileImage,
         senderName: userName,
         discussionTime: date.toISOString(),
+        help: false,
       });
       setSendTerm("");
+      // executeScroll();
     }
   };
 
@@ -183,6 +186,8 @@ function Discussion({ UrlTeamName, userName }) {
           senderName: doc.data().senderName,
           discussionText: doc.data().discussionText,
           discussionTime: doc.data().discussionTime,
+          senderProfileImage: doc.data().senderProfileImage,
+          help: doc.data().help,
         }));
         setChatList(list);
       });
@@ -203,6 +208,18 @@ function Discussion({ UrlTeamName, userName }) {
       });
     });
   }, [UrlTeamName]);
+
+  const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
+
+  const myRef = useRef(null);
+  const executeScroll = () => {
+    myRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  React.useEffect(() => {
+    // document.getElementById("scrollToThisDiv").scrollIntoView();
+    //  executeScroll();
+  }, [chatList.length]);
 
   const emptyFunction = () => {};
 
@@ -286,42 +303,49 @@ function Discussion({ UrlTeamName, userName }) {
                 No messages...
               </div>
             ) : (
-              chatList.map((chat) => (
-                <Chat
-                  text={chat.discussionText}
-                  date={chat.discussionTime}
-                  name={chat.senderName}
-                  senderId={chat.senderId}
-                  admin={admin}
-                />
-              ))
+              [...chatList]
+                .reverse()
+                .map((chat) => (
+                  <Chat
+                    key={chat.id}
+                    id={chat.id}
+                    UrlTeamName={UrlTeamName}
+                    senderProfileImage={chat.senderProfileImage}
+                    text={chat.discussionText}
+                    date={chat.discussionTime}
+                    name={chat.senderName}
+                    senderId={chat.senderId}
+                    admin={admin}
+                    help={chat.help}
+                  />
+                ))
             )}
 
-            <TodoRightUpBox>
-              <textarea
-                value={sendTerm}
-                type="text"
-                // onKeyDown={(e) => handleSubmitEnter(e)}
-                onChange={(e) => setSendTerm(e.target.value)}
-                placeholder="Type..."
-              />
-              <Button
-                // endIcon={<SendIcon />}
-                style={{
-                  background: "rgb(5, 185, 125)",
-                  color: "#fff",
-                  height: "2rem",
-                  marginRight: "0.5rem",
-                  overflow: "hidden",
-                }}
-                onClick={handleSend}
-              >
-                Send
-              </Button>
-            </TodoRightUpBox>
+            <div ref={myRef}></div>
           </TeamTodoRightContainer>
         )}
-
+        <TodoRightDownBox>
+          <textarea
+            value={sendTerm}
+            type="text"
+            // onKeyDown={(e) => handleSubmitEnter(e)}
+            onChange={(e) => setSendTerm(e.target.value)}
+            placeholder="Type..."
+          />
+          <Button
+            // endIcon={<SendIcon />}
+            style={{
+              background: "rgb(5, 185, 125)",
+              color: "#fff",
+              height: "2rem",
+              marginRight: "0.5rem",
+              overflow: "hidden",
+            }}
+            onClick={handleSend}
+          >
+            Send
+          </Button>
+        </TodoRightDownBox>
         {/* ::::::::::::::::: */}
       </TeamTodoContainer>
     </div>
@@ -386,7 +410,7 @@ const TeamTodoLeftLeftBox = styled.div`
       `}
   }
   h3 {
-    color: rgb(5, 185, 125);
+    color: rgb(5, 185, 125, 0.8);
     font-weight: 600;
     text-align: center;
     font-size: 0.9rem;
@@ -427,7 +451,7 @@ const TeamTodoLeftRightBox = styled.div`
       `}
   }
   h3 {
-    color: rgb(5, 185, 125);
+    color: rgb(5, 185, 125, 0.8);
     font-weight: 600;
     text-align: center;
     width: 100%;
@@ -446,12 +470,14 @@ const TeamTodoRightContainer = styled.div`
   flex: 0.55;
   overflow-y: scroll;
   padding: 0 1rem;
-  margin-top: 4rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 4rem;
+  margin-top: 0.5rem;
+
   ${customMedia.lessThan("smTablet")`
   margin:0 0.5rem;
   padding:0;
-    margin-top: 4rem;
+    margin-top: 0.5rem;
+    margin-bottom: 4rem;
     flex:1 !important;
   `}
   .teamNoTodoImage {
@@ -461,9 +487,10 @@ const TeamTodoRightContainer = styled.div`
   }
 `;
 
-const TodoRightUpBox = styled.div`
+const TodoRightDownBox = styled.div`
   position: absolute;
-  top: 0;
+  bottom: 0;
+  right: 2rem;
   display: flex;
   align-items: center;
   border-radius: 5px;
@@ -500,8 +527,8 @@ const TodoRightUpBox = styled.div`
     border:none;
     width: 100% !important;
     transform:scale(0.9);
-    top: 2.5rem;
-    margin-left:-0.9rem;
+    bottom: 0rem;
+    margin-right:-1.5rem !important;
   `}
 `;
 const ChatScreen = styled.div`

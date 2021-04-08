@@ -13,6 +13,7 @@ import SnackBar from "../snackbar/SnackBar";
 import { Fade, useMediaQuery, useTheme } from "@material-ui/core";
 import firebase from "firebase";
 import DoneIcon from "@material-ui/icons/Done";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   const theme = useTheme();
@@ -35,11 +36,14 @@ export default function Material({
   checkedBy,
   todoText,
   todoEndDate,
+  userName,
+  profileImage,
 }) {
   const [editComment, setEditComment] = useState(comment);
   const [done, setDone] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [added, setAdded] = useState(false);
+  const [sent, setSent] = useState(false);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -91,10 +95,6 @@ export default function Material({
   };
 
   const addToPersonal = () => {
-    // console.log(todoText);
-    // console.log(new Date().toISOString());
-    // console.log(todoEndDate);
-
     db.collection("users").doc(currentUser.uid).collection("todos").add({
       todoText: todoText,
       todoStartDate: new Date().toISOString(),
@@ -104,6 +104,19 @@ export default function Material({
       timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setAdded(true);
+  };
+
+  const sentToDiscussion = () => {
+    db.collection("teams").doc(urlTeamName).collection("discussion").add({
+      discussionText: todoText,
+      timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+      senderId: currentUser.uid,
+      senderProfileImage: profileImage,
+      senderName: userName,
+      discussionTime: new Date().toISOString(),
+      help: true,
+    });
+    setSent(true);
   };
 
   return (
@@ -156,6 +169,32 @@ export default function Material({
                 onClick={addToPersonal}
               >
                 {added ? "Added" : "Add this to personal"}
+              </Button>
+              <Button
+                endIcon={
+                  sent ? (
+                    <DoneIcon
+                      style={{ color: "#fff", transform: "scale(0.8)" }}
+                    />
+                  ) : (
+                    <ArrowForwardIcon
+                      style={{ color: "#fff", transform: "scale(0.8)" }}
+                    />
+                  )
+                }
+                className="uploadView"
+                style={{
+                  overflow: "hidden",
+                  fontSize: "0.5rem",
+                  height: "1.5rem",
+                  color: "#fff",
+                  backgroundColor: "rgb(5, 185, 125, 0.8)",
+                  marginBottom: "1rem",
+                  marginLeft: "1rem",
+                }}
+                onClick={sentToDiscussion}
+              >
+                {sent ? "Sent" : "Ask in group"}
               </Button>
             </div>
             <div className="materialMainBox">

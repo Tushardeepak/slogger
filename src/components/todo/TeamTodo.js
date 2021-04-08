@@ -125,7 +125,7 @@ const defaultMaterialTheme = createMuiTheme({
   },
 });
 
-function TeamTodo({ UrlTeamName, setDiscussionLock }) {
+function TeamTodo({ UrlTeamName, setDiscussionLock, profileImage }) {
   const [openMaker, setOpenMaker] = useState(false);
   const [make, setMake] = useState(false);
   const [selectedDate, handleDateChange] = useState(new Date());
@@ -153,7 +153,7 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
   const [openJoinSnackBar, setOpenJoinSnackBar] = useState(false);
   const [openDeleteSnackBar, setOpenDeleteSnackBar] = useState(false);
   const [currentTeamName, setCurrentTeamName] = useState("");
-  const [profileImage, setProfileImage] = useState("");
+  //const [profileImage, setProfileImage] = useState("");
   const [profilePath, setProfilePath] = useState("");
   const [openSnack, setOpenSnack] = useState(false);
 
@@ -632,6 +632,7 @@ function TeamTodo({ UrlTeamName, setDiscussionLock }) {
               todoImage={todo.todoImage}
               comment={todo.comment}
               userName={userName}
+              profileImage={profileImage}
             />
           ))}
         </TeamTodoRightContainer>

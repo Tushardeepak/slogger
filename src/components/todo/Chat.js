@@ -8,8 +8,20 @@ import { db } from "../../firebase";
 import moment from "moment";
 import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
+import { Avatar } from "@material-ui/core";
+import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
 
-function Chat({ senderId, text, date, name, admin }) {
+function Chat({
+  id,
+  senderId,
+  text,
+  date,
+  name,
+  admin,
+  senderProfileImage,
+  help,
+  UrlTeamName,
+}) {
   const { currentUser } = useAuth();
 
   var timeDifference = new Date().getTimezoneOffset();
@@ -19,10 +31,18 @@ function Chat({ senderId, text, date, name, admin }) {
   var hours = new Date(date).getHours();
   var ampm = hours >= 12 ? "pm" : "am";
 
+  const handleDeleteChat = () => {
+    db.collection("teams")
+      .doc(UrlTeamName)
+      .collection("discussion")
+      .doc(id)
+      .delete();
+  };
+
   return (
     <TodoMainCard>
       {senderId === currentUser.uid ? (
-        <TodoTextBox>
+        <>
           {currentUser.uid === senderId ? (
             ""
           ) : (
@@ -31,57 +51,84 @@ function Chat({ senderId, text, date, name, admin }) {
               {senderId === admin ? " (Admin)" : ""}{" "}
             </p>
           )}
-
-          <p
-            style={{
-              color: "rgba(0, 99, 66, 0.868)",
-              fontWeight: 400,
-              width: "100%",
-              wordBreak: "break-all",
-              verticalAlign: "center",
-              height: "auto",
-              fontSize: "small",
-              margin: "0.2rem 0",
-              fontFamily: "Times New Roman",
-            }}
-          >
-            {text}
-          </p>
-          <p className="messageTime">
-            {" "}
-            {timeComponent} {ampm} {" - "}
-            {dateComponent}
-          </p>
-        </TodoTextBox>
+          <TodoTextBox>
+            <p
+              style={{
+                color: "rgba(0, 99, 66, 0.868)",
+                fontWeight: 400,
+                width: "100%",
+                wordBreak: "break-all",
+                verticalAlign: "center",
+                height: "auto",
+                fontSize: "small",
+                margin: "0.2rem 0",
+                fontFamily: "Times New Roman",
+              }}
+            >
+              {text}
+            </p>
+            <div className="chatTimeBox">
+              <div className="chatTimeSpace">
+                {help && <p className="helpNeeded">Help</p>}
+              </div>
+              <p className="messageTime">
+                {" "}
+                {dateComponent}
+                {" - "}
+                {timeComponent} {ampm}
+              </p>
+              <DeleteSweepIcon
+                className="chatDeleteBtn"
+                onClick={handleDeleteChat}
+              />
+            </div>
+          </TodoTextBox>
+        </>
       ) : (
-        <TodoTextBoxReceived>
-          {currentUser.uid === senderId ? (
-            ""
-          ) : (
-            <p className="senderName">{name}</p>
-          )}
-
-          <p
-            style={{
-              color: "rgba(0, 99, 66, 0.868)",
-              fontWeight: 400,
-              width: "100%",
-              wordBreak: "break-all",
-              verticalAlign: "center",
-              height: "auto",
-              fontSize: "small",
-              margin: "0.2rem 0",
-              fontFamily: "Times New Roman",
-            }}
+        <div style={{ display: "flex", width: "100%", alignItems: "center" }}>
+          <Avatar
+            src={senderProfileImage}
+            alt={name}
+            className="senderAvatar"
+          />
+          <div
+            style={{ display: "flex", flexDirection: "column", width: "100%" }}
           >
-            {text}
-          </p>
-          <p className="messageTime">
-            {" "}
-            {timeComponent} {ampm} {" - "}
-            {dateComponent}
-          </p>
-        </TodoTextBoxReceived>
+            {currentUser.uid === senderId ? (
+              ""
+            ) : (
+              <p className="senderName">{name}</p>
+            )}
+            <TodoTextBoxReceived>
+              <p
+                style={{
+                  color: "rgba(0, 99, 66, 0.868)",
+                  fontWeight: 400,
+                  width: "100%",
+                  wordBreak: "break-all",
+                  verticalAlign: "center",
+                  height: "auto",
+                  fontSize: "small",
+                  margin: "0.2rem 0",
+                  fontFamily: "Times New Roman",
+                }}
+              >
+                {text}
+              </p>
+              <div className="chatTimeBox">
+                <div className="chatTimeSpace">
+                  {help && <p className="helpNeeded">Help Needed</p>}
+                </div>
+                <p className="messageTime">
+                  {" "}
+                  {dateComponent}
+                  {" - "}
+                  {timeComponent} {ampm}
+                </p>
+              </div>
+            </TodoTextBoxReceived>
+          </div>
+        </div>
       )}
     </TodoMainCard>
   );

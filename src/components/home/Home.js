@@ -101,6 +101,7 @@ function Home(props) {
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const [userName, setUserName] = React.useState("");
+  const [profileImage, setProfileImage] = React.useState("");
   const [discussionLock, setDiscussionLock] = React.useState(true);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
@@ -121,10 +122,12 @@ function Home(props) {
         const profile = snapshot.docs.map((doc) => ({
           id: doc.id,
           name: doc.data().name,
+          profileImage: doc.data().profileImage,
         }));
         profile.filter((p) => {
           if (p.name !== "") {
             setUserName(p.name);
+            setProfileImage(p.profileImage);
             setOpen(true);
             setDiscussionLock(false);
           }
@@ -211,12 +214,14 @@ function Home(props) {
             <TeamTodo
               UrlTeamName={props.match.params.teamName}
               setDiscussionLock={setDiscussionLock}
+              profileImage={profileImage}
             />
           </TabPanel>
           <TabPanel value={value} index={2}>
             <Discussion
               UrlTeamName={props.match.params.teamName}
               userName={userName}
+              profileImage={profileImage}
             />
           </TabPanel>
           <TabPanel value={value} index={3}>
@@ -280,6 +285,7 @@ const HomeContainer = styled.div`
     `};
 
   .mainPaper {
+    overflow: hidden;
     position: relative;
     width: 97.5%;
     height: 91%;

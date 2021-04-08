@@ -288,14 +288,49 @@
 
 /*:::::::::::::::Discussion::::::::::::::::*/
 
+.chatTimeBox {
+  display: flex;
+  width: 100%;
+}
+.chatTimeSpace {
+  flex: 1;
+}
 .messageTime {
   font-size: xx-small;
   color: rgba(0, 99, 66, 0.7);
-  margin-left: 75%;
 }
 .senderName {
   font-size: xx-small;
   color: rgba(0, 99, 66, 0.7);
+  margin-bottom: 0.2rem;
+  margin-top: 0.4rem;
+}
+.senderAvatar {
+  height: 2rem !important;
+  width: 2rem !important;
+  margin-right: 0.5rem;
+}
+.helpNeeded {
+  font-size: 9px;
+  background-color: rgba(0, 99, 66, 0.7);
+  color: #fff;
+  width: 10%;
+  text-align: center;
+  padding: 1px 2px;
+  border-radius: 3px;
+  font-weight: 300;
+  margin-right: 10px;
+}
+.chatDeleteBtn {
+  color: rgba(0, 99, 66, 0.7);
+  font-size: 15px !important;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.chatDeleteBtn:hover {
+  transform: scale(1.1);
+  color: rgb(148, 4, 4);
 }
 
 /*:::::::::::::::Discussion::::::::::::::::*/
@@ -310,11 +345,6 @@
   }
   .addButtonModal {
     width: 100% !important;
-  }
-}
-@media only screen and (max-width: 600px) {
-  .messageTime {
-    margin-left: 50%;
   }
 }
 
