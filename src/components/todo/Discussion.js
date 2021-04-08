@@ -364,13 +364,13 @@ const customMedia = generateMedia({
 const TeamTodoContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 89%;
+  height: 90%;
   position: absolute;
   display: flex;
   ${customMedia.lessThan("smTablet")`
     flex:1;
       flex-direction:column;
-      height: 81.5%;
+      height: 86.5%;
       margin-left:-0.1rem;
   `}
 `;
@@ -470,7 +470,7 @@ const TeamTodoRightContainer = styled.div`
   flex: 0.55;
   overflow-y: scroll;
   padding: 0 1rem;
-  margin-bottom: 4rem;
+  margin-bottom: 3.5rem;
   margin-top: 0.5rem;
 
   ${customMedia.lessThan("smTablet")`
@@ -495,8 +495,12 @@ const TodoRightDownBox = styled.div`
   align-items: center;
   border-radius: 5px;
   margin: 0.2rem 0;
+  margin-bottom: 0;
   width: 52%;
-  background-color: rgb(3, 185, 124, 0.2);
+  background-color: rgb(206, 252, 236);
+  @media (max-height: 500px) {
+    bottom: 2rem !important;
+  }
 
   textarea {
     resize: none;
@@ -513,6 +517,9 @@ const TodoRightDownBox = styled.div`
     @media (max-width: 600px) {
       font-size: 1.1rem !important;
     }
+    @media (max-height: 500px) {
+      height: 3rem !important;
+    }
   }
 
   textarea::placeholder {
@@ -527,7 +534,7 @@ const TodoRightDownBox = styled.div`
     border:none;
     width: 100% !important;
     transform:scale(0.9);
-    bottom: 0rem;
+    //bottom: 0;
     margin-right:-1.5rem !important;
   `}
 `;
