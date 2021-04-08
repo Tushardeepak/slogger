@@ -1,5 +1,5 @@
 .profilePageContainer {
-  height: 74vh;
+  height: 79vh;
   display: flex;
   overflow: hidden;
 }
@@ -8,7 +8,7 @@
   border-radius: 10px;
   overflow-y: scroll !important;
   flex: 0.35;
-  height: 74vh !important;
+  height: 75vh !important;
   border-right: 2px solid rgba(0, 141, 94, 0.295);
   margin-bottom: 1rem;
 }

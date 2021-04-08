@@ -1,7 +1,6 @@
 .addButton {
   width: 20% !important;
   color: #fff !important;
-  font-weight: 600 !important;
   background-color: rgb(5, 185, 125) !important;
   overflow: hidden !important;
   border: none;
@@ -12,9 +11,8 @@
   cursor: pointer;
 }
 .addButtonDisabled {
-  width: 95.5% !important;
+  width: 20% !important;
   color: #fff !important;
-  font-weight: 600 !important;
   background-color: rgba(5, 185, 125, 0.418) !important;
   margin: 0.5rem !important;
 }
@@ -79,6 +77,6 @@
     width: 20rem !important;
   }
   .input {
-    width: 70% !important;
+    width: 90% !important;
   }
 }

@@ -33,7 +33,13 @@ function SloggerNew() {
     }
   }, []);
   return (
-    <div style={{ height: "auto", fontFamily: "Times New Roman" }}>
+    <div
+      style={{
+        height: "auto",
+        fontFamily: "Times New Roman",
+        overflowX: "hidden",
+      }}
+    >
       <NavBar page={0} />
       <div className="banner">
         <video autoPlay loop muted className="video">
@@ -160,6 +166,9 @@ function SloggerNew() {
           </h3>
           <h3 className="screenContentPara">
             3) Get a visual representation of your work
+          </h3>
+          <h3 className="screenContentPara">
+            4) Gives a schedular for planning future activities
           </h3>
         </div>
         <img src={personalTodoImg} className="screenImg" />

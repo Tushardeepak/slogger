@@ -8,13 +8,21 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import "./style.css";
 import emailjs from "emailjs-com";
+import { Fade, useMediaQuery, useTheme } from "@material-ui/core";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="" ref={ref} {...props} />;
+  const theme = useTheme();
+  return useMediaQuery(theme.breakpoints.down("sm")) ? (
+    <Slide direction="left" ref={ref} {...props} />
+  ) : (
+    <Fade direction="" ref={ref} {...props} />
+  );
 });
 
 export default function AddingTeamModal({ open, handleClose, setSent }) {
   const [senderEmail, setSenderEmail] = useState("");
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleSend = (e) => {
     console.log(e);
@@ -44,6 +52,7 @@ export default function AddingTeamModal({ open, handleClose, setSent }) {
       open={open}
       TransitionComponent={Transition}
       keepMounted
+      fullScreen={!isSmall}
       onClose={handleClose}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
@@ -67,7 +76,12 @@ export default function AddingTeamModal({ open, handleClose, setSent }) {
             <input type="email" name="email" className="input" />
             <label>Message</label>
             <textarea name="message" className="input" />
-            <input type="submit" value="Send" className="addButton" />
+            <div style={{ display: "flex" }}>
+              <button className="addButton" onClick={() => handleClose()}>
+                Cancel
+              </button>
+              <input type="submit" value="Send" className="addButton" />
+            </div>
           </form>
         </DialogContentText>
       </DialogContent>
