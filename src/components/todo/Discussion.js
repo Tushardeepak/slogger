@@ -143,7 +143,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
         teamTodoText: "",
       });
       setSendTerm("");
-      // executeScroll();
+      executeScroll();
     }
   };
 
@@ -211,16 +211,14 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
     });
   }, [UrlTeamName]);
 
-  const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
-
-  const myRef = useRef(null);
   const executeScroll = () => {
-    myRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    document
+      .getElementById("scrollToThisDiv")
+      .scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   React.useEffect(() => {
-    // document.getElementById("scrollToThisDiv").scrollIntoView();
-    //  executeScroll();
+    executeScroll();
   }, [chatList.length]);
 
   const emptyFunction = () => {};
@@ -323,8 +321,10 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
                   />
                 ))
             )}
-
-            <div ref={myRef}></div>
+            <div
+              id="scrollToThisDiv"
+              style={{ height: "3rem", width: "100%" }}
+            ></div>
             <TodoRightDownBox>
               <textarea
                 value={sendTerm}

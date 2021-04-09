@@ -287,7 +287,7 @@ const HomeContainer = styled.div`
 
   .mainPaper {
     overflow: hidden;
-    position: relative;
+    position: absolute;
     width: 97.5%;
     height: 91%;
     border-radius: 15px;
