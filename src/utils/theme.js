@@ -40,5 +40,10 @@ export default createMuiTheme({
         color: "rgb(2, 88, 60)",
       },
     },
+    MuiDialog: {
+      paperWidthSm: {
+        width: "600px",
+      },
+    },
   },
 });

@@ -215,6 +215,7 @@ function Home(props) {
               UrlTeamName={props.match.params.teamName}
               setDiscussionLock={setDiscussionLock}
               profileImage={profileImage}
+              setTabValue={setValue}
             />
           </TabPanel>
           <TabPanel value={value} index={2}>

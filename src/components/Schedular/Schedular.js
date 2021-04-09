@@ -27,6 +27,7 @@ function Schedular(props) {
             .replace(/T.*$/, ""),
           backgroundColor: "rgba(185, 5, 5, 0.8)",
           display: "block",
+          teamName: todo.todoTeamName,
         };
       }
       if (todo.priority === 2) {
@@ -41,6 +42,7 @@ function Schedular(props) {
             .replace(/T.*$/, ""),
           backgroundColor: "rgba(185, 86, 5, 0.8)",
           display: "block",
+          teamName: todo.todoTeamName,
         };
       }
       if (todo.priority === 1) {
@@ -55,6 +57,7 @@ function Schedular(props) {
             .replace(/T.*$/, ""),
           backgroundColor: "rgba(0, 99, 66, 0.8)",
           display: "block",
+          teamName: todo.todoTeamName,
         };
       }
     });

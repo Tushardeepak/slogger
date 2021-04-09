@@ -156,6 +156,9 @@ function PersonalTodo() {
         todoEndDate: selectedEndDate.toISOString(),
         checked: false,
         priority: priority,
+        teamTodoText: "",
+        teamName: "",
+        help: false,
         timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
       setInputTodo("");
@@ -180,6 +183,9 @@ function PersonalTodo() {
         todoEndDate: selectedEndDate.toISOString(),
         checked: false,
         priority: priority,
+        teamTodoText: "",
+        teamName: "",
+        help: false,
         timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
       setInputTodo("");
@@ -210,6 +216,9 @@ function PersonalTodo() {
           todoEndDate: doc.data().todoEndDate,
           checked: doc.data().checked,
           priority: doc.data().priority,
+          teamTodoText: doc.data().teamTodoText,
+          todoTeamName: doc.data().teamName,
+          help: doc.data().help,
         }));
         console.log(list);
         setTodoList(list);
@@ -383,12 +392,16 @@ function PersonalTodo() {
           {todoList.length !== 0 ? (
             todoList.map((todo) => (
               <TodoCard
+                key={todo.id}
                 id={todo.id}
                 text={todo.todoText}
                 todoStartDate={todo.todoStartDate}
                 todoEndDate={todo.todoEndDate}
                 checked={todo.checked}
                 priority={todo.priority}
+                teamTodoText={todo.teamTodoText}
+                todoTeamName={todo.todoTeamName}
+                help={todo.help}
               />
             ))
           ) : (
@@ -429,12 +442,16 @@ function PersonalTodo() {
             })
             .map((todo) => (
               <TodoCard
+                key={todo.id}
                 id={todo.id}
                 text={todo.todoText}
                 todoStartDate={todo.todoStartDate}
                 todoEndDate={todo.todoEndDate}
                 checked={todo.checked}
                 priority={todo.priority}
+                teamTodoText={todo.teamTodoText}
+                todoTeamName={todo.todoTeamName}
+                help={todo.help}
               />
             ))}
         </TabPanel>
@@ -451,12 +468,16 @@ function PersonalTodo() {
             })
             .map((todo) => (
               <TodoCard
+                key={todo.id}
                 id={todo.id}
                 text={todo.todoText}
                 todoStartDate={todo.todoStartDate}
                 todoEndDate={todo.todoEndDate}
                 checked={todo.checked}
                 priority={todo.priority}
+                teamTodoText={todo.teamTodoText}
+                todoTeamName={todo.todoTeamName}
+                help={todo.help}
               />
             ))}
         </TabPanel>

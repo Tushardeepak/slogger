@@ -8,8 +8,20 @@ import { db } from "../../firebase";
 import moment from "moment";
 import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
-import { Avatar } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  makeStyles,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+
+const useStyles = makeStyles((theme) => ({
+  timeBtnChat: {
+    minWidth: "30%",
+  },
+}));
 
 function Chat({
   id,
@@ -21,6 +33,7 @@ function Chat({
   senderProfileImage,
   help,
   UrlTeamName,
+  teamTodoText,
 }) {
   const { currentUser } = useAuth();
 
@@ -30,6 +43,10 @@ function Chat({
   var timeComponent = date.utc().utcOffset(timeDifference).format("HH:mm");
   var hours = new Date(date).getHours();
   var ampm = hours >= 12 ? "pm" : "am";
+
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+  const classes = useStyles();
 
   const handleDeleteChat = () => {
     db.collection("teams")
@@ -69,7 +86,15 @@ function Chat({
             </p>
             <div className="chatTimeBox">
               <div className="chatTimeSpace">
-                {help && <p className="helpNeeded">Help</p>}
+                {help && (
+                  <Button
+                    classes={{ root: classes.timeBtnChat }}
+                    disabled
+                    className="helpNeeded"
+                  >
+                    {!isSmall ? "H" : "Help Needed"}
+                  </Button>
+                )}
               </div>
               <p className="messageTime">
                 {" "}
@@ -117,7 +142,15 @@ function Chat({
               </p>
               <div className="chatTimeBox">
                 <div className="chatTimeSpace">
-                  {help && <p className="helpNeeded">Help Needed</p>}
+                  {help && (
+                    <Button
+                      classes={{ root: classes.timeBtnChat }}
+                      disabled
+                      className="helpNeeded"
+                    >
+                      {!isSmall ? "H" : "Help Needed"}
+                    </Button>
+                  )}
                 </div>
                 <p className="messageTime">
                   {" "}
@@ -129,6 +162,25 @@ function Chat({
             </TodoTextBoxReceived>
           </div>
         </div>
+      )}
+      {help ? (
+        senderId === currentUser.uid ? (
+          <TeamTodoChatBox>
+            <p>
+              <span style={{ color: "rgba(0, 99, 66, 0.7)" }}>Task:</span>{" "}
+              {teamTodoText}
+            </p>
+          </TeamTodoChatBox>
+        ) : (
+          <TeamTodoChatReceivedBox>
+            <p>
+              <span style={{ color: "rgba(0, 99, 66, 0.7)" }}>Task:</span>{" "}
+              {teamTodoText}
+            </p>
+          </TeamTodoChatReceivedBox>
+        )
+      ) : (
+        ""
       )}
     </TodoMainCard>
   );
@@ -149,6 +201,7 @@ const TodoMainCard = styled.div`
   height: 3rem;
   min-height: 3rem;
   display: flex;
+  flex-direction: column;
   word-break: "break-all";
   height: auto;
 `;
@@ -160,7 +213,7 @@ const TodoTextBox = styled.div`
   margin-right: 5px;
   margin-left: 35%;
   width: 60%;
-
+  z-index: 20;
   padding: 0.2rem 0.5rem;
   word-break: "break-all";
   height: auto;
@@ -173,6 +226,7 @@ const TodoTextBoxReceived = styled.div`
   border-radius: 0px 10px 10px 10px;
   margin: 2px;
   width: 60%;
+  z-index: 20;
   padding: 0.2rem 0.5rem;
   word-break: "break-all";
   height: auto;
@@ -201,5 +255,43 @@ const TodoActions = styled.div`
     ${customMedia.lessThan("smTablet")`
       transform:scale(0.8);
     `};
+  }
+`;
+
+const TeamTodoChatBox = styled.div`
+  height: auto;
+  min-height: 3rem;
+  background-color: rgba(0, 99, 66, 0.5);
+  margin-right: 5px;
+  margin-left: 30%;
+  width: 60%;
+  margin-top: -1rem;
+  border-radius: 10px 0px 10px 10px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+  p {
+    color: #fff;
+    margin: 0.2rem 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.7rem;
+  }
+`;
+const TeamTodoChatReceivedBox = styled.div`
+  height: auto;
+  min-height: 3rem;
+  background-color: rgba(0, 99, 66, 0.5);
+  width: 60%;
+  margin-left: 10%;
+  margin-top: -1rem;
+  border-radius: 0px 10px 10px 10px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+  p {
+    color: #fff;
+    margin: 0.2rem 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.7rem;
   }
 `;

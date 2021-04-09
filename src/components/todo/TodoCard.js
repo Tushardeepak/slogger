@@ -12,7 +12,17 @@ import EditIcon from "@material-ui/icons/Edit";
 import CalendarModal from "../Schedular/CalendarModal";
 import { useMediaQuery, useTheme } from "@material-ui/core";
 
-function TodoCard({ id, text, todoStartDate, todoEndDate, checked, priority }) {
+function TodoCard({
+  id,
+  text,
+  todoStartDate,
+  todoEndDate,
+  checked,
+  priority,
+  teamTodoText,
+  todoTeamName,
+  help,
+}) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
   const [openEdit, setOpenEdit] = useState(false);
@@ -86,6 +96,38 @@ function TodoCard({ id, text, todoStartDate, todoEndDate, checked, priority }) {
             onClick={() => setOpenEdit(true)}
           />
         </div>
+        {help && (
+          <p
+            style={{
+              backgroundColor: "rgba(0, 99, 66,0.5)",
+              color: "#fff",
+              fontWeight: 300,
+              width: "auto",
+              wordBreak: "break-all",
+              verticalAlign: "center",
+              height: "auto",
+              padding: "5px",
+              borderRadius: "5px",
+              // lineHeight: "30px",
+              fontFamily: "Times New Roman",
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: "0.3rem",
+              fontSize: "13px",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "10px",
+                color: "rgba(0, 99, 66)",
+                marginBottom: "2px",
+              }}
+            >
+              {todoTeamName}
+            </span>
+            {teamTodoText}
+          </p>
+        )}
         <p
           style={{
             color: "rgba(0, 99, 66, 0.868)",
@@ -129,6 +171,9 @@ function TodoCard({ id, text, todoStartDate, todoEndDate, checked, priority }) {
             end: new Date(todoEndDate),
             _def: {
               publicId: id,
+              extendedProps: {
+                teamName: todoTeamName,
+              },
             },
           }}
         />

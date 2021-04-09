@@ -7,6 +7,9 @@
   height: 2rem;
   font-size: 0.7rem;
 }
+.fc .fc-button {
+  padding: 0.2em 0.65em !important;
+}
 .fc .fc-toolbar-title {
   font-size: 1.5rem !important;
   color: #00774f !important;

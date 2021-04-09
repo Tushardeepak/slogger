@@ -125,7 +125,12 @@ const defaultMaterialTheme = createMuiTheme({
   },
 });
 
-function TeamTodo({ UrlTeamName, setDiscussionLock, profileImage }) {
+function TeamTodo({
+  UrlTeamName,
+  setDiscussionLock,
+  profileImage,
+  setTabValue,
+}) {
   const [openMaker, setOpenMaker] = useState(false);
   const [make, setMake] = useState(false);
   const [selectedDate, handleDateChange] = useState(new Date());
@@ -633,6 +638,7 @@ function TeamTodo({ UrlTeamName, setDiscussionLock, profileImage }) {
               comment={todo.comment}
               userName={userName}
               profileImage={profileImage}
+              setTabValue={setTabValue}
             />
           ))}
         </TeamTodoRightContainer>

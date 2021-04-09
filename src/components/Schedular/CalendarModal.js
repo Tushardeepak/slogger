@@ -79,6 +79,7 @@ export default function CalendarModal({
       new Date(selectedStartDate).getTime() <=
         new Date(selectedEndDate).getTime()
     ) {
+      console.log(event._def.publicId);
       db.collection("users")
         .doc(currentUser.uid)
         .collection("todos")
@@ -112,10 +113,20 @@ export default function CalendarModal({
         className="modalTitle"
         style={{ paddingLeft: "30px" }}
       >
-        Details
+        Edit
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
+          <p
+            style={{
+              marginLeft: "0.5rem",
+              fontSize: "15px",
+              color: "rgb(0, 90, 60)",
+              marginBottom: "0.5rem",
+            }}
+          >
+            {event._def.extendedProps.teamName}
+          </p>
           <textarea
             className="todoTextarea"
             value={todoText}

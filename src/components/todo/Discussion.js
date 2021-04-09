@@ -140,6 +140,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
         senderName: userName,
         discussionTime: date.toISOString(),
         help: false,
+        teamTodoText: "",
       });
       setSendTerm("");
       // executeScroll();
@@ -187,6 +188,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
           discussionText: doc.data().discussionText,
           discussionTime: doc.data().discussionTime,
           senderProfileImage: doc.data().senderProfileImage,
+          teamTodoText: doc.data().teamTodoText,
           help: doc.data().help,
         }));
         setChatList(list);
@@ -317,35 +319,37 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
                     senderId={chat.senderId}
                     admin={admin}
                     help={chat.help}
+                    teamTodoText={chat.teamTodoText}
                   />
                 ))
             )}
 
             <div ref={myRef}></div>
+            <TodoRightDownBox>
+              <textarea
+                value={sendTerm}
+                type="text"
+                // onKeyDown={(e) => handleSubmitEnter(e)}
+                onChange={(e) => setSendTerm(e.target.value)}
+                placeholder="Type..."
+              />
+              <Button
+                // endIcon={<SendIcon />}
+                style={{
+                  background: "rgb(5, 185, 125)",
+                  color: "#fff",
+                  height: "2rem",
+                  marginRight: "0.5rem",
+                  overflow: "hidden",
+                }}
+                onClick={handleSend}
+              >
+                Send
+              </Button>
+            </TodoRightDownBox>
           </TeamTodoRightContainer>
         )}
-        <TodoRightDownBox>
-          <textarea
-            value={sendTerm}
-            type="text"
-            // onKeyDown={(e) => handleSubmitEnter(e)}
-            onChange={(e) => setSendTerm(e.target.value)}
-            placeholder="Type..."
-          />
-          <Button
-            // endIcon={<SendIcon />}
-            style={{
-              background: "rgb(5, 185, 125)",
-              color: "#fff",
-              height: "2rem",
-              marginRight: "0.5rem",
-              overflow: "hidden",
-            }}
-            onClick={handleSend}
-          >
-            Send
-          </Button>
-        </TodoRightDownBox>
+
         {/* ::::::::::::::::: */}
       </TeamTodoContainer>
     </div>
@@ -370,8 +374,9 @@ const TeamTodoContainer = styled.div`
   ${customMedia.lessThan("smTablet")`
     flex:1;
       flex-direction:column;
-      height: 86.5%;
+      height: 85%;
       margin-left:-0.1rem;
+      width: 98.5%;
   `}
 `;
 
@@ -473,12 +478,16 @@ const TeamTodoRightContainer = styled.div`
   margin-bottom: 3.5rem;
   margin-top: 0.5rem;
 
+  @media (max-height: 500px) {
+    flex: 0.85 !important;
+  }
+
   ${customMedia.lessThan("smTablet")`
   margin:0 0.5rem;
   padding:0;
     margin-top: 0.5rem;
     margin-bottom: 4rem;
-    flex:1 !important;
+    flex:1;
   `}
   .teamNoTodoImage {
     ${customMedia.lessThan("smTablet")`
@@ -498,8 +507,17 @@ const TodoRightDownBox = styled.div`
   margin-bottom: 0;
   width: 52%;
   background-color: rgb(206, 252, 236);
-  @media (max-height: 500px) {
-    bottom: 2rem !important;
+  /* @media (max-height: 650px) {
+    bottom: 0.8rem;
+  } */
+  @media (max-height: 570px) {
+    bottom: 1.5rem;
+  }
+  @media (max-height: 450px) {
+    bottom: 2rem;
+  }
+  @media (max-height: 350px) {
+    bottom: 2.2rem;
   }
 
   textarea {
@@ -512,18 +530,18 @@ const TodoRightDownBox = styled.div`
     outline: none;
     border-bottom: 2px solid rgb(5, 185, 125);
     margin: 0.5rem;
-    color: rgb(3, 185, 124);
+    color: rgb(5, 185, 125);
     font-size: 0.8rem;
     @media (max-width: 600px) {
       font-size: 1.1rem !important;
     }
-    @media (max-height: 500px) {
+    /* @media (max-height: 500px) {
       height: 3rem !important;
-    }
+    } */
   }
 
   textarea::placeholder {
-    color: rgb(3, 185, 124);
+    color: rgb(5, 185, 125);
     font-size: 0.8rem;
     ${customMedia.lessThan("smTablet")`
       font-size: 1rem;
@@ -533,9 +551,8 @@ const TodoRightDownBox = styled.div`
   ${customMedia.lessThan("smTablet")`
     border:none;
     width: 100% !important;
-    transform:scale(0.9);
     //bottom: 0;
-    margin-right:-1.5rem !important;
+    margin-right:-1.7rem !important;
   `}
 `;
 const ChatScreen = styled.div`
