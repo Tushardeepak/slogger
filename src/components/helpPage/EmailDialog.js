@@ -69,7 +69,7 @@ export default function AddingTeamModal({ open, handleClose, setSent }) {
             style={{
               display: "flex",
               flexDirection: "column",
-              width: "30rem",
+              width: "33rem",
             }}
           >
             <label>Email</label>

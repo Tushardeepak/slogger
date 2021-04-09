@@ -218,7 +218,9 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
   };
 
   React.useEffect(() => {
-    executeScroll();
+    if (UrlTeamName !== undefined && !deleteTeam) {
+      executeScroll();
+    }
   }, [chatList.length]);
 
   const emptyFunction = () => {};

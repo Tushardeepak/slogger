@@ -109,7 +109,7 @@ function HelpPage() {
         )}
 
         <HelpPageLeftBox>
-          <video autoPlay loop muted className="video">
+          <video autoPlay loop muted className="helpVideo">
             <source src={videoFaq} type="video/mp4"></source>
           </video>
         </HelpPageLeftBox>
@@ -460,7 +460,7 @@ const HelpPageLeftBox = styled.div`
   display: flex;
   align-items: center;
 
-  .video {
+  .helpVideo {
     margin-top: 2rem;
     object-fit: contain;
     height: 80vh;
