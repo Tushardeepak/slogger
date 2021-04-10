@@ -1,0 +1,14 @@
+.AutoRotatingCarousel-carouselWrapper-221 {
+  border-radius: 10px !important;
+}
+.AutoRotatingCarousel-footer-225 {
+  margin-top: -50px !important;
+}
+@media (max-width: 600px) {
+  .AutoRotatingCarousel-carouselWrapper-221 {
+    border-radius: 0px !important;
+  }
+  .Dots-dot-235 {
+    background-color: rgb(2, 119, 2) !important;
+  }
+}

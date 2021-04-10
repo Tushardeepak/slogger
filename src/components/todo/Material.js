@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -14,6 +14,8 @@ import { Fade, useMediaQuery, useTheme } from "@material-ui/core";
 import firebase from "firebase";
 import DoneIcon from "@material-ui/icons/Done";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ImagesModal from "./imagesModal/ImagesModal";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   const theme = useTheme();
@@ -49,6 +51,10 @@ export default function Material({
   const [openSmallTextBox, setOpenSmallTextBox] = useState(false);
   const [personal, setPersonal] = useState(false);
   const [discussion, setDiscussion] = useState(false);
+  const [showImages, setShowImages] = useState(false);
+  const [imageList, setImageList] = useState([]);
+  const [imageText, setImageText] = useState("");
+  const [openImagesModal, setOpenImagesModal] = useState(false);
   const [helperText, setHelperText] = useState("");
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
@@ -86,18 +92,18 @@ export default function Material({
             .doc(urlTeamName)
             .collection("teamTodos")
             .doc(id)
-            .set(
-              {
-                todoImage: url,
-              },
-              { merge: true }
-            );
+            .collection("teamTodoImages")
+            .add({
+              todoImage: url,
+              todoImageText: imageText,
+            });
         });
     } catch (error) {
       console.log(error);
     }
-
+    setShowImages(false);
     setOpenSnack(false);
+    setImageText("");
   };
 
   const addToPersonal = () => {
@@ -144,6 +150,22 @@ export default function Material({
     }
   };
 
+  useEffect(() => {
+    db.collection("teams")
+      .doc(urlTeamName)
+      .collection("teamTodos")
+      .doc(id)
+      .collection("teamTodoImages")
+      .onSnapshot((snapshot) => {
+        const list = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          todoImage: doc.data().todoImage,
+          todoImageText: doc.data().todoImageText,
+        }));
+        setImageList(list);
+      });
+  }, []);
+
   return (
     <Dialog
       open={open}
@@ -183,13 +205,13 @@ export default function Material({
                 *Please add some description or title
               </p>
             )}
-            {!openSmallTextBox && (
+            {!openSmallTextBox && !showImages && (
               <div style={{ flex: 1, width: "100%" }}>
                 <Button
                   className="uploadView"
                   style={{
                     overflow: "hidden",
-                    fontSize: "0.5rem",
+                    fontSize: "0.7rem",
                     height: "1.5rem",
                     color: "#fff",
                     backgroundColor: "rgb(5, 185, 125, 0.8)",
@@ -207,7 +229,7 @@ export default function Material({
                   className="uploadView"
                   style={{
                     overflow: "hidden",
-                    fontSize: "0.5rem",
+                    fontSize: "0.7rem",
                     height: "1.5rem",
                     color: "#fff",
                     backgroundColor: "rgb(5, 185, 125, 0.8)",
@@ -237,6 +259,11 @@ export default function Material({
                 />
                 <DialogActions>
                   <Button
+                    startIcon={
+                      <ArrowBackIcon
+                        style={{ color: "#fff", transform: "scale(0.7)" }}
+                      />
+                    }
                     onClick={() => {
                       setError(false);
                       setOpenSmallTextBox(false);
@@ -244,43 +271,106 @@ export default function Material({
                     className="uploadView"
                     style={{
                       overflow: "hidden",
-                      fontSize: "0.5rem",
+                      fontSize: "0.7rem",
                       height: "1.5rem",
                       color: "#fff",
-                      width: "10%",
                       backgroundColor: "rgb(5, 185, 125, 0.8)",
                       marginBottom: "1rem",
                     }}
                   >
-                    Cancel
+                    go back
                   </Button>
+
                   <Button
-                    endIcon={
-                      <ArrowForwardIcon
-                        style={{ color: "#fff", transform: "scale(0.7)" }}
-                      />
-                    }
                     className="uploadView"
                     style={{
                       overflow: "hidden",
-                      fontSize: "0.5rem",
+                      fontSize: "0.7rem",
                       height: "1.5rem",
                       color: "#fff",
-                      width: "10%",
                       backgroundColor: "rgb(5, 185, 125, 0.8)",
                       marginBottom: "1rem",
                     }}
                     onClick={handleAddTo}
                   >
-                    Send
+                    {personal ? "Add todo" : "send"}
                   </Button>
                 </DialogActions>
               </div>
             )}
-            {!openSmallTextBox && (
+            {!showImages && !openSmallTextBox ? (
               <>
-                <div className="materialMainBox">
-                  {admin === currentUser.uid ? (
+                <Button
+                  className="uploadView"
+                  style={{
+                    overflow: "hidden",
+                    fontSize: "0.7rem",
+                    height: "1.5rem",
+                    color: "#fff",
+                    backgroundColor: "rgb(5, 185, 125, 0.8)",
+                    marginBottom: "1rem",
+                  }}
+                  onClick={() => setShowImages(true)}
+                >
+                  Add images
+                </Button>
+                <Button
+                  className="uploadView"
+                  style={{
+                    overflow: "hidden",
+                    fontSize: "0.7rem",
+                    height: "1.5rem",
+                    color: "#fff",
+                    backgroundColor: "rgb(5, 185, 125, 0.8)",
+                    marginBottom: "1rem",
+                    marginLeft: "1rem",
+                  }}
+                  onClick={() => {
+                    setError(false);
+                    setOpenImagesModal(true);
+                  }}
+                >
+                  View Images {`(${imageList.length})`}
+                </Button>
+              </>
+            ) : (
+              !openSmallTextBox && (
+                <>
+                  <textarea
+                    defaultValue={imageText}
+                    className="helperTextBox"
+                    placeholder="Add some description..."
+                    onChange={(e) => {
+                      setError(false);
+                      setImageText(e.target.value);
+                    }}
+                  />
+                  <div className="materialMainBox">
+                    <div style={{ flex: 1 }}>
+                      <Button
+                        startIcon={
+                          <ArrowBackIcon
+                            style={{ color: "#fff", transform: "scale(0.7)" }}
+                          />
+                        }
+                        className="uploadView"
+                        style={{
+                          overflow: "hidden",
+                          fontSize: "0.7rem",
+                          height: "1.5rem",
+                          color: "#fff",
+                          backgroundColor: "rgb(5, 185, 125, 0.8)",
+                          marginBottom: "1rem",
+                          marginRight: "0.5rem",
+                        }}
+                        onClick={() => {
+                          setError(false);
+                          setShowImages(false);
+                        }}
+                      >
+                        go back
+                      </Button>
+                    </div>
                     <div style={{ marginRight: "0.5rem" }}>
                       {" "}
                       <input
@@ -294,82 +384,32 @@ export default function Material({
                         className="uploadView"
                         style={{
                           overflow: "hidden",
-                          fontSize: "0.5rem",
+                          fontSize: "0.7rem",
                           height: "1.5rem",
                           color: "#fff",
                           backgroundColor: "rgb(5, 185, 125, 0.8)",
                           marginBottom: "0.5rem",
                         }}
                         onClick={() => {
-                          document.getElementById("profile-image-file").click();
+                          if (imageText !== "") {
+                            document
+                              .getElementById("profile-image-file")
+                              .click();
+                          } else {
+                            setError(true);
+                          }
                         }}
                       >
                         Upload Image
                       </Button>
                     </div>
-                  ) : (
-                    ""
-                    // <div style={{ flex: "0.5" }}>
-                    //   {todoImage !== "" ? (
-                    //     <a
-                    //       href={todoImage}
-                    //       download
-                    //       target="_blank"
-                    //       style={{ textDecoration: "none" }}
-                    //     >
-                    //       <Button
-                    //         style={{
-                    //           width: "95%",
-                    //           fontSize: "0.7rem",
-                    //           height: "1.5rem",
-                    //           color: "#fff",
-                    //           fontWeight: 600,
-                    //           backgroundColor: "rgb(5, 185, 125)",
-
-                    //           marginBottom: "0.5rem",
-                    //         }}
-                    //       >
-                    //         Download Image
-                    //       </Button>
-                    //     </a>
-                    //   ) : (
-                    //     ""
-                    //   )}
-                    // </div>
-                  )}
-
-                  <div>
-                    {todoImage !== "" ? (
-                      <a
-                        href={todoImage}
-                        target="_blank"
-                        style={{ textDecoration: "none" }}
-                      >
-                        <Button
-                          className="uploadView"
-                          style={{
-                            overflow: "hidden",
-                            fontSize: "0.5rem",
-                            height: "1.5rem",
-                            color: "#fff",
-                            backgroundColor: "rgb(5, 185, 125, 0.8)",
-
-                            marginBottom: "0.5rem",
-                          }}
-                        >
-                          View Image
-                        </Button>
-                      </a>
-                    ) : (
-                      ""
-                    )}
                   </div>
-                </div>
-              </>
+                </>
+              )
             )}
           </div>
 
-          {!openSmallTextBox && (
+          {!openSmallTextBox && !showImages && (
             <>
               <textarea
                 defaultValue={editComment}
@@ -381,16 +421,16 @@ export default function Material({
                 className="uploadView"
                 style={{
                   overflow: "hidden",
-                  width: "10%",
                   fontSize: "0.7rem",
                   height: "1.5rem",
                   color: "#fff",
+                  width: "10%",
                   backgroundColor: "rgb(5, 185, 125, 0.8)",
                   marginTop: "0.5rem",
                 }}
                 onClick={() => handleSet()}
               >
-                {done ? "Done" : "Add"}
+                {done ? "Save" : "Add"}
               </Button>
             </>
           )}
@@ -413,6 +453,14 @@ export default function Material({
           Cancel
         </Button>
       </DialogActions>
+
+      {openImagesModal && (
+        <ImagesModal
+          handleOpen={openImagesModal}
+          setHandleOpen={setOpenImagesModal}
+          imageList={imageList}
+        />
+      )}
     </Dialog>
   );
 }

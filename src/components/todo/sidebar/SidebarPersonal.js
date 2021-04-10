@@ -405,7 +405,6 @@ const TodoLeftUpBox = styled.div`
 `;
 const TodoLeftDownBox = styled.div`
   overflow: hidden;
-  flex: 0.5 !important;
   @media (max-height: 400px) {
     display: none;
   }

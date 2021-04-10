@@ -519,7 +519,7 @@ const TodoContainer = styled.div`
   overflow: hidden;
   ${customMedia.lessThan("smTablet")`
       flex-direction:column;
-      height: 81.5%;
+      height: 85%;
       width: 97%;
   `};
 `;

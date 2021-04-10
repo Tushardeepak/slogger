@@ -376,9 +376,9 @@ const TeamTodoContainer = styled.div`
   ${customMedia.lessThan("smTablet")`
     flex:1;
       flex-direction:column;
-      height: 85%;
+      height: 93%;
       margin-left:-0.1rem;
-      width: 98.5%;
+      width: 99%;
   `}
 `;
 

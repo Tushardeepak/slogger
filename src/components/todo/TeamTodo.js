@@ -702,7 +702,7 @@ const TeamTodoContainer = styled.div`
   ${customMedia.lessThan("smTablet")`
   flex:1;
     flex-direction:column;
-    height: 81.5%;
+    height: 85%;
     width: 97%;
 `}
   .addIcon {
@@ -925,7 +925,7 @@ const TodoRightUpBox = styled.div`
     `};
   }
   .dateBox {
-    width: 88%;
+    width: 95%;
     height: 1.2rem;
     background-color: rgba(3, 185, 124, 0.308);
     border: none;
@@ -952,7 +952,7 @@ const TodoRightUpBox = styled.div`
     }
   }
   .AddButton {
-    width: 95.5%;
+    width: 90%;
     font-size: 0.7rem !important;
     height: 2rem !important;
     overflow: hidden;
