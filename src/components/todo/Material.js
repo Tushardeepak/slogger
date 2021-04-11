@@ -96,6 +96,8 @@ export default function Material({
             .add({
               todoImage: url,
               todoImageText: imageText,
+              senderId: currentUser.uid,
+              senderName: userName,
             });
         });
     } catch (error) {
@@ -133,6 +135,7 @@ export default function Material({
       senderName: userName,
       discussionTime: new Date().toISOString(),
       help: true,
+      teamTodoImage: "",
     });
     setSent(true);
     setTabValue(2);
@@ -150,7 +153,7 @@ export default function Material({
     }
   };
 
-  useEffect(() => {
+  const getAllImages = () => {
     db.collection("teams")
       .doc(urlTeamName)
       .collection("teamTodos")
@@ -161,9 +164,18 @@ export default function Material({
           id: doc.id,
           todoImage: doc.data().todoImage,
           todoImageText: doc.data().todoImageText,
+          senderId: doc.data().senderId,
+          senderName: doc.data().senderName,
         }));
-        setImageList(list);
+
+        if (list.length !== 0) {
+          setImageList(list);
+        }
       });
+  };
+
+  useEffect(() => {
+    getAllImages();
   }, []);
 
   return (
@@ -314,24 +326,26 @@ export default function Material({
                 >
                   Add images
                 </Button>
-                <Button
-                  className="uploadView"
-                  style={{
-                    overflow: "hidden",
-                    fontSize: "0.7rem",
-                    height: "1.5rem",
-                    color: "#fff",
-                    backgroundColor: "rgb(5, 185, 125, 0.8)",
-                    marginBottom: "1rem",
-                    marginLeft: "1rem",
-                  }}
-                  onClick={() => {
-                    setError(false);
-                    setOpenImagesModal(true);
-                  }}
-                >
-                  View Images {`(${imageList.length})`}
-                </Button>
+                {imageList.length !== 0 && (
+                  <Button
+                    className="uploadView"
+                    style={{
+                      overflow: "hidden",
+                      fontSize: "0.7rem",
+                      height: "1.5rem",
+                      color: "#fff",
+                      backgroundColor: "rgb(5, 185, 125, 0.8)",
+                      marginBottom: "1rem",
+                      marginLeft: "1rem",
+                    }}
+                    onClick={() => {
+                      setError(false);
+                      setOpenImagesModal(true);
+                    }}
+                  >
+                    View Images {`(${imageList.length})`}
+                  </Button>
+                )}
               </>
             ) : (
               !openSmallTextBox && (
@@ -380,28 +394,30 @@ export default function Material({
                         accept="image/*"
                         onChange={(e) => onSelectFile(e, id)}
                       />
-                      <Button
-                        className="uploadView"
-                        style={{
-                          overflow: "hidden",
-                          fontSize: "0.7rem",
-                          height: "1.5rem",
-                          color: "#fff",
-                          backgroundColor: "rgb(5, 185, 125, 0.8)",
-                          marginBottom: "0.5rem",
-                        }}
-                        onClick={() => {
-                          if (imageText !== "") {
-                            document
-                              .getElementById("profile-image-file")
-                              .click();
-                          } else {
-                            setError(true);
-                          }
-                        }}
-                      >
-                        Upload Image
-                      </Button>
+                      {!openSnack && (
+                        <Button
+                          className="uploadView"
+                          style={{
+                            overflow: "hidden",
+                            fontSize: "0.7rem",
+                            height: "1.5rem",
+                            color: "#fff",
+                            backgroundColor: "rgb(5, 185, 125, 0.8)",
+                            marginBottom: "0.5rem",
+                          }}
+                          onClick={() => {
+                            if (imageText !== "") {
+                              document
+                                .getElementById("profile-image-file")
+                                .click();
+                            } else {
+                              setError(true);
+                            }
+                          }}
+                        >
+                          Upload Image
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </>
@@ -459,6 +475,13 @@ export default function Material({
           handleOpen={openImagesModal}
           setHandleOpen={setOpenImagesModal}
           imageList={imageList}
+          urlTeamName={urlTeamName}
+          id={id}
+          setImageList={setImageList}
+          todoText={todoText}
+          userName={userName}
+          profileImage={profileImage}
+          setTabValue={setTabValue}
         />
       )}
     </Dialog>

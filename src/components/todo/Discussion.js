@@ -141,6 +141,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
         discussionTime: date.toISOString(),
         help: false,
         teamTodoText: "",
+        teamTodoImage: "",
       });
       setSendTerm("");
       executeScroll();
@@ -190,6 +191,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
           senderProfileImage: doc.data().senderProfileImage,
           teamTodoText: doc.data().teamTodoText,
           help: doc.data().help,
+          teamTodoImage: doc.data().teamTodoImage,
         }));
         setChatList(list);
       });
@@ -320,6 +322,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
                     admin={admin}
                     help={chat.help}
                     teamTodoText={chat.teamTodoText}
+                    teamTodoImage={chat.teamTodoImage}
                   />
                 ))
             )}
