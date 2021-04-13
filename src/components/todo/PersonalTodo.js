@@ -9,6 +9,7 @@ import {
   Tabs,
   useMediaQuery,
   useTheme,
+  withStyles,
 } from "@material-ui/core";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import AddIcon from "@material-ui/icons/Add";
@@ -30,6 +31,7 @@ import { useHistory } from "react-router-dom";
 import "./heightMedia.css";
 import SidebarPersonal from "./sidebar/SidebarPersonal";
 import Schedular from "../Schedular/Schedular";
+import Slider from "@material-ui/core/Slider";
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -128,7 +130,7 @@ function PersonalTodo() {
   const [loader, setLoader] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [todoLength, setTodoLength] = useState(0);
-  const [priority, setPriority] = useState(1);
+  const [priority, setPriority] = useState(0);
   const history = useHistory();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
@@ -137,6 +139,48 @@ function PersonalTodo() {
 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+
+  const PrettoSlider = createMuiTheme({
+    overrides: {
+      MuiSlider: {
+        root: {
+          color:
+            priority < 33
+              ? "rgb(1, 112, 75)"
+              : priority > 66
+              ? "rgba(185, 5, 5)"
+              : "rgba(185, 86, 5)",
+          height: 8,
+          transition: "all 0.5s ease-in-out",
+          transform: "scale(0.6)",
+        },
+
+        thumb: {
+          height: 24,
+          width: 24,
+          backgroundColor: "#fff",
+          border: "2px solid currentColor",
+          marginTop: -8,
+          marginLeft: -12,
+          "&:focus, &:hover, &$active": {
+            boxShadow: "inherit",
+          },
+        },
+        active: {},
+        valueLabel: {
+          left: "calc(-50% + 4px)",
+        },
+        track: {
+          height: 8,
+          borderRadius: 4,
+        },
+        rail: {
+          height: 8,
+          borderRadius: 4,
+        },
+      },
+    },
+  });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -150,20 +194,23 @@ function PersonalTodo() {
   const handleSubmit = async () => {
     if (inputTodo !== "") {
       setLoader(true);
-      db.collection("users").doc(currentUser.uid).collection("todos").add({
-        todoText: inputTodo,
-        todoStartDate: selectedStartDate.toISOString(),
-        todoEndDate: selectedEndDate.toISOString(),
-        checked: false,
-        priority: priority,
-        teamTodoText: "",
-        teamName: "",
-        help: false,
-        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+      db.collection("users")
+        .doc(currentUser.uid)
+        .collection("todos")
+        .add({
+          todoText: inputTodo,
+          todoStartDate: selectedStartDate.toISOString(),
+          todoEndDate: selectedEndDate.toISOString(),
+          checked: false,
+          priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
+          teamTodoText: "",
+          teamName: "",
+          help: false,
+          timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
       setInputTodo("");
       setLoader(false);
-      setPriority(1);
+      setPriority(0);
       handleStartDateChange(new Date());
       handleEndDateChange(new Date());
     } else {
@@ -177,20 +224,23 @@ function PersonalTodo() {
       event.code === "NumpadEnter"
     ) {
       setLoader(true);
-      db.collection("users").doc(currentUser.uid).collection("todos").add({
-        todoText: inputTodo,
-        todoStartDate: selectedStartDate.toISOString(),
-        todoEndDate: selectedEndDate.toISOString(),
-        checked: false,
-        priority: priority,
-        teamTodoText: "",
-        teamName: "",
-        help: false,
-        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+      db.collection("users")
+        .doc(currentUser.uid)
+        .collection("todos")
+        .add({
+          todoText: inputTodo,
+          todoStartDate: selectedStartDate.toISOString(),
+          todoEndDate: selectedEndDate.toISOString(),
+          checked: false,
+          priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
+          teamTodoText: "",
+          teamName: "",
+          help: false,
+          timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
       setInputTodo("");
       setLoader(false);
-      setPriority(1);
+      setPriority(0);
       handleStartDateChange(new Date());
       handleEndDateChange(new Date());
     } else {
@@ -225,6 +275,10 @@ function PersonalTodo() {
         handleTodoLength(list);
       });
   }, []);
+
+  function labelText(value) {
+    return priority < 33 ? "Low" : priority > 66 ? "Top" : "Med";
+  }
 
   return (
     <TodoContainer>
@@ -303,27 +357,29 @@ function PersonalTodo() {
             >
               ADD
             </Button>
-            <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-              <Button
-                className={priority === 3 ? "selectedTopPriority" : "priority"}
-                onClick={() => setPriority(3)}
-              >
-                Top
-              </Button>
-              <Button
-                className={
-                  priority === 2 ? "selectedEarlyPriority" : "priority"
-                }
-                onClick={() => setPriority(2)}
-              >
-                Early
-              </Button>
-              <Button
-                className={priority === 1 ? "selectedPriority" : "priority"}
-                onClick={() => setPriority(1)}
-              >
-                Easy
-              </Button>
+
+            <p
+              style={{
+                color: "rgb(0, 90, 60)",
+                fontSize: "0.6rem",
+                marginTop: "0.5rem",
+              }}
+            >
+              Set priority
+            </p>
+            <div style={{ width: "90%" }}>
+              <ThemeProvider theme={PrettoSlider}>
+                <Slider
+                  getAriaValueText={labelText}
+                  defaultValue={priority}
+                  value={priority}
+                  valueLabelFormat={labelText}
+                  valueLabelDisplay="auto"
+                  onChange={(e, data) => {
+                    setPriority(data);
+                  }}
+                />
+              </ThemeProvider>
             </div>
           </TodoLeftUpBox>
           <TodoLeftDownBox>
@@ -482,7 +538,7 @@ function PersonalTodo() {
             ))}
         </TabPanel>
         <TabPanel style={{ width: "100%" }} value={value} index={3}>
-          <Schedular todoList={todoList} />
+          <Schedular todoList={todoList} setPersonalTabValue={setValue} />
         </TabPanel>
       </TodoRightContainer>
     </TodoContainer>
@@ -541,14 +597,14 @@ const TodoLeftContainer = styled.div`
 `;
 
 const TodoLeftUpBox = styled.div`
-  flex: 0.5 !important;
+  //flex: 0.5 !important;
   width: 100%;
   border-bottom: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  align-items: center;
   ${customMedia.lessThan("smTablet")`
-  flex: 0.5;
+ // flex: 0.5;
     border:none;
   `};
 
@@ -667,52 +723,12 @@ const TodoLeftUpBox = styled.div`
     margin: 0.5rem;
     margin-bottom: 0;
   }
-
-  .priority {
-    margin: 0.5rem;
-    border: 2px solid rgb(5, 185, 125);
-    color: rgb(5, 185, 125, 0.8);
-    width: 70%;
-    height: 50% !important;
-    overflow: hidden;
-    transition: all 0.5s ease-in-out;
-  }
-  .selectedTopPriority {
-    margin: 0.5rem;
-    border: 2px solid rgba(185, 5, 5);
-    background-color: rgba(185, 5, 5, 0.8);
-    color: #fff;
-    width: 70%;
-    height: 50% !important;
-    overflow: hidden;
-    transition: all 0.5s ease-in-out;
-  }
-  .selectedEarlyPriority {
-    margin: 0.5rem;
-    border: 2px solid rgba(185, 86, 5);
-    background-color: rgba(185, 86, 5, 0.8);
-    color: #fff;
-    width: 70%;
-    height: 50% !important;
-    overflow: hidden;
-    transition: all 0.5s ease-in-out;
-  }
-  .selectedPriority {
-    margin: 0.5rem;
-    border: 2px solid rgb(5, 185, 125);
-    background-color: rgb(5, 185, 125, 0.8);
-    color: #fff;
-    width: 70%;
-    height: 50% !important;
-    overflow: hidden;
-    transition: all 0.5s ease-in-out;
-  }
 `;
 const TodoLeftDownBox = styled.div`
   overflow: hidden;
-  flex: 0.5 !important;
+  // flex: 0.5 !important;
   ${customMedia.lessThan("smTablet")`
-  flex: 1;
+  //flex: 1;
     `};
 `;
 

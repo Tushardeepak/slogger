@@ -223,7 +223,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
     if (UrlTeamName !== undefined && !deleteTeam) {
       executeScroll();
     }
-  }, [chatList.length]);
+  }, [UrlTeamName]);
 
   const emptyFunction = () => {};
 

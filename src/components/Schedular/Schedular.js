@@ -127,6 +127,7 @@ function Schedular(props) {
           event={event}
           getAllEvents={getAllEvents}
           getChild={getChild}
+          setPersonalTabValue={props.setPersonalTabValue}
         />
       )}
     </div>

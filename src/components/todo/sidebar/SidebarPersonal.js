@@ -18,7 +18,7 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme, Slider } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import AlarmIcon from "@material-ui/icons/AddAlarm";
 import AddIcon from "@material-ui/icons/Add";
@@ -60,12 +60,54 @@ export default function SidebarPersonal() {
   const history = useHistory();
   const [selectedStartDate, handleStartDateChange] = useState(new Date());
   const [selectedEndDate, handleEndDateChange] = useState(new Date());
-  const [priority, setPriority] = useState(1);
+  const [priority, setPriority] = useState(0);
   const [inputTodo, setInputTodo] = useState("");
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [todoLength, setTodoLength] = useState(0);
+
+  const PrettoSlider = createMuiTheme({
+    overrides: {
+      MuiSlider: {
+        root: {
+          color:
+            priority < 33
+              ? "rgb(1, 112, 75)"
+              : priority > 66
+              ? "rgba(185, 5, 5)"
+              : "rgba(185, 86, 5)",
+          height: 8,
+          transition: "all 0.5s ease-in-out",
+          transform: "scale(0.6)",
+        },
+
+        thumb: {
+          height: 24,
+          width: 24,
+          backgroundColor: "#fff",
+          border: "2px solid currentColor",
+          marginTop: -8,
+          marginLeft: -12,
+          "&:focus, &:hover, &$active": {
+            boxShadow: "inherit",
+          },
+        },
+        active: {},
+        valueLabel: {
+          left: "calc(-50% + 4px)",
+        },
+        track: {
+          height: 8,
+          borderRadius: 4,
+        },
+        rail: {
+          height: 8,
+          borderRadius: 4,
+        },
+      },
+    },
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -83,18 +125,24 @@ export default function SidebarPersonal() {
     setInputTodo(value);
     setError(false);
   };
+  function labelText(value) {
+    return priority < 33 ? "Low" : priority > 66 ? "Top" : "Med";
+  }
 
   const handleSubmit = async () => {
     if (inputTodo !== "") {
       setLoader(true);
-      db.collection("users").doc(currentUser.uid).collection("todos").add({
-        todoText: inputTodo,
-        todoStartDate: selectedStartDate.toISOString(),
-        todoEndDate: selectedEndDate.toISOString(),
-        checked: false,
-        priority: priority,
-        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+      db.collection("users")
+        .doc(currentUser.uid)
+        .collection("todos")
+        .add({
+          todoText: inputTodo,
+          todoStartDate: selectedStartDate.toISOString(),
+          todoEndDate: selectedEndDate.toISOString(),
+          checked: false,
+          priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
+          timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
       setInputTodo("");
       setLoader(false);
     } else {
@@ -221,67 +269,28 @@ export default function SidebarPersonal() {
             >
               ADD
             </Button>
-            <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-              <Button
-                className={priority === 3 ? "selectedTopPriority" : "priority"}
-                onClick={() => setPriority(3)}
-              >
-                Top
-              </Button>
-              <Button
-                className={
-                  priority === 2 ? "selectedEarlyPriority" : "priority"
-                }
-                onClick={() => setPriority(2)}
-              >
-                Early
-              </Button>
-              <Button
-                className={priority === 1 ? "selectedPriority" : "priority"}
-                onClick={() => setPriority(1)}
-              >
-                Easy
-              </Button>
-            </div>
-            {/* <div className="inputField inputFieldPersonal">
-              <CreateIcon className="todoIcon" />
-              <input
-                value={inputTodo}
-                className="todoInputPersonal"
-                type="text"
-                placeholder="Write here..."
-                onChange={(e) => handleInputChange(e.target.value)}
-              />
-            </div>
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-              <div className="dateBox">
-                <ThemeProvider theme={defaultMaterialTheme}>
-                  <DateTimePicker
-                    variant="inline"
-                    // label="Add time"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    style={{
-                      width: "100%",
-                      textAlign: "center",
-                      cursor: "pointer",
-                    }}
-                    InputProps={{
-                      endAdornment: <AlarmIcon className="AlarmIcon" />,
-                      disableUnderline: true,
-                    }}
-                  />
-                </ThemeProvider>
-              </div>
-            </MuiPickersUtilsProvider>
-            <Button
-              disabled={loader}
-              endIcon={<AddIcon />}
-              className={loader ? "AddButtonDisabled" : "AddButton"}
-              onClick={() => handleSubmit()}
+            <p
+              style={{
+                color: "rgb(0, 90, 60)",
+                fontSize: "0.6rem",
+                marginTop: "0.5rem",
+                textAlign: "center",
+              }}
             >
-              ADD
-            </Button> */}
+              Set priority
+            </p>
+            <ThemeProvider theme={PrettoSlider}>
+              <Slider
+                getAriaValueText={labelText}
+                defaultValue={priority}
+                value={priority}
+                valueLabelFormat={labelText}
+                valueLabelDisplay="auto"
+                onChange={(e, data) => {
+                  setPriority(data);
+                }}
+              />
+            </ThemeProvider>
           </TodoLeftUpBox>
           <TodoLeftDownBox>
             {todoLength !== 0 ? (

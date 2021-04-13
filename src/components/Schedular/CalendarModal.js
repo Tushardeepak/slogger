@@ -15,6 +15,7 @@ import {
   Fade,
   useMediaQuery,
   useTheme,
+  withStyles,
 } from "@material-ui/core";
 import "./style.css";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -22,6 +23,7 @@ import { ThemeProvider } from "styled-components";
 import MomentUtils from "@date-io/moment";
 import AlarmIcon from "@material-ui/icons/AddAlarm";
 import { green } from "@material-ui/core/colors";
+import Slider from "@material-ui/core/Slider";
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -58,20 +60,59 @@ export default function CalendarModal({
   event,
   getAllEvents,
   getChild,
+  setPersonalTabValue,
 }) {
   const [todoText, setTodoText] = useState(event.title);
   const [selectedStartDate, handleStartDateChange] = useState(event.start);
   const [selectedEndDate, handleEndDateChange] = useState(event.end);
   const [priority, setPriority] = useState(
     event.backgroundColor === "rgba(185, 5, 5, 0.8)"
-      ? 3
+      ? 100
       : event.backgroundColor === "rgba(185, 86, 5, 0.8)"
-      ? 2
-      : 1
+      ? 50
+      : 0
   );
   const { currentUser } = useAuth();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const PrettoSlider = withStyles({
+    root: {
+      color:
+        priority < 33
+          ? "rgb(1, 112, 75)"
+          : priority > 66
+          ? "rgba(185, 5, 5)"
+          : "rgba(185, 86, 5)",
+      height: 8,
+      transition: "all 0.5s ease-in-out",
+      transform: "scale(0.6)",
+      marginLeft: "1rem",
+    },
+    thumb: {
+      height: 24,
+      width: 24,
+      backgroundColor: "#fff",
+      border: "2px solid currentColor",
+      marginTop: -8,
+      marginLeft: -12,
+      "&:focus, &:hover, &$active": {
+        boxShadow: "inherit",
+      },
+    },
+    active: {},
+    valueLabel: {
+      left: "calc(-50% + 4px)",
+    },
+    track: {
+      height: 8,
+      borderRadius: 4,
+    },
+    rail: {
+      height: 8,
+      borderRadius: 4,
+    },
+  })(Slider);
 
   const handleSubmit = () => {
     if (
@@ -89,15 +130,19 @@ export default function CalendarModal({
             todoText: todoText,
             todoStartDate: selectedStartDate.toISOString(),
             todoEndDate: selectedEndDate.toISOString(),
-            priority: priority,
+            priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
           },
           { merge: true }
         );
-
+      //setPersonalTabValue(0);
       // getChild(getAllEvents());
+      setPriority(0);
       handleClose();
     }
   };
+  function labelText(value) {
+    return priority < 33 ? "Low" : priority > 66 ? "Top" : "Med";
+  }
   return (
     <Dialog
       open={open}
@@ -182,25 +227,28 @@ export default function CalendarModal({
               </MuiPickersUtilsProvider>
             </div>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Button
-              className={priority === 3 ? "selectedTopPriority" : "priority"}
-              onClick={() => setPriority(3)}
-            >
-              Top
-            </Button>
-            <Button
-              className={priority === 2 ? "selectedEarlyPriority" : "priority"}
-              onClick={() => setPriority(2)}
-            >
-              Early
-            </Button>
-            <Button
-              className={priority === 1 ? "selectedPriority" : "priority"}
-              onClick={() => setPriority(1)}
-            >
-              Easy
-            </Button>
+
+          <p
+            style={{
+              color: "rgb(0, 90, 60)",
+              fontSize: "0.6rem",
+              marginTop: "0.7rem",
+              textAlign: "center",
+            }}
+          >
+            Set priority
+          </p>
+          <div style={{ width: "90%" }}>
+            <PrettoSlider
+              getAriaValueText={labelText}
+              defaultValue={priority}
+              value={priority}
+              valueLabelFormat={labelText}
+              valueLabelDisplay="auto"
+              onChange={(e, data) => {
+                setPriority(data);
+              }}
+            />
           </div>
         </DialogContentText>
       </DialogContent>
