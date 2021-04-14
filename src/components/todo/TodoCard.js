@@ -80,7 +80,7 @@ function TodoCard({
             <span className="startEndDateSpan">
               {isSmall
                 ? new Date(todoStartDate).toString().substring(0, 15)
-                : new Date(todoStartDate).toString().substring(0, 11)}
+                : new Date(todoStartDate).toString().substring(4, 11)}
             </span>
           </p>
           <p className="startEndDate">
@@ -88,7 +88,7 @@ function TodoCard({
             <span className="startEndDateSpan">
               {isSmall
                 ? new Date(todoEndDate).toString().substring(0, 15)
-                : new Date(todoEndDate).toString().substring(0, 11)}
+                : new Date(todoEndDate).toString().substring(4, 11)}
             </span>
           </p>
           {new Date().getTime() - new Date(todoEndDate).getTime() > 86400000 &&
@@ -294,6 +294,10 @@ const TodoTextBox = styled.div`
     padding: 2px 7px;
     width: 3rem;
     text-align: center;
+    @media (max-width: 600px) {
+      padding: 2px 0px;
+      font-size: 8px;
+    }
   }
   .editTodoIcon {
     margin-left: 1rem;
