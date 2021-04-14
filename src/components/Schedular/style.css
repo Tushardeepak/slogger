@@ -8,7 +8,7 @@
   font-size: 0.7rem;
 }
 .fc .fc-button {
-  padding: 0.2em 0.65em !important;
+  padding: 0.1em 0.65em !important;
 }
 .fc .fc-toolbar-title {
   font-size: 1.5rem !important;
@@ -16,7 +16,7 @@
   font-weight: 400;
 }
 .fc .fc-toolbar {
-  justify-content: space-evenly;
+  justify-content: space-between !important;
 }
 .fc .fc-col-header-cell-cushion {
   color: #03855a;

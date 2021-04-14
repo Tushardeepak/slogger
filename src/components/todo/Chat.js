@@ -171,24 +171,26 @@ function Chat({
               <span style={{ color: "rgba(0, 99, 66, 0.7)" }}>Task:</span>{" "}
               {teamTodoText}
             </p>
-            <a
-              href={teamTodoImage}
-              target="_blank"
-              style={{ textDecoration: "none" }}
-            >
-              <img
-                src={teamTodoImage}
-                style={{
-                  width: "96%",
-                  height: "80%",
-                  marginLeft: "2%",
-                  marginBottom: "1%",
-                  objectFit: "contain",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              />
-            </a>
+            {teamTodoImage !== "" && (
+              <a
+                href={teamTodoImage}
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
+                <img
+                  src={teamTodoImage}
+                  style={{
+                    width: "96%",
+                    height: "80%",
+                    marginLeft: "2%",
+                    marginBottom: "1%",
+                    objectFit: "contain",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                />
+              </a>
+            )}
           </TeamTodoChatBox>
         ) : (
           <TeamTodoChatReceivedBox>

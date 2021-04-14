@@ -27,10 +27,12 @@ import Slider from "@material-ui/core/Slider";
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
-    primary: green,
-    width: "100%",
-    cursor: "pointer",
+    primary: {
+      main: "rgb(2, 88, 60)",
+    },
   },
+  width: "100%",
+
   overrides: {
     MuiInputBase: {
       root: {
@@ -38,8 +40,26 @@ const defaultMaterialTheme = createMuiTheme({
       },
       input: {
         color: "rgb(0, 90, 60)",
-        fontSize: "1rem",
+        fontSize: "1.2rem",
         cursor: "pointer",
+      },
+    },
+    MuiDialog: {
+      paperWidthSm: {
+        width: "300px",
+      },
+    },
+    MuiPickersDay: {
+      daySelected: {
+        backgroundColor: "rgb(2, 88, 60)",
+        [":hover"]: {
+          backgroundColor: "rgb(2, 88, 60)",
+        },
+      },
+    },
+    MuiButton: {
+      textPrimary: {
+        color: "rgb(2, 88, 60)",
       },
     },
   },
@@ -134,7 +154,7 @@ export default function CalendarModal({
           },
           { merge: true }
         );
-      //setPersonalTabValue(0);
+      setPersonalTabValue(0);
       // getChild(getAllEvents());
       setPriority(0);
       handleClose();
@@ -184,9 +204,10 @@ export default function CalendarModal({
                 <div className="dateBox">
                   <ThemeProvider theme={defaultMaterialTheme}>
                     <DatePicker
-                      variant="dialog"
+                      variant="inline"
                       // format="DD/MM/YYYY"
                       value={selectedStartDate}
+                      orientation="portrait"
                       onChange={handleStartDateChange}
                       style={{
                         width: "100%",
@@ -208,7 +229,8 @@ export default function CalendarModal({
                 <div className="dateBox">
                   <ThemeProvider theme={defaultMaterialTheme}>
                     <DatePicker
-                      variant="dialog"
+                      variant="inline"
+                      orientation="portrait"
                       value={selectedEndDate}
                       //  format="DD/MM/YYYY"
                       onChange={handleEndDateChange}

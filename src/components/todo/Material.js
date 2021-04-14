@@ -52,6 +52,7 @@ export default function Material({
   const [personal, setPersonal] = useState(false);
   const [discussion, setDiscussion] = useState(false);
   const [showImages, setShowImages] = useState(false);
+  const [deadlinePassed, setDeadlinePasses] = useState(false);
   const [imageList, setImageList] = useState([]);
   const [imageText, setImageText] = useState("");
   const [openImagesModal, setOpenImagesModal] = useState(false);
@@ -109,20 +110,24 @@ export default function Material({
   };
 
   const addToPersonal = () => {
-    console.log(todoText);
-    db.collection("users").doc(currentUser.uid).collection("todos").add({
-      todoText: helperText,
-      teamTodoText: todoText,
-      teamName: urlTeamName,
-      todoStartDate: new Date().toISOString(),
-      todoEndDate: todoEndDate,
-      checked: false,
-      priority: 3,
-      timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-      help: true,
-    });
-    setAdded(true);
-    setTabValue(0);
+    if (new Date().getTime() - new Date(todoEndDate).getTime() > 86400000) {
+      setDeadlinePasses(true);
+    } else {
+      console.log(todoText);
+      db.collection("users").doc(currentUser.uid).collection("todos").add({
+        todoText: helperText,
+        teamTodoText: todoText,
+        teamName: urlTeamName,
+        todoStartDate: new Date().toISOString(),
+        todoEndDate: todoEndDate,
+        checked: false,
+        priority: 3,
+        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+        help: true,
+      });
+      setAdded(true);
+      setTabValue(0);
+    }
   };
 
   const sentToDiscussion = () => {
@@ -269,6 +274,11 @@ export default function Material({
                     setHelperText(e.target.value);
                   }}
                 />
+                {deadlinePassed && (
+                  <p style={{ fontSize: "0.5rem", color: "red" }}>
+                    Deadline is passed, Cannot be added
+                  </p>
+                )}
                 <DialogActions>
                   <Button
                     startIcon={

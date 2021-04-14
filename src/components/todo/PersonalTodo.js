@@ -285,8 +285,17 @@ function PersonalTodo() {
   }
 
   useEffect(() => {
-    console.log(filter);
-  }, [filter]);
+    handleEndDateChange(selectedStartDate);
+  }, [selectedStartDate]);
+
+  useEffect(() => {
+    if (
+      new Date(selectedEndDate).getTime() <
+      new Date(selectedStartDate).getTime()
+    ) {
+      handleEndDateChange(selectedStartDate);
+    }
+  }, [selectedEndDate]);
 
   return (
     <TodoContainer>
