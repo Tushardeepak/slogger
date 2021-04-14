@@ -34,6 +34,7 @@ import "./heightMedia.css";
 import SidebarPersonal from "./sidebar/SidebarPersonal";
 import Schedular from "../Schedular/Schedular";
 import Slider from "@material-ui/core/Slider";
+import ClearIcon from "@material-ui/icons/Clear";
 
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -132,6 +133,7 @@ function PersonalTodo() {
   const [priorityFilter, setPriorityFilter] = useState("All (Priority)");
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [transitionDirection, setTransitionDirection] = useState("down");
   const [todoList, setTodoList] = useState([]);
   const [todoLength, setTodoLength] = useState(0);
   const [priority, setPriority] = useState(0);
@@ -196,6 +198,7 @@ function PersonalTodo() {
   };
 
   const handleSubmit = async () => {
+    setTransitionDirection("right");
     if (inputTodo !== "") {
       setLoader(true);
       db.collection("users")
@@ -223,6 +226,7 @@ function PersonalTodo() {
   };
 
   const handleSubmitEnter = async (event) => {
+    setTransitionDirection("right");
     if (
       (inputTodo !== "" && event.code === "Enter") ||
       event.code === "NumpadEnter"
@@ -296,6 +300,8 @@ function PersonalTodo() {
       handleEndDateChange(selectedStartDate);
     }
   }, [selectedEndDate]);
+
+  const emptyFunction = () => {};
 
   return (
     <TodoContainer>
@@ -457,7 +463,7 @@ function PersonalTodo() {
             />
           </Tabs>
         </AppBar>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
@@ -558,6 +564,20 @@ function PersonalTodo() {
               Low priority
             </MenuItem>
           </Select>
+          {filter !== "All (Day)" || priorityFilter !== "All (Priority)" ? (
+            <p
+              className="clearFilter"
+              onClick={() => {
+                setFilter("All (Day)");
+                setPriorityFilter("All (Priority)");
+              }}
+            >
+              Clear all{" "}
+              <ClearIcon style={{ fontSize: "0.7rem", marginLeft: "2px" }} />
+            </p>
+          ) : (
+            ""
+          )}
         </div>
         <TabPanel
           style={{
@@ -625,6 +645,9 @@ function PersonalTodo() {
                   teamTodoText={todo.teamTodoText}
                   todoTeamName={todo.todoTeamName}
                   help={todo.help}
+                  setTransitionDirection={setTransitionDirection}
+                  transitionDirection={transitionDirection}
+                  setPersonalTabValue={setValue}
                 />
               ))
           ) : (
@@ -717,6 +740,9 @@ function PersonalTodo() {
                 teamTodoText={todo.teamTodoText}
                 todoTeamName={todo.todoTeamName}
                 help={todo.help}
+                setTransitionDirection={setTransitionDirection}
+                transitionDirection={transitionDirection}
+                setPersonalTabValue={setValue}
               />
             ))}
         </TabPanel>
@@ -785,6 +811,9 @@ function PersonalTodo() {
                 teamTodoText={todo.teamTodoText}
                 todoTeamName={todo.todoTeamName}
                 help={todo.help}
+                setTransitionDirection={setTransitionDirection}
+                transitionDirection={transitionDirection}
+                setPersonalTabValue={setValue}
               />
             ))}
         </TabPanel>
@@ -829,6 +858,22 @@ const TodoContainer = styled.div`
       height: 85%;
       width: 97%;
   `};
+
+  .clearFilter {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 1rem;
+    background-color: rgb(5, 185, 125, 0.8);
+    font-size: 0.5rem;
+    border-radius: 10px;
+    color: #fff;
+    padding: 2px 5px;
+    transition: all 0.5s ease-in-out;
+  }
+  .clearFilter:hover {
+    background-color: rgb(5, 185, 125);
+  }
 `;
 
 const TodoLeftContainer = styled.div`

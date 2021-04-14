@@ -10,7 +10,7 @@ import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
 import EditIcon from "@material-ui/icons/Edit";
 import CalendarModal from "../Schedular/CalendarModal";
-import { useMediaQuery, useTheme } from "@material-ui/core";
+import { Fade, Slide, useMediaQuery, useTheme } from "@material-ui/core";
 
 function TodoCard({
   id,
@@ -22,19 +22,27 @@ function TodoCard({
   teamTodoText,
   todoTeamName,
   help,
+  transitionDirection,
+  setTransitionDirection,
+  setPersonalTabValue,
 }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
   const [openEdit, setOpenEdit] = useState(false);
+  const [transitionIn, setTransitionIn] = useState(true);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleDelete = (todoId) => {
-    db.collection("users")
-      .doc(currentUser.uid)
-      .collection("todos")
-      .doc(todoId)
-      .delete();
+    setTransitionDirection("left");
+    setTransitionIn(false);
+    setTimeout(() => {
+      db.collection("users")
+        .doc(currentUser.uid)
+        .collection("todos")
+        .doc(todoId)
+        .delete();
+    }, 200);
   };
 
   const handleChecked = () => {
@@ -48,153 +56,156 @@ function TodoCard({
   };
 
   return (
-    <TodoMainCard>
-      <TodoStartIcon>
-        <CustomTooltip title="Completed" arrow placement="left">
-          {checked ? (
-            <CheckBoxIcon
-              className="todoStartIcon"
-              onClick={() => handleChecked()}
-            />
-          ) : (
-            <CheckBoxOutlineBlankIcon
-              className="todoStartIcon"
-              onClick={() => handleChecked()}
-            />
-          )}
-        </CustomTooltip>
-      </TodoStartIcon>
+    <Slide in={transitionIn} timeout={400} direction={transitionDirection}>
+      <TodoMainCard>
+        <TodoStartIcon>
+          <CustomTooltip title="Completed" arrow placement="left">
+            {checked ? (
+              <CheckBoxIcon
+                className="todoStartIcon"
+                onClick={() => handleChecked()}
+              />
+            ) : (
+              <CheckBoxOutlineBlankIcon
+                className="todoStartIcon"
+                onClick={() => handleChecked()}
+              />
+            )}
+          </CustomTooltip>
+        </TodoStartIcon>
 
-      <TodoTextBox>
-        <div
-          className="todoDate"
-          style={{
-            width: "100%",
-            height: "20px",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <p className="startStartDate">
-            Start{isSmall ? " Date:" : ":"}
-            <span className="startEndDateSpan">
-              {isSmall
-                ? new Date(todoStartDate).toString().substring(0, 15)
-                : new Date(todoStartDate).toString().substring(4, 11)}
-            </span>
-          </p>
-          <p className="startEndDate">
-            End{isSmall ? " Date:" : ":"}
-            <span className="startEndDateSpan">
-              {isSmall
-                ? new Date(todoEndDate).toString().substring(0, 15)
-                : new Date(todoEndDate).toString().substring(4, 11)}
-            </span>
-          </p>
-          {new Date().getTime() - new Date(todoEndDate).getTime() > 86400000 &&
-          !checked ? (
-            <p className="missed">missed</p>
-          ) : new Date(todoEndDate).toString().substring(0, 15) ===
-            new Date().toString().substring(0, 15) ? (
-            <p className="missed">due today</p>
-          ) : (
-            <p className="missed" style={{ opacity: 0 }}>
-              {/* missed for spacing */}
-              missed
+        <TodoTextBox>
+          <div
+            className="todoDate"
+            style={{
+              width: "100%",
+              height: "20px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <p className="startStartDate">
+              Start{isSmall ? " Date:" : ":"}
+              <span className="startEndDateSpan">
+                {isSmall
+                  ? new Date(todoStartDate).toString().substring(0, 15)
+                  : new Date(todoStartDate).toString().substring(4, 11)}
+              </span>
+            </p>
+            <p className="startEndDate">
+              End{isSmall ? " Date:" : ":"}
+              <span className="startEndDateSpan">
+                {isSmall
+                  ? new Date(todoEndDate).toString().substring(0, 15)
+                  : new Date(todoEndDate).toString().substring(4, 11)}
+              </span>
+            </p>
+            {new Date().getTime() - new Date(todoEndDate).getTime() >
+              86400000 && !checked ? (
+              <p className="missed">missed</p>
+            ) : new Date(todoEndDate).toString().substring(0, 15) ===
+              new Date().toString().substring(0, 15) ? (
+              <p className="missed">due today</p>
+            ) : (
+              <p className="missed" style={{ opacity: 0 }}>
+                {/* missed for spacing */}
+                missed
+              </p>
+            )}
+            <EditIcon
+              className="editTodoIcon"
+              onClick={() => setOpenEdit(true)}
+            />
+          </div>
+          {help && (
+            <p
+              style={{
+                backgroundColor: "rgba(0, 99, 66,0.4)",
+                color: "#fff",
+                fontWeight: 300,
+                width: "auto",
+                wordBreak: "break-all",
+                verticalAlign: "center",
+                height: "auto",
+                padding: "5px",
+                borderRadius: "5px",
+                // lineHeight: "30px",
+                fontFamily: "Times New Roman",
+                display: "flex",
+                flexDirection: "column",
+                marginBottom: "0.3rem",
+                fontSize: "13px",
+              }}
+            >
+              <span style={{ marginBottom: "5px" }}>
+                <span
+                  style={{
+                    fontSize: "10px",
+                    color: "rgba(0, 99, 66)",
+                    backgroundColor: "rgba(0, 99, 66,0.2)",
+                    padding: "2px 10px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  {todoTeamName}
+                </span>
+              </span>
+              {teamTodoText}
             </p>
           )}
-          <EditIcon
-            className="editTodoIcon"
-            onClick={() => setOpenEdit(true)}
-          />
-        </div>
-        {help && (
           <p
             style={{
-              backgroundColor: "rgba(0, 99, 66,0.4)",
-              color: "#fff",
-              fontWeight: 300,
-              width: "auto",
+              color: "rgba(0, 99, 66, 0.868)",
+              fontWeight: 400,
+              width: "100%",
               wordBreak: "break-all",
               verticalAlign: "center",
               height: "auto",
-              padding: "5px",
-              borderRadius: "5px",
               // lineHeight: "30px",
               fontFamily: "Times New Roman",
-              display: "flex",
-              flexDirection: "column",
-              marginBottom: "0.3rem",
-              fontSize: "13px",
             }}
           >
-            <span style={{ marginBottom: "5px" }}>
-              <span
-                style={{
-                  fontSize: "10px",
-                  color: "rgba(0, 99, 66)",
-                  backgroundColor: "rgba(0, 99, 66,0.2)",
-                  padding: "2px 10px",
-                  borderRadius: "5px",
-                }}
-              >
-                {todoTeamName}
-              </span>
-            </span>
-            {teamTodoText}
+            {text}
           </p>
-        )}
-        <p
+        </TodoTextBox>
+        <TodoActions
           style={{
-            color: "rgba(0, 99, 66, 0.868)",
-            fontWeight: 400,
-            width: "100%",
-            wordBreak: "break-all",
-            verticalAlign: "center",
-            height: "auto",
-            // lineHeight: "30px",
-            fontFamily: "Times New Roman",
-          }}
-        >
-          {text}
-        </p>
-      </TodoTextBox>
-      <TodoActions
-        style={{
-          backgroundColor:
-            priority === 3
-              ? "rgba(185, 5, 5, 0.8)"
-              : priority === 2
-              ? "rgba(185, 86, 5, 0.8)"
-              : "rgba(0, 99, 66, 0.8)",
-        }}
-      >
-        <DeleteIcon className="delete" onClick={() => handleDelete(id)} />
-      </TodoActions>
-      {openEdit && (
-        <CalendarModal
-          open={openEdit}
-          handleClose={() => setOpenEdit(false)}
-          event={{
-            title: text,
             backgroundColor:
               priority === 3
                 ? "rgba(185, 5, 5, 0.8)"
                 : priority === 2
                 ? "rgba(185, 86, 5, 0.8)"
                 : "rgba(0, 99, 66, 0.8)",
-            start: new Date(todoStartDate),
-            end: new Date(todoEndDate),
-            _def: {
-              publicId: id,
-              extendedProps: {
-                teamName: todoTeamName,
-              },
-            },
           }}
-        />
-      )}
-    </TodoMainCard>
+        >
+          <DeleteIcon className="delete" onClick={() => handleDelete(id)} />
+        </TodoActions>
+        {openEdit && (
+          <CalendarModal
+            open={openEdit}
+            handleClose={() => setOpenEdit(false)}
+            event={{
+              title: text,
+              backgroundColor:
+                priority === 3
+                  ? "rgba(185, 5, 5, 0.8)"
+                  : priority === 2
+                  ? "rgba(185, 86, 5, 0.8)"
+                  : "rgba(0, 99, 66, 0.8)",
+              start: new Date(todoStartDate),
+              end: new Date(todoEndDate),
+              _def: {
+                publicId: id,
+                extendedProps: {
+                  teamName: todoTeamName,
+                },
+              },
+            }}
+            setPersonalTabValue={setPersonalTabValue}
+          />
+        )}
+      </TodoMainCard>
+    </Slide>
   );
 }
 

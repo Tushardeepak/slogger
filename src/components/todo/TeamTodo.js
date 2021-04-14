@@ -136,12 +136,9 @@ function TeamTodo({
   const [selectedDate, handleDateChange] = useState(new Date());
   const [inputTodo, setInputTodo] = useState("");
   const [userName, setUserName] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [thisIsAdmin, setThisIsAdmin] = useState(false);
   const [deleteTeam, setDeleteTeam] = useState(false);
   const [error, setError] = useState(false);
-  const [profileError, setProfileError] = useState(false);
   const [loader, setLoader] = useState(false);
   const [firstLoader, setFirstLoader] = useState(true);
   const [teams, setTeams] = useState([]);
@@ -158,9 +155,8 @@ function TeamTodo({
   const [openJoinSnackBar, setOpenJoinSnackBar] = useState(false);
   const [openDeleteSnackBar, setOpenDeleteSnackBar] = useState(false);
   const [currentTeamName, setCurrentTeamName] = useState("");
-  //const [profileImage, setProfileImage] = useState("");
-  const [profilePath, setProfilePath] = useState("");
   const [openSnack, setOpenSnack] = useState(false);
+  const [transitionDirection, setTransitionDirection] = useState("right");
 
   const handleInputChange = (value) => {
     setInputTodo(value);
@@ -639,6 +635,8 @@ function TeamTodo({
               userName={userName}
               profileImage={profileImage}
               setTabValue={setTabValue}
+              setTransitionDirection={setTransitionDirection}
+              transitionDirection={transitionDirection}
             />
           ))}
         </TeamTodoRightContainer>

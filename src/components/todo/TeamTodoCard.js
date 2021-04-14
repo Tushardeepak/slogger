@@ -8,7 +8,13 @@ import { db, storage } from "../../firebase";
 import moment from "moment";
 import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
-import { Button, IconButton, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Button,
+  IconButton,
+  Slide,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import Material from "./Material";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import DoneIcon from "@material-ui/icons/Done";
@@ -27,12 +33,15 @@ function TeamTodoCard({
   userName,
   profileImage,
   setTabValue,
+  transitionDirection,
+  setTransitionDirection,
 }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
   const [assignedTo, setAssignedTo] = useState();
   const [openMaterial, setOpenMaterial] = useState(false);
   const [assignChange, setAssignChange] = useState(false);
+  const [transitionIn, setTransitionIn] = useState(true);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -49,27 +58,33 @@ function TeamTodoCard({
     setAssignChange(true);
   };
 
-  const handleDelete = (id) => {
-    if (todoImage !== "") {
-      // Create a reference to the file to delete
-      var desertRef = storage.refFromURL(todoImage);
-
-      // Delete the file
-      desertRef
-        .delete()
-        .then(function () {
-          console.log("File deleted successfully");
-        })
-        .catch(function (error) {
-          console.log(error);
+  const handleDelete = async (id) => {
+    setTransitionDirection("left");
+    setTransitionIn(false);
+    setTimeout(() => {
+      db.collection("teams")
+        .doc(urlTeamName)
+        .collection("teamTodos")
+        .doc(id)
+        .collection("teamTodoImages")
+        .onSnapshot((snapshot) => {
+          const list = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            todoImage: doc.data().todoImage,
+          }));
+          if (list.length !== 0) {
+            list.forEach((file) => {
+              storage.refFromURL(file.todoImage).delete();
+            });
+          }
         });
-    }
 
-    db.collection("teams")
-      .doc(urlTeamName)
-      .collection("teamTodos")
-      .doc(id)
-      .delete();
+      db.collection("teams")
+        .doc(urlTeamName)
+        .collection("teamTodos")
+        .doc(id)
+        .delete();
+    }, 200);
   };
 
   const handleChecked = () => {
@@ -101,193 +116,199 @@ function TeamTodoCard({
   const emptyFunction = () => {};
 
   return (
-    <TodoMainCard>
-      <TodoStartIcon>
-        <CustomTooltip title="Double tap" arrow placement="left">
-          {checked ? (
-            <CheckBoxIcon
-              className="todoStartIcon"
-              onClick={() => handleChecked()}
-            />
-          ) : (
-            <CheckBoxOutlineBlankIcon
-              className="todoStartIcon"
-              onClick={() => handleChecked()}
-            />
-          )}
-        </CustomTooltip>
-      </TodoStartIcon>
+    <Slide in={transitionIn} timeout={400} direction={transitionDirection}>
+      <TodoMainCard>
+        <TodoStartIcon>
+          <CustomTooltip title="Double tap" arrow placement="left">
+            {checked ? (
+              <CheckBoxIcon
+                className="todoStartIcon"
+                onClick={() => handleChecked()}
+              />
+            ) : (
+              <CheckBoxOutlineBlankIcon
+                className="todoStartIcon"
+                onClick={() => handleChecked()}
+              />
+            )}
+          </CustomTooltip>
+        </TodoStartIcon>
 
-      <TodoTextBox>
-        {!isSmall ? (
-          <>
-            <div
-              style={{
-                flex: 1,
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <div style={{ flex: 1 }}>
-                <Button
-                  className="uploadView"
-                  style={{
-                    width: "10%",
-                    fontSize: "0.65rem",
-                    height: "1.2rem",
-                    color: "#fff",
-                    backgroundColor: "rgb(5, 185, 125,0.8)",
-                    marginRight: "1rem",
-                    marginBottom: "0.2rem",
-                  }}
-                  onClick={() => setOpenMaterial(true)}
-                >
-                  Details
-                </Button>
-              </div>
-              <p
-                className="todoDate"
+        <TodoTextBox>
+          {!isSmall ? (
+            <>
+              <div
                 style={{
-                  color: "rgba(0, 99, 66, 0.668)",
-                  paddingBottom: "0rem",
-                  fontSize: "0.55rem",
+                  flex: 1,
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                {date.substring(8, 10)}
-                {"/"}
-                {date.substring(5, 7)}
-                {"/"}
-                {date.substring(0, 4)}
-              </p>
-            </div>
-            <div style={{ width: "100%", flex: 1, marginBottom: "0.5rem" }}>
-              <div className="inputField">
-                <p className="assignedTo">Assigned to :</p>
-                <input
-                  value={assignedTo}
-                  className="todoInput"
-                  type="text"
-                  onChange={
-                    admin === currentUser.uid
-                      ? (e) => handleInputChange(e.target.value)
-                      : () => emptyFunction()
-                  }
-                  // onKeyDown={(e) => handleSubmitEnter(e)}
-                />
-                {admin === currentUser.uid
-                  ? assignChange && (
-                      <DoneIcon
-                        className="assignIcon"
-                        onClick={() => handleAssignedSubmit()}
-                      />
-                    )
-                  : ""}
+                <div style={{ flex: 1 }}>
+                  <Button
+                    className="uploadView"
+                    style={{
+                      width: "10%",
+                      fontSize: "0.65rem",
+                      height: "1.2rem",
+                      color: "#fff",
+                      backgroundColor: "rgb(5, 185, 125,0.8)",
+                      marginRight: "1rem",
+                      marginBottom: "0.2rem",
+                    }}
+                    onClick={() => setOpenMaterial(true)}
+                  >
+                    Details
+                  </Button>
+                </div>
+                <p
+                  className="todoDate"
+                  style={{
+                    color: "rgba(0, 99, 66, 0.668)",
+                    paddingBottom: "0rem",
+                    fontSize: "0.55rem",
+                  }}
+                >
+                  {date.substring(8, 10)}
+                  {"/"}
+                  {date.substring(5, 7)}
+                  {"/"}
+                  {date.substring(0, 4)}
+                </p>
+              </div>
+              <div style={{ width: "100%", flex: 1, marginBottom: "0.5rem" }}>
+                <div className="inputField">
+                  <p className="assignedTo">Assigned to :</p>
+                  <input
+                    value={assignedTo}
+                    className="todoInput"
+                    type="text"
+                    onChange={
+                      admin === currentUser.uid
+                        ? (e) => handleInputChange(e.target.value)
+                        : () => emptyFunction()
+                    }
+                    // onKeyDown={(e) => handleSubmitEnter(e)}
+                  />
+                  {admin === currentUser.uid
+                    ? assignChange && (
+                        <DoneIcon
+                          className="assignIcon"
+                          onClick={() => handleAssignedSubmit()}
+                        />
+                      )
+                    : ""}
+                </div>
+              </div>
+            </>
+          ) : (
+            <div style={{ display: "flex" }}>
+              <div style={{ width: "100%", flex: "0.85" }}>
+                <div className="inputField">
+                  <p className="assignedTo">Assigned to :</p>
+                  <input
+                    value={assignedTo}
+                    className="todoInput"
+                    type="text"
+                    onChange={
+                      admin === currentUser.uid
+                        ? (e) => handleInputChange(e.target.value)
+                        : () => emptyFunction()
+                    }
+                    // onKeyDown={(e) => handleSubmitEnter(e)}
+                  />
+                  {admin === currentUser.uid
+                    ? assignChange && (
+                        <DoneIcon
+                          className="assignIcon"
+                          onClick={() => handleAssignedSubmit()}
+                        />
+                      )
+                    : ""}
+                </div>
+              </div>
+              <div
+                style={{
+                  flex: "0.15",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <p
+                  className="todoDate"
+                  style={{
+                    color: "rgba(0, 99, 66, 0.668)",
+                    paddingBottom: "0.3rem",
+                  }}
+                >
+                  {date.substring(8, 10)}
+                  {"/"}
+                  {date.substring(5, 7)}
+                  {"/"}
+                  {date.substring(0, 4)}
+                </p>
+                <div>
+                  <Button
+                    className="uploadView"
+                    style={{
+                      width: "98%",
+                      fontSize: "0.65rem",
+                      height: "1.2rem",
+                      color: "#fff",
+                      backgroundColor: "rgb(5, 185, 125,0.8)",
+                      marginBottom: "0.7rem",
+                    }}
+                    onClick={() => setOpenMaterial(true)}
+                  >
+                    Details
+                  </Button>
+                </div>
               </div>
             </div>
-          </>
+          )}
+          <p
+            style={{
+              color: "rgba(0, 99, 66, 0.868)",
+              fontWeight: 400,
+              width: "100%",
+              wordBreak: "break-all",
+              verticalAlign: "center",
+              height: "auto",
+              // lineHeight: "30px",
+              marginTop: "-5px",
+              fontFamily: "Times New Roman",
+            }}
+          >
+            {text}
+          </p>
+        </TodoTextBox>
+        {admin === currentUser.uid ? (
+          <TodoActions>
+            <DeleteIcon className="delete" onClick={() => handleDelete(id)} />
+          </TodoActions>
         ) : (
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "100%", flex: "0.85" }}>
-              <div className="inputField">
-                <p className="assignedTo">Assigned to :</p>
-                <input
-                  value={assignedTo}
-                  className="todoInput"
-                  type="text"
-                  onChange={
-                    admin === currentUser.uid
-                      ? (e) => handleInputChange(e.target.value)
-                      : () => emptyFunction()
-                  }
-                  // onKeyDown={(e) => handleSubmitEnter(e)}
-                />
-                {admin === currentUser.uid
-                  ? assignChange && (
-                      <DoneIcon
-                        className="assignIcon"
-                        onClick={() => handleAssignedSubmit()}
-                      />
-                    )
-                  : ""}
-              </div>
-            </div>
-            <div
-              style={{ flex: "0.15", display: "flex", flexDirection: "column" }}
-            >
-              <p
-                className="todoDate"
-                style={{
-                  color: "rgba(0, 99, 66, 0.668)",
-                  paddingBottom: "0.3rem",
-                }}
-              >
-                {date.substring(8, 10)}
-                {"/"}
-                {date.substring(5, 7)}
-                {"/"}
-                {date.substring(0, 4)}
-              </p>
-              <div>
-                <Button
-                  className="uploadView"
-                  style={{
-                    width: "98%",
-                    fontSize: "0.65rem",
-                    height: "1.2rem",
-                    color: "#fff",
-                    backgroundColor: "rgb(5, 185, 125,0.8)",
-                    marginBottom: "0.7rem",
-                  }}
-                  onClick={() => setOpenMaterial(true)}
-                >
-                  Details
-                </Button>
-              </div>
-            </div>
-          </div>
+          ""
         )}
-        <p
-          style={{
-            color: "rgba(0, 99, 66, 0.868)",
-            fontWeight: 400,
-            width: "100%",
-            wordBreak: "break-all",
-            verticalAlign: "center",
-            height: "auto",
-            // lineHeight: "30px",
-            marginTop: "-5px",
-            fontFamily: "Times New Roman",
-          }}
-        >
-          {text}
-        </p>
-      </TodoTextBox>
-      {admin === currentUser.uid ? (
-        <TodoActions>
-          <DeleteIcon className="delete" onClick={() => handleDelete(id)} />
-        </TodoActions>
-      ) : (
-        ""
-      )}
-      {openMaterial && (
-        <Material
-          open={openMaterial}
-          handleClose={() => setOpenMaterial(false)}
-          id={id}
-          todoImage={todoImage}
-          admin={admin}
-          currentUser={currentUser}
-          comment={comment}
-          urlTeamName={urlTeamName}
-          checkedBy={checkedBy}
-          todoText={text}
-          todoEndDate={date}
-          profileImage={profileImage}
-          userName={userName}
-          setTabValue={setTabValue}
-        />
-      )}
-    </TodoMainCard>
+        {openMaterial && (
+          <Material
+            open={openMaterial}
+            handleClose={() => setOpenMaterial(false)}
+            id={id}
+            todoImage={todoImage}
+            admin={admin}
+            currentUser={currentUser}
+            comment={comment}
+            urlTeamName={urlTeamName}
+            checkedBy={checkedBy}
+            todoText={text}
+            todoEndDate={date}
+            profileImage={profileImage}
+            userName={userName}
+            setTabValue={setTabValue}
+          />
+        )}
+      </TodoMainCard>
+    </Slide>
   );
 }
 
