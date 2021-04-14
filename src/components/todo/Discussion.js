@@ -222,6 +222,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
   React.useEffect(() => {
     if (UrlTeamName !== undefined && !deleteTeam) {
       executeScroll();
+      console.log("scroll");
     }
   }, [UrlTeamName]);
 

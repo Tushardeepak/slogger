@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CreateIcon from "@material-ui/icons/Create";
 import {
   AppBar,
   Button,
   makeStyles,
+  MenuItem,
+  Select,
   Tab,
   Tabs,
   useMediaQuery,
@@ -126,6 +128,8 @@ function PersonalTodo() {
   const [selectedStartDate, handleStartDateChange] = useState(new Date());
   const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [inputTodo, setInputTodo] = useState("");
+  const [filter, setFilter] = useState("All (Day)");
+  const [priorityFilter, setPriorityFilter] = useState("All (Priority)");
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
   const [todoList, setTodoList] = useState([]);
@@ -279,6 +283,10 @@ function PersonalTodo() {
   function labelText(value) {
     return priority < 33 ? "Low" : priority > 66 ? "Top" : "Med";
   }
+
+  useEffect(() => {
+    console.log(filter);
+  }, [filter]);
 
   return (
     <TodoContainer>
@@ -440,26 +448,176 @@ function PersonalTodo() {
             />
           </Tabs>
         </AppBar>
+        <div style={{ display: "flex" }}>
+          <Select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            disableUnderline
+            style={{
+              height: "2rem",
+              marginTop: "0.5rem",
+              marginBottom: "0.2rem",
+              background: "#d1faec",
+              borderRadius: 10,
+              width: "13%",
+              padding: "2px 10px",
+              textAlign: "center",
+              color: "#2ec592",
+              fontSize: "0.7rem",
+            }}
+          >
+            <MenuItem
+              style={{
+                color: "#2ec592",
+                fontSize: "0.7rem",
+              }}
+              value="All (Day)"
+            >
+              All (Day)
+            </MenuItem>
+            <MenuItem
+              style={{
+                color: "#2ec592",
+                fontSize: "0.7rem",
+              }}
+              value="Today"
+            >
+              Today
+            </MenuItem>
+            <MenuItem
+              style={{
+                color: "#2ec592",
+                fontSize: "0.7rem",
+              }}
+              value="Missed"
+            >
+              Missed
+            </MenuItem>
+          </Select>
+          <Select
+            value={priorityFilter}
+            onChange={(e) => setPriorityFilter(e.target.value)}
+            disableUnderline
+            style={{
+              height: "2rem",
+              marginTop: "0.5rem",
+              marginBottom: "0.2rem",
+              marginLeft: "1rem",
+              background: "#d1faec",
+              borderRadius: 10,
+              width: "13%",
+              padding: "2px 10px",
+              textAlign: "center",
+              color: "#2ec592",
+              fontSize: "0.7rem",
+            }}
+          >
+            <MenuItem
+              style={{
+                color: "#2ec592",
+                fontSize: "0.7rem",
+              }}
+              value="All (Priority)"
+            >
+              All (Priority)
+            </MenuItem>
+            <MenuItem
+              style={{
+                color: "#2ec592",
+                fontSize: "0.7rem",
+              }}
+              value="Top priority"
+            >
+              Top priority
+            </MenuItem>
+            <MenuItem
+              style={{
+                color: "#2ec592",
+                fontSize: "0.7rem",
+              }}
+              value="Mid priority"
+            >
+              Mid priority
+            </MenuItem>
+            <MenuItem
+              style={{
+                color: "#2ec592",
+                fontSize: "0.7rem",
+              }}
+              value="Low priority"
+            >
+              Low priority
+            </MenuItem>
+          </Select>
+        </div>
         <TabPanel
-          style={{ width: "100%", overflowY: "scroll", marginBottom: "0.5rem" }}
+          style={{
+            width: "100%",
+            overflowY: "scroll",
+            marginBottom: "0.5rem",
+          }}
           value={value}
           index={0}
         >
           {todoList.length !== 0 ? (
-            todoList.map((todo) => (
-              <TodoCard
-                key={todo.id}
-                id={todo.id}
-                text={todo.todoText}
-                todoStartDate={todo.todoStartDate}
-                todoEndDate={todo.todoEndDate}
-                checked={todo.checked}
-                priority={todo.priority}
-                teamTodoText={todo.teamTodoText}
-                todoTeamName={todo.todoTeamName}
-                help={todo.help}
-              />
-            ))
+            todoList
+              .filter((list) => {
+                if (filter === "All (Day)") {
+                  return list;
+                }
+                if (filter === "Today") {
+                  if (
+                    new Date(list.todoEndDate).toString().substring(0, 15) ===
+                    new Date().toString().substring(0, 15)
+                  ) {
+                    return list;
+                  }
+                }
+                if (filter === "Missed") {
+                  if (
+                    new Date().getTime() -
+                      new Date(list.todoEndDate).getTime() >
+                      86400000 &&
+                    !list.checked
+                  ) {
+                    return list;
+                  }
+                }
+              })
+              .filter((list) => {
+                if (priorityFilter === "All (Priority)") {
+                  return list;
+                }
+                if (priorityFilter === "Top priority") {
+                  if (list.priority === 3) {
+                    return list;
+                  }
+                }
+                if (priorityFilter === "Mid priority") {
+                  if (list.priority === 2) {
+                    return list;
+                  }
+                }
+                if (priorityFilter === "Low priority") {
+                  if (list.priority === 1) {
+                    return list;
+                  }
+                }
+              })
+              .map((todo) => (
+                <TodoCard
+                  key={todo.id}
+                  id={todo.id}
+                  text={todo.todoText}
+                  todoStartDate={todo.todoStartDate}
+                  todoEndDate={todo.todoEndDate}
+                  checked={todo.checked}
+                  priority={todo.priority}
+                  teamTodoText={todo.teamTodoText}
+                  todoTeamName={todo.todoTeamName}
+                  help={todo.help}
+                />
+              ))
           ) : (
             <NoTodo>
               <img src={noTodoImg} className="noTodo"></img>
@@ -496,6 +654,48 @@ function PersonalTodo() {
                 return check;
               }
             })
+            .filter((list) => {
+              if (filter === "All (Day)") {
+                return list;
+              }
+              if (filter === "Today") {
+                if (
+                  new Date(list.todoEndDate).toString().substring(0, 15) ===
+                  new Date().toString().substring(0, 15)
+                ) {
+                  return list;
+                }
+              }
+              if (filter === "Missed") {
+                if (
+                  new Date().getTime() - new Date(list.todoEndDate).getTime() >
+                    86400000 &&
+                  !list.checked
+                ) {
+                  return list;
+                }
+              }
+            })
+            .filter((list) => {
+              if (priorityFilter === "All (Priority)") {
+                return list;
+              }
+              if (priorityFilter === "Top priority") {
+                if (list.priority === 3) {
+                  return list;
+                }
+              }
+              if (priorityFilter === "Mid priority") {
+                if (list.priority === 2) {
+                  return list;
+                }
+              }
+              if (priorityFilter === "Low priority") {
+                if (list.priority === 1) {
+                  return list;
+                }
+              }
+            })
             .map((todo) => (
               <TodoCard
                 key={todo.id}
@@ -520,6 +720,48 @@ function PersonalTodo() {
             .filter((check) => {
               if (check.checked === false) {
                 return check;
+              }
+            })
+            .filter((list) => {
+              if (filter === "All (Day)") {
+                return list;
+              }
+              if (filter === "Today") {
+                if (
+                  new Date(list.todoEndDate).toString().substring(0, 15) ===
+                  new Date().toString().substring(0, 15)
+                ) {
+                  return list;
+                }
+              }
+              if (filter === "Missed") {
+                if (
+                  new Date().getTime() - new Date(list.todoEndDate).getTime() >
+                    86400000 &&
+                  !list.checked
+                ) {
+                  return list;
+                }
+              }
+            })
+            .filter((list) => {
+              if (priorityFilter === "All (Priority)") {
+                return list;
+              }
+              if (priorityFilter === "Top priority") {
+                if (list.priority === 3) {
+                  return list;
+                }
+              }
+              if (priorityFilter === "Mid priority") {
+                if (list.priority === 2) {
+                  return list;
+                }
+              }
+              if (priorityFilter === "Low priority") {
+                if (list.priority === 1) {
+                  return list;
+                }
               }
             })
             .map((todo) => (

@@ -75,7 +75,7 @@ function TodoCard({
             alignItems: "center",
           }}
         >
-          <p className="startEndDate">
+          <p className="startStartDate">
             Start{isSmall ? " Date:" : ":"}
             <span className="startEndDateSpan">
               {isSmall
@@ -87,10 +87,22 @@ function TodoCard({
             End{isSmall ? " Date:" : ":"}
             <span className="startEndDateSpan">
               {isSmall
-                ? new Date(todoStartDate).toString().substring(0, 15)
-                : new Date(todoStartDate).toString().substring(0, 11)}
+                ? new Date(todoEndDate).toString().substring(0, 15)
+                : new Date(todoEndDate).toString().substring(0, 11)}
             </span>
           </p>
+          {new Date().getTime() - new Date(todoEndDate).getTime() > 86400000 &&
+          !checked ? (
+            <p className="missed">missed</p>
+          ) : new Date(todoEndDate).toString().substring(0, 15) ===
+            new Date().toString().substring(0, 15) ? (
+            <p className="missed">due today</p>
+          ) : (
+            <p className="missed" style={{ opacity: 0 }}>
+              {/* missed for spacing */}
+              missed
+            </p>
+          )}
           <EditIcon
             className="editTodoIcon"
             onClick={() => setOpenEdit(true)}
@@ -99,7 +111,7 @@ function TodoCard({
         {help && (
           <p
             style={{
-              backgroundColor: "rgba(0, 99, 66,0.5)",
+              backgroundColor: "rgba(0, 99, 66,0.4)",
               color: "#fff",
               fontWeight: 300,
               width: "auto",
@@ -116,14 +128,18 @@ function TodoCard({
               fontSize: "13px",
             }}
           >
-            <span
-              style={{
-                fontSize: "10px",
-                color: "rgba(0, 99, 66)",
-                marginBottom: "2px",
-              }}
-            >
-              {todoTeamName}
+            <span style={{ marginBottom: "5px" }}>
+              <span
+                style={{
+                  fontSize: "10px",
+                  color: "rgba(0, 99, 66)",
+                  backgroundColor: "rgba(0, 99, 66,0.2)",
+                  padding: "2px 10px",
+                  borderRadius: "5px",
+                }}
+              >
+                {todoTeamName}
+              </span>
             </span>
             {teamTodoText}
           </p>
@@ -193,7 +209,8 @@ const customMedia = generateMedia({
 
 const TodoMainCard = styled.div`
   margin: 0.7rem 0rem;
-  box-shadow: 0px 1px 5px rgb(0, 129, 86);
+  margin-top: -0.2rem;
+  box-shadow: 0px 1px 3px rgb(0, 129, 86);
   background-color: rgb(231, 250, 243);
   border-radius: 20px 10px 30px 10px;
   width: 100%;
@@ -205,7 +222,7 @@ const TodoMainCard = styled.div`
 `;
 const TodoStartIcon = styled.div`
   transform: scale(0.8);
-  flex: 0.07;
+  flex: 0.04;
   width: 100%;
   height: auto;
   display: flex;
@@ -219,7 +236,7 @@ const TodoStartIcon = styled.div`
 
   .todoStartIcon {
     color: rgba(0, 99, 66, 0.568);
-    font-size: 1.7rem;
+    font-size: 1.2rem;
     object-fit: contain;
     cursor: pointer;
 
@@ -230,7 +247,7 @@ const TodoStartIcon = styled.div`
   }
 `;
 const TodoTextBox = styled.div`
-  flex: 0.88;
+  flex: 1;
   width: 100%;
   padding: 0.2rem 0.5rem;
   word-break: "break-all";
@@ -240,6 +257,16 @@ const TodoTextBox = styled.div`
     font-size: 13px;
     ${customMedia.lessThan("smTablet")`
        font-size:9px;
+    `};
+  }
+  .startStartDate {
+    flex: 0.5;
+    font-size: 9px;
+    color: rgba(4, 126, 85, 0.868);
+    font-weight: 700;
+    ${customMedia.lessThan("smTablet")`
+       font-size:8px;
+       font-weight: 400;
     `};
   }
   .startEndDate {
@@ -259,7 +286,17 @@ const TodoTextBox = styled.div`
           margin-left:0.1rem;
     `};
   }
+  .missed {
+    font-size: 9px;
+    color: #fff;
+    background-color: rgba(4, 126, 85, 0.65);
+    border-radius: 10px;
+    padding: 2px 7px;
+    width: 3rem;
+    text-align: center;
+  }
   .editTodoIcon {
+    margin-left: 1rem;
     color: rgba(4, 126, 85, 0.568);
     transform: scale(0.7);
     cursor: pointer;
@@ -275,7 +312,7 @@ const TodoActions = styled.div`
   justify-content: center;
   align-items: center;
   color: #fff;
-  flex: 0.05;
+  flex: 0.03;
   width: 100%;
   height: auto;
   padding: 0.2rem 0.5rem;
@@ -287,8 +324,9 @@ const TodoActions = styled.div`
 
   .delete {
     cursor: pointer;
+    transform: scale(0.8);
     ${customMedia.lessThan("smTablet")`
-      transform:scale(0.8);
+      transform:scale(0.7);
     `};
   }
 `;

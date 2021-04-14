@@ -301,8 +301,8 @@ const customMedia = generateMedia({
 });
 
 const TodoMainCard = styled.div`
-  margin: 1rem 0rem;
-  box-shadow: 0px 1px 5px rgb(0, 129, 86);
+  margin: 0.7rem 0rem;
+  box-shadow: 0px 1px 2px rgb(0, 129, 86);
   background-color: rgb(231, 250, 243);
   border-radius: 10px;
   width: 100%;
@@ -318,7 +318,7 @@ const TodoMainCard = styled.div`
 `;
 const TodoStartIcon = styled.div`
   transform: scale(0.8);
-  flex: 0.07;
+  flex: 0.04;
   width: 100%;
   height: auto;
   display: flex;
@@ -332,7 +332,7 @@ const TodoStartIcon = styled.div`
 
   .todoStartIcon {
     color: rgba(0, 99, 66, 0.568);
-    font-size: 1.7rem;
+    font-size: 1.2rem;
     object-fit: contain;
     cursor: pointer;
 
@@ -343,7 +343,7 @@ const TodoStartIcon = styled.div`
   }
 `;
 const TodoTextBox = styled.div`
-  flex: 0.88;
+  flex: 1;
   width: 100%;
   padding: 0.2rem 0.5rem;
   word-break: "break-all";
@@ -437,7 +437,7 @@ const TodoActions = styled.div`
   justify-content: space-between;
   align-items: center;
   color: #fff;
-  flex: 0.05;
+  flex: 0.03;
   width: 100%;
   height: auto;
   padding: 0.2rem 0.5rem;
@@ -452,9 +452,9 @@ const TodoActions = styled.div`
 
   .delete {
     cursor: pointer;
-
+    transform: scale(0.8);
     ${customMedia.lessThan("smTablet")`
-      transform:scale(0.8);
+      transform:scale(0.7);
     `};
   }
 `;
