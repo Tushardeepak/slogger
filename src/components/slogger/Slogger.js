@@ -21,7 +21,7 @@ import NavBar from "../navBar/NavBar";
 import "./style.css";
 import { useHistory } from "react-router";
 import { useAuth } from "../../context/AuthContext";
-import { Button, useMediaQuery, useTheme } from "@material-ui/core";
+import { Button, Slide, useMediaQuery, useTheme } from "@material-ui/core";
 
 function SloggerNew() {
   const history = useHistory();
@@ -172,49 +172,53 @@ function SloggerNew() {
         </div>
       </div>
       {openEx && (
-        <div
-          className="screenContainer"
-          style={{
-            marginBottom: "1rem",
-            marginTop: "1rem",
-            padding: "2rem 0",
-            background: "#27214215",
-          }}
-        >
-          <div className="screenContentBox">
-            <h3 className="screenContentSubHeading">ANYWHERE ANYTIME</h3>
-            <h3 className="screenContentHeading">Slogger Extension</h3>
-            <h3 className="screenContentPara">
-              Follow these 5 easy steps to add
-            </h3>
-            <h3 className="screenContentPara">
-              1) Download the zip folder and extract it.
-            </h3>
-            <h3 className="screenContentPara">
-              2) Go to extension settings in your browser.
-              <br />
-              ("chrome://extensions/" in chrome browser)
-            </h3>
-            <h3 className="screenContentPara">3) Enable the developer mode.</h3>
-            <h3 className="screenContentPara">
-              4) Click on Load unpacked button
-            </h3>
-            <h3 className="screenContentPara">
-              5) Select the folder which you have extracted.
-            </h3>
-            <a
-              href={zipFile}
-              download
-              target="_blank"
-              style={{ textDecoration: "none" }}
-            >
-              <Button className="downloadZipButton">
-                Click here to download .zip file
-              </Button>
-            </a>
+        <Slide in={openEx} direction="right" timeout={500}>
+          <div
+            className="screenContainer"
+            style={{
+              marginBottom: "1rem",
+              marginTop: "1rem",
+              padding: "2rem 0",
+              background: "#27214215",
+            }}
+          >
+            <div className="screenContentBox">
+              <h3 className="screenContentSubHeading">ANYWHERE ANYTIME</h3>
+              <h3 className="screenContentHeading">Slogger Extension</h3>
+              <h3 className="screenContentPara">
+                Follow these 5 easy steps to add
+              </h3>
+              <h3 className="screenContentPara">
+                1) Download the zip folder and extract it.
+              </h3>
+              <h3 className="screenContentPara">
+                2) Go to extension settings in your browser.
+                <br />
+                ("chrome://extensions/" in chrome browser)
+              </h3>
+              <h3 className="screenContentPara">
+                3) Enable the developer mode.
+              </h3>
+              <h3 className="screenContentPara">
+                4) Click on Load unpacked button
+              </h3>
+              <h3 className="screenContentPara">
+                5) Select the folder which you have extracted.
+              </h3>
+              <a
+                href={zipFile}
+                download
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
+                <Button className="downloadZipButton">
+                  Click here to download .zip file
+                </Button>
+              </a>
+            </div>
+            <img src={extensionImg} className="screenImg" />
           </div>
-          <img src={extensionImg} className="screenImg" />
-        </div>
+        </Slide>
       )}
       <h2 className="screenHeading">Workflow that just works</h2>
       <h4 className="screenSubHeading">Artistically Inspired</h4>
