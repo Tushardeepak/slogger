@@ -331,6 +331,22 @@
   .screenImgBox {
     width: auto;
   }
+  .extensionBoxSmall {
+    width: 100%;
+    flex-direction: column;
+    border-radius: 0;
+    height: 5rem;
+  }
+  .exSmallText h3 {
+    font-size: 1.5rem;
+  }
+  .exSmallText h5 {
+    font-size: 0.7rem;
+  }
+  .howToAdd {
+    margin-top: 1rem !important;
+    width: 60% !important;
+  }
 }
 @media (max-width: 500px) {
   .banner img {
