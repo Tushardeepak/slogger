@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { useAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
 import moment from "moment";
-import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
 import {
   Avatar,
@@ -37,7 +33,6 @@ function Chat({
   teamTodoImage,
 }) {
   const { currentUser } = useAuth();
-
   var timeDifference = new Date().getTimezoneOffset();
   var date = moment(date).subtract(1, "h");
   var dateComponent = date.utc().format("DD-MM-YYYY");

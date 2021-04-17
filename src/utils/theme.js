@@ -43,6 +43,7 @@ export default createMuiTheme({
     MuiDialog: {
       paperWidthSm: {
         width: "600px",
+        borderRadius: "20px",
       },
     },
   },

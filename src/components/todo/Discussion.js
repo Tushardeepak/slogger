@@ -193,6 +193,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
           help: doc.data().help,
           teamTodoImage: doc.data().teamTodoImage,
         }));
+        //console.log(list);
         setChatList(list);
       });
   }, [UrlTeamName]);
@@ -335,7 +336,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
               <textarea
                 value={sendTerm}
                 type="text"
-                // onKeyDown={(e) => handleSubmitEnter(e)}
+                onKeyDown={(e) => handleSubmitEnter(e)}
                 onChange={(e) => setSendTerm(e.target.value)}
                 placeholder="Type..."
               />

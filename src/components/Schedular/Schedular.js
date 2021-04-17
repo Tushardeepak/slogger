@@ -19,12 +19,14 @@ function Schedular(props) {
         return {
           id: todo.id,
           title: todo.todoText,
-          start: new Date(new Date(todo.todoStartDate).getTime() + day)
-            .toISOString()
-            .replace(/T.*$/, ""),
-          end: new Date(new Date(todo.todoEndDate).getTime() + day * 2)
-            .toISOString()
-            .replace(/T.*$/, ""),
+          // start: new Date(new Date(todo.todoStartDate).getTime() + day)
+          //   .toISOString()
+          //   .replace(/T.*$/, ""),
+          // end: new Date(new Date(todo.todoEndDate).getTime() + day * 2)
+          //   .toISOString()
+          //   .replace(/T.*$/, ""),
+          start: new Date(todo.todoStartDate),
+          end: new Date(todo.todoEndDate),
           backgroundColor: "rgba(185, 5, 5, 0.8)",
           display: "block",
           teamName: todo.todoTeamName,
@@ -34,12 +36,14 @@ function Schedular(props) {
         return {
           id: todo.id,
           title: todo.todoText,
-          start: new Date(new Date(todo.todoStartDate).getTime() + day)
-            .toISOString()
-            .replace(/T.*$/, ""),
-          end: new Date(new Date(todo.todoEndDate).getTime() + day * 2)
-            .toISOString()
-            .replace(/T.*$/, ""),
+          // start: new Date(new Date(todo.todoStartDate).getTime() + day)
+          //   .toISOString()
+          //   .replace(/T.*$/, ""),
+          // end: new Date(new Date(todo.todoEndDate).getTime() + day * 2)
+          //   .toISOString()
+          //   .replace(/T.*$/, ""),
+          start: new Date(todo.todoStartDate),
+          end: new Date(todo.todoEndDate),
           backgroundColor: "rgba(185, 86, 5, 0.8)",
           display: "block",
           teamName: todo.todoTeamName,
@@ -49,12 +53,14 @@ function Schedular(props) {
         return {
           id: todo.id,
           title: todo.todoText,
-          start: new Date(new Date(todo.todoStartDate).getTime() + day)
-            .toISOString()
-            .replace(/T.*$/, ""),
-          end: new Date(new Date(todo.todoEndDate).getTime() + day * 2)
-            .toISOString()
-            .replace(/T.*$/, ""),
+          // start: new Date(new Date(todo.todoStartDate).getTime() + day)
+          //   .toISOString()
+          //   .replace(/T.*$/, ""),
+          // end: new Date(new Date(todo.todoEndDate).getTime() + day * 2)
+          //   .toISOString()
+          //   .replace(/T.*$/, ""),
+          start: new Date(todo.todoStartDate),
+          end: new Date(todo.todoEndDate),
           backgroundColor: "rgba(0, 99, 66, 0.8)",
           display: "block",
           teamName: todo.todoTeamName,

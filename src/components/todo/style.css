@@ -385,10 +385,9 @@
   .addButtonModal {
     width: 100% !important;
   }
-  /* .commentTextBox {
-    min-width: none !important;
-    width: 100%;
-  } */
+  .TodoTextBox {
+    min-height: 5rem;
+  }
 }
 
 @media only screen and (max-height: 600px) {

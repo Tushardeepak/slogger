@@ -94,7 +94,6 @@ export default function DownloadImageModal({
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogContent style={{ color: "#019966" }}>Actions</DialogContent>
         <DialogContent>
           {currentUser.uid === senderId && !sure && (
             <Button
@@ -195,6 +194,20 @@ export default function DownloadImageModal({
         </DialogContent>
         <DialogContent style={{ display: "flex" }}>
           <div style={{ flex: 1 }}></div>
+          <Button
+            className="uploadView"
+            style={{
+              overflow: "hidden",
+              fontSize: "0.7rem",
+              height: "1.5rem",
+              color: "#fff",
+              backgroundColor: "#019966",
+              marginRight: "0.5rem",
+            }}
+            onClick={handleClose}
+          >
+            close
+          </Button>
           <Button
             className="uploadView"
             style={{

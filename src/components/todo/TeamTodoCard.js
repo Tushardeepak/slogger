@@ -326,7 +326,7 @@ const TodoMainCard = styled.div`
   box-shadow: 0px 1px 2px rgb(0, 129, 86);
   background-color: rgb(231, 250, 243);
   border-radius: 10px;
-  width: 100%;
+  width: 99%;
   height: 3rem;
   min-height: 3rem;
   display: flex;

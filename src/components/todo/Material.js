@@ -30,7 +30,6 @@ export default function Material({
   open,
   handleClose,
   id,
-  todoImage,
   admin,
   currentUser,
   comment,
@@ -57,6 +56,7 @@ export default function Material({
   const [imageText, setImageText] = useState("");
   const [openImagesModal, setOpenImagesModal] = useState(false);
   const [helperText, setHelperText] = useState("");
+  const [adminTodoText, setAdminTodoText] = useState(todoText);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -158,6 +158,15 @@ export default function Material({
     }
   };
 
+  const handleAdminTodoChange = () => {
+    db.collection("teams").doc(urlTeamName).collection("teamTodos").doc(id).set(
+      {
+        todoText: adminTodoText,
+      },
+      { merge: true }
+    );
+  };
+
   const getAllImages = () => {
     db.collection("teams")
       .doc(urlTeamName)
@@ -213,10 +222,29 @@ export default function Material({
         >
           <div style={{ width: "100%", marginBottom: "0.5rem" }}>
             <textarea
-              defaultValue={todoText}
+              defaultValue={adminTodoText}
               className="TodoTextBox"
-              disabled
+              disabled={admin === currentUser.uid ? false : true}
+              onChange={(e) => setAdminTodoText(e.target.value)}
             />
+            {admin === currentUser.uid && (
+              <div style={{ display: "flex" }}>
+                <div style={{ flex: 1 }}></div>
+                <Button
+                  style={{
+                    overflow: "hidden",
+                    fontSize: "0.7rem",
+                    height: "1.5rem",
+                    color: "#fff",
+                    backgroundColor: "rgb(5, 185, 125, 0.8)",
+                    marginRight: "1rem",
+                  }}
+                  onClick={handleAdminTodoChange}
+                >
+                  Save
+                </Button>
+              </div>
+            )}
             {error && (
               <p style={{ color: "rgba(185, 5, 5, 0.7)", fontSize: "10px" }}>
                 *Please add some description or title

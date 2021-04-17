@@ -213,6 +213,60 @@
   grid-template-columns: repeat(4, 1fr);
 }
 
+.extensionContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+.extensionBoxSmall {
+  background-color: #272142;
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  padding: 2rem;
+  width: 50%;
+  justify-content: space-evenly;
+  border-radius: 20px;
+  margin: 1rem 0;
+}
+.exSmallText {
+  color: #fff;
+  text-align: center;
+}
+.exSmallText h3 {
+  font-weight: 300;
+  font-size: 2rem;
+}
+.exSmallText h5 {
+  font-weight: 300;
+  font-size: 0.8rem;
+}
+.howToAdd {
+  background-color: #272142 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  transition: all 0.5s ease-in-out !important;
+  border-radius: 15px !important;
+  width: 20%;
+}
+.howToAdd:hover {
+  background-color: #fff !important;
+  color: #272142 !important;
+  border: 2px solid #272142 !important;
+  border-radius: 15px !important;
+}
+.downloadZipButton {
+  background-color: #272142 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  transition: all 0.5s ease-in-out !important;
+  border-radius: 15px !important;
+  margin: 1rem 0 !important;
+  text-align: center !important;
+}
+
 @media (max-width: 1000px) {
   .serviceBox {
     width: 100%;

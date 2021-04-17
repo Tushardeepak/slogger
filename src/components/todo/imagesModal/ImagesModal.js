@@ -61,11 +61,13 @@ function ImagesModal({
             <p
               style={{
                 fontSize: "1rem",
-                color: "seagreen",
+                color: "rgb(1, 87, 1)",
                 margin: "1rem 0 0 1rem",
+                textAlign: "center",
+                fontFamily: "sans-serif",
               }}
             >
-              <span style={{ fontSize: "0.7rem" }}>Uploaded by :</span>{" "}
+              <span style={{ fontSize: "0.7rem" }}>By :</span>{" "}
               {images.senderName}
             </p>
             <Divider style={{ margin: "0.5rem 1rem 0 1rem" }} />

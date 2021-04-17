@@ -168,17 +168,22 @@ function DeleteUserTeamModal({
 
   const deleteAllTodo = (todo) => {
     todo.map((doc) => {
-      if (doc.todoImage !== "") {
-        var desertRef = storage.refFromURL(doc.todoImage);
-        desertRef
-          .delete()
-          .then(function () {
-            console.log("File deleted successfully");
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
+      db.collection("teams")
+        .doc(teamName)
+        .collection("teamTodos")
+        .doc(doc.id)
+        .collection("teamTodoImages")
+        .onSnapshot((snapshot) => {
+          const list = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            todoImage: doc.data().todoImage,
+          }));
+          if (list.length !== 0) {
+            list.forEach((file) => {
+              storage.refFromURL(file.todoImage).delete();
+            });
+          }
+        });
 
       db.collection("teams")
         .doc(teamName)

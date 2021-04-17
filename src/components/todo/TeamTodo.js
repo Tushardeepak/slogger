@@ -156,7 +156,7 @@ function TeamTodo({
   const [openDeleteSnackBar, setOpenDeleteSnackBar] = useState(false);
   const [currentTeamName, setCurrentTeamName] = useState("");
   const [openSnack, setOpenSnack] = useState(false);
-  const [transitionDirection, setTransitionDirection] = useState("right");
+  const [transitionDirection, setTransitionDirection] = useState("down");
 
   const handleInputChange = (value) => {
     setInputTodo(value);
@@ -178,6 +178,7 @@ function TeamTodo({
   };
 
   const handleSubmit = () => {
+    setTransitionDirection("down");
     if (inputTodo !== "") {
       db.collection("teams").doc(UrlTeamName).collection("teamTodos").add({
         todoText: inputTodo,
@@ -618,27 +619,30 @@ function TeamTodo({
           ) : (
             ""
           )}
-
-          {teamsTodoList.map((todo) => (
-            <TeamTodoCard
-              key={todo.id}
-              id={todo.id}
-              text={todo.todoText}
-              date={todo.todoTime}
-              checked={todo.checked}
-              checkedBy={todo.checkedBy}
-              admin={todo.admin}
-              urlTeamName={UrlTeamName}
-              assigned={todo.assignedTo}
-              todoImage={todo.todoImage}
-              comment={todo.comment}
-              userName={userName}
-              profileImage={profileImage}
-              setTabValue={setTabValue}
-              setTransitionDirection={setTransitionDirection}
-              transitionDirection={transitionDirection}
-            />
-          ))}
+          {teamsTodoList.length !== 0 && (
+            <div className="rightDownContainer">
+              {teamsTodoList.map((todo) => (
+                <TeamTodoCard
+                  key={todo.id}
+                  id={todo.id}
+                  text={todo.todoText}
+                  date={todo.todoTime}
+                  checked={todo.checked}
+                  checkedBy={todo.checkedBy}
+                  admin={todo.admin}
+                  urlTeamName={UrlTeamName}
+                  assigned={todo.assignedTo}
+                  todoImage={todo.todoImage}
+                  comment={todo.comment}
+                  userName={userName}
+                  profileImage={profileImage}
+                  setTabValue={setTabValue}
+                  setTransitionDirection={setTransitionDirection}
+                  transitionDirection={transitionDirection}
+                />
+              ))}
+            </div>
+          )}
         </TeamTodoRightContainer>
       </TeamTodoContainer>
       {openMaker && (
@@ -803,13 +807,19 @@ const TeamTodoLeftRightBox = styled.div`
 `;
 const TeamTodoRightContainer = styled.div`
   flex: 0.55;
-  overflow-y: scroll;
   padding: 0 1rem;
   ${customMedia.lessThan("smTablet")`
   flex:1;
   
   padding: 0 0.2rem;
 `}
+  .rightDownContainer {
+    padding: 0 0.1rem;
+    width: 99%;
+    height: 81%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
   .teamNoTodoImage {
     ${customMedia.lessThan("smTablet")`
     height:70% !important;
@@ -856,7 +866,7 @@ const TodoRightUpBox = styled.div`
   display: flex;
   flex-direction: column;
   border-bottom: 2px solid rgba(0, 141, 94, 0.295);
-  width: 100%;
+  width: 99%;
 
   ${customMedia.lessThan("smTablet")`
     border:none;

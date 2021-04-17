@@ -34,7 +34,7 @@
   font-weight: 400 !important;
 }
 .fc-h-event {
-  border: none;
+  border: none !important;
   box-shadow: 2px 2px 5px grey;
 }
 .fc-h-event .fc-event-main {
@@ -43,6 +43,9 @@
 }
 .fc-h-event:hover .fc-event-main {
   background-color: rgba(0, 0, 0, 0.226);
+}
+.fc-event-time {
+  display: none;
 }
 
 /* modal edits */
