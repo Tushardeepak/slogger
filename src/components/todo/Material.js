@@ -238,6 +238,7 @@ export default function Material({
                     color: "#fff",
                     backgroundColor: "rgb(5, 185, 125, 0.8)",
                     marginRight: "1rem",
+                    marginBottom: "1rem",
                   }}
                   onClick={handleAdminTodoChange}
                 >

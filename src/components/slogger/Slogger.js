@@ -21,7 +21,13 @@ import NavBar from "../navBar/NavBar";
 import "./style.css";
 import { useHistory } from "react-router";
 import { useAuth } from "../../context/AuthContext";
-import { Button, Slide, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Button,
+  Slide,
+  useMediaQuery,
+  useTheme,
+  Zoom,
+} from "@material-ui/core";
 
 function SloggerNew() {
   const history = useHistory();
@@ -172,14 +178,15 @@ function SloggerNew() {
         </div>
       </div>
       {openEx && (
-        <Slide in={openEx} direction="right" timeout={500}>
+        <Zoom in={openEx} direction="right" timeout={500}>
           <div
             className="screenContainer"
             style={{
-              marginBottom: "1rem",
+              marginBottom: "2rem",
               marginTop: "1rem",
               padding: "2rem 0",
-              background: "#27214215",
+              background: "#cdf5ff",
+              borderRadius: "68% 32% 74% 26% / 22% 47% 53% 78%",
             }}
           >
             <div className="screenContentBox">
@@ -218,7 +225,7 @@ function SloggerNew() {
             </div>
             <img src={extensionImg} className="screenImg" />
           </div>
-        </Slide>
+        </Zoom>
       )}
       <h2 className="screenHeading">Workflow that just works</h2>
       <h4 className="screenSubHeading">Artistically Inspired</h4>

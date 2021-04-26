@@ -386,7 +386,7 @@
     width: 100% !important;
   }
   .TodoTextBox {
-    min-height: 5rem;
+    min-height: 4rem;
   }
 }
 
