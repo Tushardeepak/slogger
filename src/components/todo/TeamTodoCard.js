@@ -28,6 +28,7 @@ function TeamTodoCard({
   admin,
   urlTeamName,
   assigned,
+  assignedBy,
   todoImage,
   comment,
   userName,
@@ -287,7 +288,9 @@ function TeamTodoCard({
             <DeleteIcon className="delete" onClick={() => handleDelete(id)} />
           </TodoActions>
         ) : (
-          ""
+          <TodoActions>
+            <DeleteIcon style={{ opacity: 0 }} />
+          </TodoActions>
         )}
         {openMaterial && (
           <Material
@@ -300,6 +303,7 @@ function TeamTodoCard({
             comment={comment}
             urlTeamName={urlTeamName}
             checkedBy={checkedBy}
+            assignedBy={assignedBy}
             todoText={text}
             todoEndDate={date}
             profileImage={profileImage}

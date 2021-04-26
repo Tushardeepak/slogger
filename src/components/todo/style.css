@@ -191,7 +191,7 @@
   max-height: 6rem;
   width: 96%;
   font-weight: 300 !important;
-  margin-bottom: 1rem;
+  background-color: rgb(247, 247, 247);
 }
 .commentTextBox {
   padding: 0.5rem;

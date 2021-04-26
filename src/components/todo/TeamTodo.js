@@ -190,6 +190,7 @@ function TeamTodo({
         todoImage: "",
         comment: "",
         checkedBy: "",
+        assignedBy: userName,
       });
       setInputTodo("");
       setLoader(false);
@@ -210,6 +211,7 @@ function TeamTodo({
           checked: doc.data().checked,
           checkedBy: doc.data().checkedBy,
           assignedTo: doc.data().assignedTo,
+          assignedBy: doc.data().assignedBy,
           todoImage: doc.data().todoImage,
           comment: doc.data().comment,
         }));
@@ -380,101 +382,71 @@ function TeamTodo({
         )}
 
         <TeamTodoRightContainer>
-          {thisIsAdmin ? (
-            <TodoRightUpBox>
-              <div className="inputField">
-                <CreateIcon className="todoIcon" />
-                <textarea
-                  value={inputTodo}
-                  className="todoInput"
-                  type="text"
-                  placeholder="Write here..."
-                  onChange={(e) => handleInputChange(e.target.value)}
-                  //onKeyDown={(e) => handleSubmitEnter(e)}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  paddingLeft: "0 0rem",
-                  width: "100%",
-                }}
-              >
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                  {/* <CustomTooltip title="Enter deadline" placement="top" arrow> */}
-                  <div className="dateBox">
-                    <p>Deadline:</p>
-                    <ThemeProvider theme={defaultMaterialTheme}>
-                      <DatePicker
-                        variant="dialog"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        style={{
-                          width: "100%",
-                          textAlign: "center",
-                          cursor: "pointer",
-                          fontSize: "0.7rem",
-                        }}
-                        InputProps={{
-                          endAdornment: <AlarmIcon className="AlarmIcon" />,
-                          disableUnderline: true,
-                        }}
-                      />
-                    </ThemeProvider>
-                  </div>
-                  {/* </CustomTooltip> */}
-                </MuiPickersUtilsProvider>
-
-                <Button
-                  disabled={loader}
-                  endIcon={<AddIcon className="addIcon" />}
-                  className={loader ? "AddButtonDisabled" : "AddButton"}
-                  onClick={() => handleSubmit()}
-                >
-                  ADD
-                </Button>
-                <CustomTooltip title="Start meeting" placement="down">
-                  <a
-                    href={`https://slogmeet.web.app/${UrlTeamName}`}
-                    className="meetingLink"
-                  >
-                    <Button disabled={loader} className="slogMeet">
-                      <VideoCallIcon />
-                    </Button>
-                  </a>
-                </CustomTooltip>
-              </div>
-            </TodoRightUpBox>
-          ) : (
+          <TodoRightUpBox>
+            <div className="inputField">
+              <CreateIcon className="todoIcon" />
+              <textarea
+                value={inputTodo}
+                className="todoInput"
+                type="text"
+                placeholder="Write here..."
+                onChange={(e) => handleInputChange(e.target.value)}
+                //onKeyDown={(e) => handleSubmitEnter(e)}
+              />
+            </div>
             <div
               style={{
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "rgb(5, 185, 125)",
-                padding: "1.4rem 0rem",
-                borderBottom: "2px solid rgba(0, 141, 94, 0.295)",
+                paddingLeft: "0 0rem",
+                width: "100%",
               }}
             >
-              <h1 style={{ fontSize: "1rem" }}>SLOGGER</h1>
-              {UrlTeamName !== undefined && (
-                <CustomTooltip title="Join meeting" placement="top">
-                  <a
-                    href={`https://slogmeet.web.app/${UrlTeamName}`}
-                    className="meetingJoinLink"
-                  >
-                    <Button
-                      disabled={loader}
-                      className="slogMeet"
-                      style={{ width: "10%", transform: "scale(0.7)" }}
-                    >
-                      <VideoCallIcon />
-                    </Button>
-                  </a>
-                </CustomTooltip>
-              )}
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                {/* <CustomTooltip title="Enter deadline" placement="top" arrow> */}
+                <div className="dateBox">
+                  <p>Deadline:</p>
+                  <ThemeProvider theme={defaultMaterialTheme}>
+                    <DatePicker
+                      variant="dialog"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        cursor: "pointer",
+                        fontSize: "0.7rem",
+                      }}
+                      InputProps={{
+                        endAdornment: <AlarmIcon className="AlarmIcon" />,
+                        disableUnderline: true,
+                      }}
+                    />
+                  </ThemeProvider>
+                </div>
+                {/* </CustomTooltip> */}
+              </MuiPickersUtilsProvider>
+
+              <Button
+                disabled={loader}
+                endIcon={<AddIcon className="addIcon" />}
+                className={loader ? "AddButtonDisabled" : "AddButton"}
+                onClick={() => handleSubmit()}
+              >
+                ADD
+              </Button>
+              <CustomTooltip title="Start meeting" placement="down">
+                <a
+                  href={`https://slogmeet.web.app/${UrlTeamName}`}
+                  className="meetingLink"
+                >
+                  <Button disabled={loader} className="slogMeet">
+                    <VideoCallIcon />
+                  </Button>
+                </a>
+              </CustomTooltip>
             </div>
-          )}
+          </TodoRightUpBox>
+
           {teamsTodoList.length === 0 ? (
             thisIsAdmin ? (
               <div
@@ -632,6 +604,7 @@ function TeamTodo({
                   admin={todo.admin}
                   urlTeamName={UrlTeamName}
                   assigned={todo.assignedTo}
+                  assignedBy={todo.assignedBy}
                   todoImage={todo.todoImage}
                   comment={todo.comment}
                   userName={userName}

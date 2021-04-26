@@ -40,6 +40,7 @@ export default function Material({
   userName,
   profileImage,
   setTabValue,
+  assignedBy,
 }) {
   const [editComment, setEditComment] = useState(comment);
   const [done, setDone] = useState(false);
@@ -204,11 +205,16 @@ export default function Material({
     >
       <DialogTitle id="alert-dialog-slide-title" className="title">
         Details
-        {checkedBy !== "" && (
-          <p style={{ fontSize: "small" }}>
-            <span style={{ fontWeight: 600 }}>Completed By:</span> {checkedBy}
+        <div style={{ display: "flex" }}>
+          <p style={{ fontSize: "x-small" }}>
+            <span style={{ fontWeight: 600 }}>Assigned By:</span> {assignedBy}
           </p>
-        )}
+          {checkedBy !== "" && (
+            <p style={{ fontSize: "x-small", marginLeft: "1rem" }}>
+              <span style={{ fontWeight: 600 }}>Completed By:</span> {checkedBy}
+            </p>
+          )}
+        </div>
       </DialogTitle>
 
       <DialogContent>
@@ -237,7 +243,7 @@ export default function Material({
                     height: "1.5rem",
                     color: "#fff",
                     backgroundColor: "rgb(5, 185, 125, 0.8)",
-                    marginRight: "1rem",
+                    marginRight: "0.5rem",
                     marginBottom: "1rem",
                   }}
                   onClick={handleAdminTodoChange}

@@ -21,13 +21,7 @@ import NavBar from "../navBar/NavBar";
 import "./style.css";
 import { useHistory } from "react-router";
 import { useAuth } from "../../context/AuthContext";
-import {
-  Button,
-  Slide,
-  useMediaQuery,
-  useTheme,
-  Zoom,
-} from "@material-ui/core";
+import { Button, useMediaQuery, useTheme, Zoom } from "@material-ui/core";
 
 function SloggerNew() {
   const history = useHistory();
@@ -179,51 +173,57 @@ function SloggerNew() {
       </div>
       {openEx && (
         <Zoom in={openEx} direction="right" timeout={500}>
-          <div
-            className="screenContainer"
-            style={{
-              marginBottom: "2rem",
-              marginTop: "1rem",
-              padding: "2rem 0",
-              background: "#cdf5ff",
-              borderRadius: "68% 32% 74% 26% / 22% 47% 53% 78%",
-            }}
-          >
-            <div className="screenContentBox">
-              <h3 className="screenContentSubHeading">ANYWHERE ANYTIME</h3>
-              <h3 className="screenContentHeading">Slogger Extension</h3>
-              <h3 className="screenContentPara">
-                Follow these 5 easy steps to add
-              </h3>
-              <h3 className="screenContentPara">
-                1) Download the zip folder and extract it.
-              </h3>
-              <h3 className="screenContentPara">
-                2) Go to extension settings in your browser.
-                <br />
-                ("chrome://extensions/" in chrome browser)
-              </h3>
-              <h3 className="screenContentPara">
-                3) Enable the developer mode.
-              </h3>
-              <h3 className="screenContentPara">
-                4) Click on Load unpacked button
-              </h3>
-              <h3 className="screenContentPara">
-                5) Select the folder which you have extracted.
-              </h3>
-              <a
-                href={zipFile}
-                download
-                target="_blank"
-                style={{ textDecoration: "none" }}
-              >
-                <Button className="downloadZipButton">
-                  Click here to download .zip file
-                </Button>
-              </a>
+          <div className="screenContainer" style={{ marginTop: "-0.7rem" }}>
+            <div
+              className="screenContainer"
+              style={{
+                marginBottom: "2rem",
+                marginTop: "1rem",
+                padding: "2rem 0",
+                background: "rgb(205,245,255)",
+                background:
+                  "linear-gradient(65deg, rgba(205,245,255,1) 0%, rgba(255,255,255,1) 83%)",
+                borderRadius: "68% 32% 74% 26% / 22% 47% 53% 78%",
+                boxShadow: "rgba(0, 0, 0, 0.1) 1px 2px 4px",
+                width: "90%",
+              }}
+            >
+              <div className="screenContentBox">
+                <h3 className="screenContentSubHeading">ANYWHERE ANYTIME</h3>
+                <h3 className="screenContentHeading">Slogger Extension</h3>
+                <h3 className="screenContentPara">
+                  Follow these 5 easy steps to add
+                </h3>
+                <h3 className="screenContentPara">
+                  1) Download the zip folder and extract it.
+                </h3>
+                <h3 className="screenContentPara">
+                  2) Go to extension settings in your browser.
+                  <br />
+                  ("chrome://extensions/" in chrome browser)
+                </h3>
+                <h3 className="screenContentPara">
+                  3) Enable the developer mode.
+                </h3>
+                <h3 className="screenContentPara">
+                  4) Click on Load unpacked button
+                </h3>
+                <h3 className="screenContentPara">
+                  5) Select the folder which you have extracted.
+                </h3>
+                <a
+                  href={zipFile}
+                  download
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button className="downloadZipButton">
+                    Click here to download .zip file
+                  </Button>
+                </a>
+              </div>
+              <img src={extensionImg} className="screenImg" />
             </div>
-            <img src={extensionImg} className="screenImg" />
           </div>
         </Zoom>
       )}
