@@ -18,11 +18,13 @@ import {
 import Material from "./Material";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import DoneIcon from "@material-ui/icons/Done";
+import CalendarModal from "../Schedular/CalendarModal";
 
 function TeamTodoCard({
   id,
   text,
-  date,
+  startDate,
+  endDate,
   checked,
   checkedBy,
   admin,
@@ -36,6 +38,8 @@ function TeamTodoCard({
   setTabValue,
   transitionDirection,
   setTransitionDirection,
+  priority,
+  setOpenSchedular,
 }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
@@ -43,6 +47,7 @@ function TeamTodoCard({
   const [openMaterial, setOpenMaterial] = useState(false);
   const [assignChange, setAssignChange] = useState(false);
   const [transitionIn, setTransitionIn] = useState(true);
+  const [edit, setEdit] = useState(false);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -120,19 +125,19 @@ function TeamTodoCard({
     <Slide in={transitionIn} timeout={400} direction={transitionDirection}>
       <TodoMainCard>
         <TodoStartIcon>
-          <CustomTooltip title="Double tap" arrow placement="left">
-            {checked ? (
-              <CheckBoxIcon
-                className="todoStartIcon"
-                onClick={() => handleChecked()}
-              />
-            ) : (
-              <CheckBoxOutlineBlankIcon
-                className="todoStartIcon"
-                onClick={() => handleChecked()}
-              />
-            )}
-          </CustomTooltip>
+          {/* <CustomTooltip title="Double tap" arrow placement="top"> */}
+          {checked ? (
+            <CheckBoxIcon
+              className="todoStartIcon"
+              onClick={() => handleChecked()}
+            />
+          ) : (
+            <CheckBoxOutlineBlankIcon
+              className="todoStartIcon"
+              onClick={() => handleChecked()}
+            />
+          )}
+          {/* </CustomTooltip> */}
         </TodoStartIcon>
 
         <TodoTextBox>
@@ -145,7 +150,21 @@ function TeamTodoCard({
                   alignItems: "center",
                 }}
               >
-                <div style={{ flex: 1 }}>
+                <div style={{ display: "flex" }}>
+                  <Button
+                    className="uploadView"
+                    style={{
+                      width: "98%",
+                      fontSize: "0.65rem",
+                      height: "1.2rem",
+                      color: "#fff",
+                      backgroundColor: "rgb(5, 185, 125,0.8)",
+                      marginRight: "0.4rem",
+                    }}
+                    onClick={() => setEdit(true)}
+                  >
+                    Edit
+                  </Button>
                   <Button
                     className="uploadView"
                     style={{
@@ -162,20 +181,66 @@ function TeamTodoCard({
                     Details
                   </Button>
                 </div>
-                <p
-                  className="todoDate"
-                  style={{
-                    color: "rgba(0, 99, 66, 0.668)",
-                    paddingBottom: "0rem",
-                    fontSize: "0.55rem",
-                  }}
-                >
-                  {date.substring(8, 10)}
-                  {"/"}
-                  {date.substring(5, 7)}
-                  {"/"}
-                  {date.substring(0, 4)}
-                </p>
+                <div style={{ display: "flex" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginRight: "0.4rem",
+                    }}
+                  >
+                    <strong
+                      className="todoDate"
+                      style={{
+                        color: "rgba(0, 99, 66, 0.668)",
+                      }}
+                    >
+                      Start
+                    </strong>
+                    <p
+                      className="todoDate"
+                      style={{
+                        color: "rgba(0, 99, 66, 0.668)",
+                        paddingBottom: "0.3rem",
+                      }}
+                    >
+                      {startDate?.substring(8, 10)}
+                      {"/"}
+                      {startDate?.substring(5, 7)}
+                      {"/"}
+                      {startDate?.substring(0, 4)}
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginRight: "0.4rem",
+                    }}
+                  >
+                    <strong
+                      className="todoDate"
+                      style={{
+                        color: "rgba(0, 99, 66, 0.668)",
+                      }}
+                    >
+                      End
+                    </strong>
+                    <p
+                      className="todoDate"
+                      style={{
+                        color: "rgba(0, 99, 66, 0.668)",
+                        paddingBottom: "0.3rem",
+                      }}
+                    >
+                      {endDate?.substring(8, 10)}
+                      {"/"}
+                      {endDate?.substring(5, 7)}
+                      {"/"}
+                      {endDate?.substring(0, 4)}
+                    </p>
+                  </div>
+                </div>
               </div>
               <div style={{ width: "100%", flex: 1, marginBottom: "0.5rem" }}>
                 <div className="inputField">
@@ -204,7 +269,7 @@ function TeamTodoCard({
             </>
           ) : (
             <div style={{ display: "flex" }}>
-              <div style={{ width: "100%", flex: "0.85" }}>
+              <div style={{ width: "100%", flex: "1" }}>
                 <div className="inputField">
                   <p className="assignedTo">Assigned to :</p>
                   <input
@@ -230,25 +295,71 @@ function TeamTodoCard({
               </div>
               <div
                 style={{
-                  flex: "0.15",
+                  //flex: "0.45",
                   display: "flex",
-                  flexDirection: "column",
                 }}
               >
-                <p
-                  className="todoDate"
+                <div
                   style={{
-                    color: "rgba(0, 99, 66, 0.668)",
-                    paddingBottom: "0.3rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    marginRight: "0.4rem",
                   }}
                 >
-                  {date.substring(8, 10)}
-                  {"/"}
-                  {date.substring(5, 7)}
-                  {"/"}
-                  {date.substring(0, 4)}
-                </p>
-                <div>
+                  <strong
+                    className="todoDate"
+                    style={{
+                      color: "rgba(0, 99, 66, 0.668)",
+                      paddingBottom: "0.3rem",
+                    }}
+                  >
+                    Start
+                  </strong>
+                  <p
+                    className="todoDate"
+                    style={{
+                      color: "rgba(0, 99, 66, 0.668)",
+                      paddingBottom: "0.3rem",
+                    }}
+                  >
+                    {startDate?.substring(8, 10)}
+                    {"/"}
+                    {startDate?.substring(5, 7)}
+                    {"/"}
+                    {startDate?.substring(0, 4)}
+                  </p>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginRight: "0.4rem",
+                  }}
+                >
+                  <strong
+                    className="todoDate"
+                    style={{
+                      color: "rgba(0, 99, 66, 0.668)",
+                      paddingBottom: "0.3rem",
+                    }}
+                  >
+                    End
+                  </strong>
+                  <p
+                    className="todoDate"
+                    style={{
+                      color: "rgba(0, 99, 66, 0.668)",
+                      paddingBottom: "0.3rem",
+                    }}
+                  >
+                    {endDate?.substring(8, 10)}
+                    {"/"}
+                    {endDate?.substring(5, 7)}
+                    {"/"}
+                    {endDate?.substring(0, 4)}
+                  </p>
+                </div>
+                <div style={{ display: "flex" }}>
                   <Button
                     className="uploadView"
                     style={{
@@ -257,7 +368,20 @@ function TeamTodoCard({
                       height: "1.2rem",
                       color: "#fff",
                       backgroundColor: "rgb(5, 185, 125,0.8)",
-                      marginBottom: "0.7rem",
+                      marginRight: "0.4rem",
+                    }}
+                    onClick={() => setEdit(true)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    className="uploadView"
+                    style={{
+                      width: "98%",
+                      fontSize: "0.65rem",
+                      height: "1.2rem",
+                      color: "#fff",
+                      backgroundColor: "rgb(5, 185, 125,0.8)",
                     }}
                     onClick={() => setOpenMaterial(true)}
                   >
@@ -272,11 +396,10 @@ function TeamTodoCard({
               color: "rgba(0, 99, 66, 0.868)",
               fontWeight: 400,
               width: "100%",
-              wordBreak: "break-all",
+              wordBreak: "break-word",
               verticalAlign: "center",
               height: "auto",
               // lineHeight: "30px",
-              marginTop: "-5px",
               fontFamily: "Times New Roman",
             }}
           >
@@ -284,11 +407,11 @@ function TeamTodoCard({
           </p>
         </TodoTextBox>
         {admin === currentUser.uid ? (
-          <TodoActions>
+          <TodoActions priority={priority}>
             <DeleteIcon className="delete" onClick={() => handleDelete(id)} />
           </TodoActions>
         ) : (
-          <TodoActions>
+          <TodoActions priority={priority}>
             <DeleteIcon style={{ opacity: 0 }} />
           </TodoActions>
         )}
@@ -305,10 +428,37 @@ function TeamTodoCard({
             checkedBy={checkedBy}
             assignedBy={assignedBy}
             todoText={text}
-            todoEndDate={date}
+            todoEndDate={endDate}
             profileImage={profileImage}
             userName={userName}
             setTabValue={setTabValue}
+          />
+        )}
+        {edit && (
+          <CalendarModal
+            open={edit}
+            handleClose={() => setEdit(false)}
+            event={{
+              title: text,
+              backgroundColor:
+                priority === 3
+                  ? "rgba(185, 5, 5, 0.8)"
+                  : priority === 2
+                  ? "rgba(185, 86, 5, 0.8)"
+                  : "rgba(0, 99, 66, 0.8)",
+              start: new Date(startDate),
+              end: new Date(endDate),
+              _def: {
+                publicId: id,
+                extendedProps: {
+                  teamName: "",
+                },
+              },
+            }}
+            team={true}
+            urlTeamName={urlTeamName}
+            setPersonalTabValue={emptyFunction}
+            setOpenSchedular={setOpenSchedular}
           />
         )}
       </TodoMainCard>
@@ -330,11 +480,11 @@ const TodoMainCard = styled.div`
   box-shadow: 0px 1px 2px rgb(0, 129, 86);
   background-color: rgb(231, 250, 243);
   border-radius: 10px;
-  width: 99%;
+  width: 100%;
   height: 3rem;
   min-height: 3rem;
   display: flex;
-  word-break: "break-all";
+  word-break: "break-word";
   min-height: 4.5rem !important;
   height: auto;
   /* ${customMedia.lessThan("smTablet")`
@@ -371,7 +521,7 @@ const TodoTextBox = styled.div`
   flex: 1;
   width: 100%;
   padding: 0.2rem 0.5rem;
-  word-break: "break-all";
+  word-break: "break-word";
   height: auto;
 
   .assignedTo {
@@ -466,9 +616,19 @@ const TodoActions = styled.div`
   width: 100%;
   height: auto;
   padding: 0.2rem 0.5rem;
-  background-color: rgba(0, 99, 66, 0.868);
   border-radius: 30px 10px 10px 30px;
-  border-left: 2px solid rgba(0, 99, 66, 0.768);
+  background-color: ${(props) =>
+    props.priority === 3
+      ? "rgba(185, 5, 5, 0.8)"
+      : props.priority === 2
+      ? "rgba(185, 86, 5, 0.8)"
+      : "rgba(0, 99, 66, 0.8)"};
+  border-left: ${(props) =>
+    props.priority === 3
+      ? "2px solid rgba(185, 5, 5, 0.768)"
+      : props.priority === 2
+      ? "2px solid rgba(185, 86, 5, 0.768)"
+      : "2px solid rgba(0, 99, 66, 0.768)"};
 
   ${customMedia.lessThan("smTablet")`
       flex: 0.05;

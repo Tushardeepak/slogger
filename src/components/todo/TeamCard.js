@@ -55,7 +55,7 @@ function TeamCard({
           padding: "0.3rem",
           borderRadius: discussion ? "5px" : "5px 0 0 5px",
           textAlign: "center",
-          wordBreak: "break-all",
+          wordBreak: "break-word",
           border: "2px solid rgb(0, 94, 62)",
           marginRight: 0,
         }}
@@ -113,7 +113,7 @@ function TeamCard({
           fontSize: "0.7rem",
           borderRadius: discussion ? "5px" : "5px 0 0 5px",
           textAlign: "center",
-          wordBreak: "break-all",
+          wordBreak: "break-word",
           border: "2px solid rgba(7, 190, 129, 0.534)",
           marginRight: 0,
         }}

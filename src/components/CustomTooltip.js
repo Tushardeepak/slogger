@@ -5,7 +5,7 @@ const CustomTooltip = withStyles(() => ({
   tooltip: {
     fontSize: ".7em",
     fontWeight: 400,
-    background: "rgb(5, 185, 125)",
+    background: "rgb(5, 185, 125,0.8)",
     color: "#fff",
     marginBottom: "0rem",
     overflow: "hidden",

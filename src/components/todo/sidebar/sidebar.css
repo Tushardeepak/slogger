@@ -13,12 +13,17 @@
   border: 2px solid rgb(5, 185, 125) !important;
   background-color: rgb(5, 185, 125) !important;
   color: #fff !important;
-  width: 98% !important;
+  width: 100% !important;
   height: 1.5rem !important;
-  margin: 10px 0 !important;
+  margin: 5px 10px !important;
   font-weight: 300 !important;
   font-size: 0.7rem !important;
   overflow: hidden;
+}
+.addItemsTeams p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .addItemsProfile {
   border: 2px solid rgb(5, 185, 125) !important;

@@ -81,6 +81,9 @@ export default function CalendarModal({
   getAllEvents,
   getChild,
   setPersonalTabValue,
+  team,
+  urlTeamName,
+  setOpenSchedular,
 }) {
   const [todoText, setTodoText] = useState(event.title);
   const [selectedStartDate, handleStartDateChange] = useState(event.start);
@@ -141,20 +144,38 @@ export default function CalendarModal({
         new Date(selectedEndDate).getTime()
     ) {
       console.log(event._def.publicId);
-      db.collection("users")
-        .doc(currentUser.uid)
-        .collection("todos")
-        .doc(event._def.publicId)
-        .set(
-          {
-            todoText: todoText,
-            todoStartDate: selectedStartDate.toISOString(),
-            todoEndDate: selectedEndDate.toISOString(),
-            priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
-          },
-          { merge: true }
-        );
-      setPersonalTabValue(0);
+      if (team) {
+        db.collection("teams")
+          .doc(urlTeamName)
+          .collection("teamTodos")
+          .doc(event._def.publicId)
+          .set(
+            {
+              todoText: todoText,
+              todoStartTime: selectedStartDate.toISOString(),
+              todoEndTime: selectedEndDate.toISOString(),
+              priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
+            },
+            { merge: true }
+          );
+        setOpenSchedular(false);
+      } else {
+        db.collection("users")
+          .doc(currentUser.uid)
+          .collection("todos")
+          .doc(event._def.publicId)
+          .set(
+            {
+              todoText: todoText,
+              todoStartDate: selectedStartDate.toISOString(),
+              todoEndDate: selectedEndDate.toISOString(),
+              priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
+            },
+            { merge: true }
+          );
+        setPersonalTabValue(0);
+      }
+
       // getChild(getAllEvents());
       setPriority(0);
       handleClose();

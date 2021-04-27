@@ -31,6 +31,11 @@ import "./heightMedia.css";
 import SnackBar from "../snackbar/SnackBar";
 import SidebarTeams from "./sidebar/SidebarTeams";
 import VideoCallIcon from "@material-ui/icons/VideoCall";
+import Slider from "@material-ui/core/Slider";
+import ListIcon from "@material-ui/icons/List";
+import DateRangeIcon from "@material-ui/icons/DateRange";
+import TeamSchedular from "../Schedular/TeamSchedular";
+import ClearIcon from "@material-ui/icons/Clear";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -133,7 +138,8 @@ function TeamTodo({
 }) {
   const [openMaker, setOpenMaker] = useState(false);
   const [make, setMake] = useState(false);
-  const [selectedDate, handleDateChange] = useState(new Date());
+  const [selectedStartDate, handleStartDateChange] = useState(new Date());
+  const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [inputTodo, setInputTodo] = useState("");
   const [userName, setUserName] = useState("");
   const [thisIsAdmin, setThisIsAdmin] = useState(false);
@@ -154,9 +160,58 @@ function TeamTodo({
   const [openMakeSnackBar, setOpenMakeSnackBar] = useState(false);
   const [openJoinSnackBar, setOpenJoinSnackBar] = useState(false);
   const [openDeleteSnackBar, setOpenDeleteSnackBar] = useState(false);
+  const [openSchedular, setOpenSchedular] = useState(false);
   const [currentTeamName, setCurrentTeamName] = useState("");
   const [openSnack, setOpenSnack] = useState(false);
   const [transitionDirection, setTransitionDirection] = useState("down");
+  const [priority, setPriority] = useState(0);
+  const [priorityFilter, setPriorityFilter] = useState(4);
+
+  const PrettoSlider = createMuiTheme({
+    overrides: {
+      MuiSlider: {
+        root: {
+          color:
+            priority < 33
+              ? "rgb(1, 112, 75)"
+              : priority > 66
+              ? "rgba(185, 5, 5)"
+              : "rgba(185, 86, 5)",
+          height: 8,
+          transition: "all 0.5s ease-in-out",
+          transform: "scale(0.7)",
+        },
+
+        thumb: {
+          height: 24,
+          width: 24,
+          backgroundColor: "#fff",
+          border: "2px solid currentColor",
+          marginTop: -8,
+          marginLeft: -12,
+          "&:focus, &:hover, &$active": {
+            boxShadow: "inherit",
+          },
+        },
+        active: {},
+        valueLabel: {
+          left: "calc(-50% + 4px)",
+        },
+        track: {
+          height: 8,
+          borderRadius: 4,
+        },
+        rail: {
+          height: 8,
+          borderRadius: 4,
+        },
+      },
+    },
+  });
+
+  function labelText(value) {
+    return priority < 33 ? "Low" : priority > 66 ? "Top" : "Med";
+  }
 
   const handleInputChange = (value) => {
     setInputTodo(value);
@@ -180,19 +235,25 @@ function TeamTodo({
   const handleSubmit = () => {
     setTransitionDirection("down");
     if (inputTodo !== "") {
-      db.collection("teams").doc(UrlTeamName).collection("teamTodos").add({
-        todoText: inputTodo,
-        todoTime: selectedDate.toISOString(),
-        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-        admin: currentUser.uid,
-        checked: false,
-        assignedTo: "",
-        todoImage: "",
-        comment: "",
-        checkedBy: "",
-        assignedBy: userName,
-      });
+      db.collection("teams")
+        .doc(UrlTeamName)
+        .collection("teamTodos")
+        .add({
+          todoText: inputTodo,
+          todoEndTime: selectedEndDate.toISOString(),
+          todoStartTime: selectedStartDate.toISOString(),
+          timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+          admin: currentUser.uid,
+          checked: false,
+          assignedTo: "",
+          todoImage: "",
+          comment: "",
+          checkedBy: "",
+          assignedBy: userName,
+          priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
+        });
       setInputTodo("");
+      setPriority(0);
       setLoader(false);
     }
   };
@@ -207,13 +268,15 @@ function TeamTodo({
           id: doc.id,
           admin: doc.data().admin,
           todoText: doc.data().todoText,
-          todoTime: doc.data().todoTime,
+          todoStartTime: doc.data().todoStartTime,
+          todoEndTime: doc.data().todoEndTime,
           checked: doc.data().checked,
           checkedBy: doc.data().checkedBy,
           assignedTo: doc.data().assignedTo,
           assignedBy: doc.data().assignedBy,
           todoImage: doc.data().todoImage,
           comment: doc.data().comment,
+          priority: doc.data().priority,
         }));
         setTeamsTodoList(list);
       });
@@ -264,6 +327,7 @@ function TeamTodo({
         }
       });
     });
+    setTransitionDirection("down");
   }, [UrlTeamName]);
 
   React.useEffect(() => {
@@ -286,6 +350,15 @@ function TeamTodo({
         setFirstLoader(false);
       });
   }, []);
+
+  React.useEffect(() => {
+    if (
+      new Date(selectedEndDate).getTime() <
+      new Date(selectedStartDate).getTime()
+    ) {
+      handleEndDateChange(selectedStartDate);
+    }
+  }, [selectedEndDate]);
 
   const emptyFunction = () => {};
 
@@ -310,7 +383,7 @@ function TeamTodo({
     <div>
       <TeamTodoContainer>
         {!isSmall ? (
-          <SidebarTeams UrlTeamName={UrlTeamName} />
+          <SidebarTeams UrlTeamName={UrlTeamName} userName={userName} />
         ) : (
           <TeamTodoLeftContainer>
             <TeamTodoLeftLeftBox>
@@ -380,243 +453,356 @@ function TeamTodo({
             </TeamTodoLeftRightBox>
           </TeamTodoLeftContainer>
         )}
-
-        <TeamTodoRightContainer>
-          <TodoRightUpBox>
-            <div className="inputField">
-              <CreateIcon className="todoIcon" />
-              <textarea
-                value={inputTodo}
-                className="todoInput"
-                type="text"
-                placeholder="Write here..."
-                onChange={(e) => handleInputChange(e.target.value)}
-                //onKeyDown={(e) => handleSubmitEnter(e)}
-              />
-            </div>
+        <TeamTodoMiniActionContainer>
+          <CustomTooltip title="Start meeting" placement="top">
+            <a
+              href={`https://slogmeet.web.app/${UrlTeamName}`}
+              className="meetingLink"
+              target="_blank"
+            >
+              <VideoCallIcon className="slogMeet" disabled={loader} />
+            </a>
+          </CustomTooltip>
+          <CustomTooltip title="Filter" placement="top">
             <div
               style={{
-                display: "flex",
-                paddingLeft: "0 0rem",
-                width: "100%",
+                backgroundColor:
+                  priorityFilter === 3
+                    ? "rgba(185, 5, 5, 0.8)"
+                    : priorityFilter === 2
+                    ? "rgba(185, 86, 5, 0.8)"
+                    : priorityFilter === 4
+                    ? "rgb(5, 185, 125, 0.8)"
+                    : "rgba(0, 99, 66, 0.8)",
+              }}
+              className="meetingLink"
+              onClick={() => {
+                if (priorityFilter === 1) setPriorityFilter(2);
+                if (priorityFilter === 2) setPriorityFilter(3);
+                if (priorityFilter === 3) setPriorityFilter(4);
+                if (priorityFilter === 4) setPriorityFilter(1);
               }}
             >
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                {/* <CustomTooltip title="Enter deadline" placement="top" arrow> */}
-                <div className="dateBox">
-                  <p>Deadline:</p>
-                  <ThemeProvider theme={defaultMaterialTheme}>
-                    <DatePicker
-                      variant="dialog"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      style={{
-                        width: "100%",
-                        textAlign: "center",
-                        cursor: "pointer",
-                        fontSize: "0.7rem",
-                      }}
-                      InputProps={{
-                        endAdornment: <AlarmIcon className="AlarmIcon" />,
-                        disableUnderline: true,
-                      }}
-                    />
-                  </ThemeProvider>
+              <ListIcon className="slogMeet" />
+            </div>
+          </CustomTooltip>
+          <CustomTooltip title="Schedular" placement="top">
+            <div
+              className="meetingLink"
+              onClick={() => setOpenSchedular(!openSchedular)}
+              style={{
+                background: openSchedular
+                  ? "rgba(0, 99, 66, 0.8)"
+                  : "rgb(5, 185, 125, 0.8)",
+              }}
+            >
+              {openSchedular ? (
+                <ClearIcon className="slogMeet" />
+              ) : (
+                <DateRangeIcon className="slogMeet" />
+              )}
+            </div>
+          </CustomTooltip>
+        </TeamTodoMiniActionContainer>
+        {openSchedular ? (
+          <TeamTodoRightContainer style={{ overflowY: "scroll" }}>
+            <TeamSchedular
+              todoList={teamsTodoList}
+              urlTeamName={UrlTeamName}
+              setOpenSchedular={setOpenSchedular}
+            />
+          </TeamTodoRightContainer>
+        ) : (
+          <TeamTodoRightContainer>
+            {isSmall && (
+              <TodoRightUpBox>
+                <div className="inputField">
+                  <CreateIcon className="todoIcon" />
+                  <textarea
+                    value={inputTodo}
+                    className="todoInput"
+                    type="text"
+                    placeholder="Write here..."
+                    onChange={(e) => handleInputChange(e.target.value)}
+                    //onKeyDown={(e) => handleSubmitEnter(e)}
+                  />
                 </div>
-                {/* </CustomTooltip> */}
-              </MuiPickersUtilsProvider>
-
-              <Button
-                disabled={loader}
-                endIcon={<AddIcon className="addIcon" />}
-                className={loader ? "AddButtonDisabled" : "AddButton"}
-                onClick={() => handleSubmit()}
-              >
-                ADD
-              </Button>
-              <CustomTooltip title="Start meeting" placement="down">
-                <a
-                  href={`https://slogmeet.web.app/${UrlTeamName}`}
-                  className="meetingLink"
+                <div
+                  style={{
+                    display: "flex",
+                    paddingLeft: "0 0rem",
+                    width: "100%",
+                  }}
                 >
-                  <Button disabled={loader} className="slogMeet">
-                    <VideoCallIcon />
+                  <div className="priorityBox">
+                    <ThemeProvider theme={PrettoSlider}>
+                      <Slider
+                        getAriaValueText={labelText}
+                        defaultValue={priority}
+                        value={priority}
+                        valueLabelFormat={labelText}
+                        valueLabelDisplay="auto"
+                        onChange={(e, data) => {
+                          setPriority(data);
+                        }}
+                      />
+                    </ThemeProvider>
+                  </div>
+                  <MuiPickersUtilsProvider utils={MomentUtils}>
+                    {/* <CustomTooltip title="Enter deadline" placement="top" arrow> */}
+                    <div className="dateBox" style={{ marginRight: 0 }}>
+                      <p>Start:</p>
+                      <ThemeProvider theme={defaultMaterialTheme}>
+                        <DatePicker
+                          variant="dialog"
+                          value={selectedStartDate}
+                          onChange={handleStartDateChange}
+                          style={{
+                            width: "100%",
+                            textAlign: "center",
+                            cursor: "pointer",
+                            fontSize: "0.7rem",
+                          }}
+                          InputProps={{
+                            endAdornment: <AlarmIcon className="AlarmIcon" />,
+                            disableUnderline: true,
+                          }}
+                        />
+                      </ThemeProvider>
+                    </div>
+                    {/* </CustomTooltip> */}
+                  </MuiPickersUtilsProvider>
+                  <MuiPickersUtilsProvider utils={MomentUtils}>
+                    {/* <CustomTooltip title="Enter deadline" placement="top" arrow> */}
+                    <div className="dateBox">
+                      <p>End:</p>
+                      <ThemeProvider theme={defaultMaterialTheme}>
+                        <DatePicker
+                          variant="dialog"
+                          value={selectedEndDate}
+                          onChange={handleEndDateChange}
+                          style={{
+                            width: "100%",
+                            textAlign: "center",
+                            cursor: "pointer",
+                            fontSize: "0.7rem",
+                          }}
+                          InputProps={{
+                            endAdornment: <AlarmIcon className="AlarmIcon" />,
+                            disableUnderline: true,
+                          }}
+                        />
+                      </ThemeProvider>
+                    </div>
+                    {/* </CustomTooltip> */}
+                  </MuiPickersUtilsProvider>
+                  <Button
+                    disabled={loader}
+                    endIcon={<AddIcon className="addIcon" />}
+                    className={loader ? "AddButtonDisabled" : "AddButton"}
+                    onClick={() => handleSubmit()}
+                  >
+                    ADD
                   </Button>
-                </a>
-              </CustomTooltip>
-            </div>
-          </TodoRightUpBox>
+                </div>
+              </TodoRightUpBox>
+            )}
 
-          {teamsTodoList.length === 0 ? (
-            thisIsAdmin ? (
-              <div
-                className="teamNoTodoImage"
-                style={{
-                  height: "80%",
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  objectFit: "contain",
-                }}
-              >
-                <img
-                  src={noTeamTodoImage}
+            {teamsTodoList.length === 0 ? (
+              thisIsAdmin ? (
+                <div
+                  className="teamNoTodoImage"
                   style={{
-                    height: "15rem",
-                    width: "15rem",
-                    overflow: "hidden",
-                  }}
-                />
-                <h3
-                  style={{
-                    color: "rgba(0, 141, 94, 0.695)",
-                    overflow: "hidden",
+                    height: "80%",
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    objectFit: "contain",
                   }}
                 >
-                  NO WORK TO DO
-                </h3>{" "}
-                <h4
+                  <img
+                    src={noTeamTodoImage}
+                    style={{
+                      height: "15rem",
+                      width: "15rem",
+                      overflow: "hidden",
+                    }}
+                  />
+                  <h3
+                    style={{
+                      color: "rgba(0, 141, 94, 0.695)",
+                      overflow: "hidden",
+                    }}
+                  >
+                    NO WORK TO DO
+                  </h3>{" "}
+                  <h4
+                    style={{
+                      color: "rgba(0, 141, 94, 0.695)",
+                      overflow: "hidden",
+                    }}
+                  >
+                    ADD SOME
+                  </h4>{" "}
+                  <br />
+                  <h6
+                    style={{
+                      color: "rgba(0, 141, 94, 0.695)",
+                      cursor: "pointer",
+                      overflow: "hidden",
+                    }}
+                    onClick={() => history.push("/help")}
+                  >
+                    Need Help?
+                  </h6>{" "}
+                </div>
+              ) : deleteTeam ? (
+                <div
+                  className="teamNoTodoImage"
                   style={{
-                    color: "rgba(0, 141, 94, 0.695)",
-                    overflow: "hidden",
+                    height: "80%",
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    objectFit: "contain",
                   }}
                 >
-                  ADD SOME
-                </h4>{" "}
-                <br />
-                <h6
+                  <img
+                    src={deletedTeam}
+                    style={{
+                      height: "15rem",
+                      width: "15rem",
+                      overflow: "hidden",
+                    }}
+                  />
+                  <h4
+                    style={{
+                      color: "rgba(0, 141, 94, 0.695)",
+                      overflow: "hidden",
+                      textAlign: "center",
+                    }}
+                  >
+                    THIS TEAM WAS DELETED BY THE ADMIN
+                  </h4>{" "}
+                  <br />
+                  <h6
+                    style={{
+                      color: "rgba(0, 141, 94, 0.695)",
+                      cursor: "pointer",
+                      overflow: "hidden",
+                    }}
+                    onClick={() => history.push("/help")}
+                  >
+                    Need Help?
+                  </h6>{" "}
+                </div>
+              ) : (
+                <div
+                  className="teamNoTodoImage"
                   style={{
-                    color: "rgba(0, 141, 94, 0.695)",
-                    cursor: "pointer",
-                    overflow: "hidden",
+                    height: "80%",
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    objectFit: "contain",
                   }}
-                  onClick={() => history.push("/help")}
                 >
-                  Need Help?
-                </h6>{" "}
-              </div>
-            ) : deleteTeam ? (
-              <div
-                className="teamNoTodoImage"
-                style={{
-                  height: "80%",
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  objectFit: "contain",
-                }}
-              >
-                <img
-                  src={deletedTeam}
-                  style={{
-                    height: "15rem",
-                    width: "15rem",
-                    overflow: "hidden",
-                  }}
-                />
-                <h4
-                  style={{
-                    color: "rgba(0, 141, 94, 0.695)",
-                    overflow: "hidden",
-                    textAlign: "center",
-                  }}
-                >
-                  THIS TEAM WAS DELETED BY THE ADMIN
-                </h4>{" "}
-                <br />
-                <h6
-                  style={{
-                    color: "rgba(0, 141, 94, 0.695)",
-                    cursor: "pointer",
-                    overflow: "hidden",
-                  }}
-                  onClick={() => history.push("/help")}
-                >
-                  Need Help?
-                </h6>{" "}
-              </div>
+                  <img
+                    src={noTodoJoinTeam}
+                    style={{
+                      height: "15rem",
+                      width: "15rem",
+                      overflow: "hidden",
+                    }}
+                  />
+                  <h4
+                    style={{
+                      color: "rgba(0, 141, 94, 0.695)",
+                      overflow: "hidden",
+                      textAlign: "center",
+                    }}
+                  >
+                    NO WORK TO DO, WE WILL UPDATE
+                  </h4>{" "}
+                  <h5
+                    style={{
+                      color: "rgba(0, 141, 94, 0.695)",
+                      overflow: "hidden",
+                      textAlign: "center",
+                    }}
+                  >
+                    TILL THEN SIT BACK AND RELAX
+                  </h5>{" "}
+                  <br />
+                  <h6
+                    style={{
+                      color: "rgba(0, 141, 94, 0.695)",
+                      cursor: "pointer",
+                      overflow: "hidden",
+                    }}
+                    onClick={() => history.push("/help")}
+                  >
+                    Need Help?
+                  </h6>{" "}
+                </div>
+              )
             ) : (
-              <div
-                className="teamNoTodoImage"
-                style={{
-                  height: "80%",
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  objectFit: "contain",
-                }}
-              >
-                <img
-                  src={noTodoJoinTeam}
-                  style={{
-                    height: "15rem",
-                    width: "15rem",
-                    overflow: "hidden",
-                  }}
-                />
-                <h4
-                  style={{
-                    color: "rgba(0, 141, 94, 0.695)",
-                    overflow: "hidden",
-                    textAlign: "center",
-                  }}
-                >
-                  NO WORK TO DO, WE WILL UPDATE
-                </h4>{" "}
-                <h5
-                  style={{
-                    color: "rgba(0, 141, 94, 0.695)",
-                    overflow: "hidden",
-                    textAlign: "center",
-                  }}
-                >
-                  TILL THEN SIT BACK AND RELAX
-                </h5>{" "}
-                <br />
-                <h6
-                  style={{
-                    color: "rgba(0, 141, 94, 0.695)",
-                    cursor: "pointer",
-                    overflow: "hidden",
-                  }}
-                  onClick={() => history.push("/help")}
-                >
-                  Need Help?
-                </h6>{" "}
+              ""
+            )}
+            {teamsTodoList.length !== 0 && (
+              <div className="rightDownContainer">
+                {teamsTodoList
+                  .filter((list) => {
+                    if (priorityFilter === 4) {
+                      return list;
+                    }
+                    if (priorityFilter === 3) {
+                      if (list.priority === 3) {
+                        return list;
+                      }
+                    }
+                    if (priorityFilter === 2) {
+                      if (list.priority === 2) {
+                        return list;
+                      }
+                    }
+                    if (priorityFilter === 1) {
+                      if (list.priority === 1) {
+                        return list;
+                      }
+                    }
+                  })
+                  .map((todo) => (
+                    <TeamTodoCard
+                      key={todo.id}
+                      id={todo.id}
+                      text={todo.todoText}
+                      startDate={todo.todoStartTime}
+                      endDate={todo.todoEndTime}
+                      checked={todo.checked}
+                      checkedBy={todo.checkedBy}
+                      admin={todo.admin}
+                      urlTeamName={UrlTeamName}
+                      assigned={todo.assignedTo}
+                      assignedBy={todo.assignedBy}
+                      todoImage={todo.todoImage}
+                      comment={todo.comment}
+                      priority={todo.priority}
+                      userName={userName}
+                      profileImage={profileImage}
+                      setTabValue={setTabValue}
+                      setTransitionDirection={setTransitionDirection}
+                      transitionDirection={transitionDirection}
+                      setOpenSchedular={setOpenSchedular}
+                    />
+                  ))}
               </div>
-            )
-          ) : (
-            ""
-          )}
-          {teamsTodoList.length !== 0 && (
-            <div className="rightDownContainer">
-              {teamsTodoList.map((todo) => (
-                <TeamTodoCard
-                  key={todo.id}
-                  id={todo.id}
-                  text={todo.todoText}
-                  date={todo.todoTime}
-                  checked={todo.checked}
-                  checkedBy={todo.checkedBy}
-                  admin={todo.admin}
-                  urlTeamName={UrlTeamName}
-                  assigned={todo.assignedTo}
-                  assignedBy={todo.assignedBy}
-                  todoImage={todo.todoImage}
-                  comment={todo.comment}
-                  userName={userName}
-                  profileImage={profileImage}
-                  setTabValue={setTabValue}
-                  setTransitionDirection={setTransitionDirection}
-                  transitionDirection={transitionDirection}
-                />
-              ))}
-            </div>
-          )}
-        </TeamTodoRightContainer>
+            )}
+          </TeamTodoRightContainer>
+        )}
       </TeamTodoContainer>
       {openMaker && (
         <AddingTeamModal
@@ -686,7 +872,7 @@ const TeamTodoContainer = styled.div`
 `;
 
 const TeamTodoLeftContainer = styled.div`
-  flex: 0.45;
+  flex: 0.4;
   border-right: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
   overflow: hidden;
@@ -778,28 +964,23 @@ const TeamTodoLeftRightBox = styled.div`
     `}
   }
 `;
-const TeamTodoRightContainer = styled.div`
-  flex: 0.55;
-  padding: 0 1rem;
+
+const TeamTodoMiniActionContainer = styled.div`
+  margin: 0.5rem;
+  padding: 0.5rem 0.3rem;
+  box-shadow: rgba(3, 185, 124, 0.308) 0px 1px 4px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(3, 185, 124, 0.08);
   ${customMedia.lessThan("smTablet")`
-  flex:1;
-  
-  padding: 0 0.2rem;
+  flex-direction: row;
+  justify-content:space-around;
+  padding: 0.3rem;
 `}
-  .rightDownContainer {
-    padding: 0 0.1rem;
-    width: 99%;
-    height: 81%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-  }
-  .teamNoTodoImage {
-    ${customMedia.lessThan("smTablet")`
-    height:70% !important;
-    flex: 1;
-  `}
-  }
-  .meetingLink {
+
+  /* .meetingLink {
     width: 30%;
     margin: 0.2rem 0rem;
     margin-left: 0.2rem;
@@ -818,20 +999,54 @@ const TeamTodoRightContainer = styled.div`
      width: 17% !important;
      
     `};
+  } */
+
+  .meetingLink {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(5, 185, 125, 0.8);
+    border-radius: 200%;
+    padding: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    cursor: pointer;
+    ${customMedia.lessThan("smTablet")`
+      margin-top: 0rem;
+      padding: 0.4rem;
+    `}
   }
   .slogMeet {
-    height: 2rem !important;
+    height: 1.5rem !important;
+    width: 1.5rem !important;
     overflow: hidden;
     width: 100%;
     color: #fff;
-    background-color: rgb(5, 185, 125, 0.8);
     ${customMedia.lessThan("smTablet")`
-    height: 2.1rem !important;
-    `};
+       height: 1.2rem !important;
+    width: 1.2rem !important;
+    `}
   }
-
-  .slogMeet:hover {
-    background-color: rgb(5, 185, 125);
+`;
+const TeamTodoRightContainer = styled.div`
+  flex: 0.6;
+  padding-right: 1rem;
+  ${customMedia.lessThan("smTablet")`
+  flex:1;
+  padding: 0 0.2rem;
+`}
+  .rightDownContainer {
+    padding: 0 0.1rem;
+    width: 99%;
+    height: 81%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .teamNoTodoImage {
+    ${customMedia.lessThan("smTablet")`
+    height:70% !important;
+    flex: 1;
+  `}
   }
 `;
 
@@ -905,15 +1120,21 @@ const TodoRightUpBox = styled.div`
     margin-top:0px;
     `};
   }
+  .priorityBox {
+    background-color: rgba(3, 185, 124, 0.308);
+    width: 60%;
+    height: 2rem;
+    margin: 0.2rem 0;
+    border-radius: 5px;
+  }
   .dateBox {
-    width: 95%;
+    width: 80%;
     height: 1.2rem;
     background-color: rgba(3, 185, 124, 0.308);
     border: none;
     border-radius: 5px;
     padding: 0.4rem;
-    margin: 0.2rem 0;
-    margin-right: 0.2rem;
+    margin: 0.2rem 0.2rem;
     font-size: 0.7rem !important;
     display: flex;
     align-items: center;
@@ -933,7 +1154,7 @@ const TodoRightUpBox = styled.div`
     }
   }
   .AddButton {
-    width: 90%;
+    width: 40%;
     font-size: 0.7rem !important;
     height: 2rem !important;
     overflow: hidden;

@@ -55,6 +55,8 @@ function TodoCard({
     );
   };
 
+  const emptyFunction = () => {};
+
   return (
     <Slide in={transitionIn} timeout={400} direction={transitionDirection}>
       <TodoMainCard>
@@ -124,7 +126,7 @@ function TodoCard({
                 color: "#fff",
                 fontWeight: 300,
                 width: "auto",
-                wordBreak: "break-all",
+                wordBreak: "break-word",
                 verticalAlign: "center",
                 height: "auto",
                 padding: "5px",
@@ -158,7 +160,7 @@ function TodoCard({
               color: "rgba(0, 99, 66, 0.868)",
               fontWeight: 400,
               width: "100%",
-              wordBreak: "break-all",
+              wordBreak: "break-word",
               verticalAlign: "center",
               height: "auto",
               // lineHeight: "30px",
@@ -202,6 +204,9 @@ function TodoCard({
               },
             }}
             setPersonalTabValue={setPersonalTabValue}
+            setOpenSchedular={emptyFunction}
+            team={false}
+            urlTeamName={""}
           />
         )}
       </TodoMainCard>
@@ -228,7 +233,7 @@ const TodoMainCard = styled.div`
   height: 3rem;
   min-height: 3rem;
   display: flex;
-  word-break: "break-all";
+  word-break: "break-word";
   height: auto;
 `;
 const TodoStartIcon = styled.div`
@@ -261,7 +266,7 @@ const TodoTextBox = styled.div`
   flex: 1;
   width: 100%;
   padding: 0.2rem 0.5rem;
-  word-break: "break-all";
+  word-break: "break-word";
   height: auto;
 
   .todoDate {

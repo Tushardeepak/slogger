@@ -70,7 +70,7 @@ function Chat({
                 color: "rgba(0, 99, 66, 0.868)",
                 fontWeight: 400,
                 width: "100%",
-                wordBreak: "break-all",
+                wordBreak: "break-word",
                 verticalAlign: "center",
                 height: "auto",
                 fontSize: "small",
@@ -126,7 +126,7 @@ function Chat({
                   color: "rgba(0, 99, 66, 0.868)",
                   fontWeight: 400,
                   width: "100%",
-                  wordBreak: "break-all",
+                  wordBreak: "break-word",
                   verticalAlign: "center",
                   height: "auto",
                   fontSize: "small",
@@ -227,7 +227,7 @@ const TodoMainCard = styled.div`
   min-height: 3rem;
   display: flex;
   flex-direction: column;
-  word-break: "break-all";
+  word-break: "break-word";
   height: auto;
 `;
 
@@ -240,7 +240,7 @@ const TodoTextBox = styled.div`
   width: 60%;
   z-index: 20;
   padding: 0.2rem 0.5rem;
-  word-break: "break-all";
+  word-break: "break-word";
   height: auto;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
@@ -253,7 +253,7 @@ const TodoTextBoxReceived = styled.div`
   width: 60%;
   z-index: 20;
   padding: 0.2rem 0.5rem;
-  word-break: "break-all";
+  word-break: "break-word";
   height: auto;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
