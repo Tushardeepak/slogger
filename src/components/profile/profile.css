@@ -2,14 +2,17 @@
   height: 79vh;
   display: flex;
   overflow: hidden;
+  overflow-y: scroll !important;
+  justify-content: center;
 }
 .profilePageMyProfile {
   padding: 10px;
   border-radius: 10px;
-  overflow-y: scroll !important;
-  flex: 0.35;
+  /* overflow-y: scroll !important; */
+  /* flex: 0.35; */
+  flex: 0.6;
   height: 75vh !important;
-  border-right: 2px solid rgba(0, 141, 94, 0.295);
+  /* border-right: 2px solid rgba(0, 141, 94, 0.295); */
   margin-bottom: 1rem;
 }
 .profilePageTopBar {
@@ -148,6 +151,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  display: none;
 }
 .otherProfileSection p {
   font-size: small;

@@ -159,15 +159,6 @@ export default function Material({
     }
   };
 
-  const handleAdminTodoChange = () => {
-    db.collection("teams").doc(urlTeamName).collection("teamTodos").doc(id).set(
-      {
-        todoText: adminTodoText,
-      },
-      { merge: true }
-    );
-  };
-
   const getAllImages = () => {
     db.collection("teams")
       .doc(urlTeamName)
@@ -230,28 +221,10 @@ export default function Material({
             <textarea
               defaultValue={adminTodoText}
               className="TodoTextBox"
-              disabled={admin === currentUser.uid ? false : true}
-              onChange={(e) => setAdminTodoText(e.target.value)}
+              disabled={true}
+              //  onChange={(e) => setAdminTodoText(e.target.value)}
             />
-            {admin === currentUser.uid && (
-              <div style={{ display: "flex" }}>
-                <div style={{ flex: 1 }}></div>
-                <Button
-                  style={{
-                    overflow: "hidden",
-                    fontSize: "0.7rem",
-                    height: "1.5rem",
-                    color: "#fff",
-                    backgroundColor: "rgb(5, 185, 125, 0.8)",
-                    marginRight: "0.5rem",
-                    marginBottom: "1rem",
-                  }}
-                  onClick={handleAdminTodoChange}
-                >
-                  Save
-                </Button>
-              </div>
-            )}
+
             {error && (
               <p style={{ color: "rgba(185, 5, 5, 0.7)", fontSize: "10px" }}>
                 *Please add some description or title

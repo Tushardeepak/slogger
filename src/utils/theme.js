@@ -46,5 +46,23 @@ export default createMuiTheme({
         borderRadius: "20px",
       },
     },
+    MuiCheckbox: {
+      root: {
+        color: "rgb(5, 185, 125)",
+      },
+    },
+    MuiAvatarGroup: {
+      avatar: {
+        border: "none",
+      },
+    },
+    MuiAvatar: {
+      colorDefault: {
+        height: "1.5rem",
+        width: "1.5rem",
+        backgroundColor: "rgb(2, 88, 60, 0.5)",
+        fontSize: "0.6rem",
+      },
+    },
   },
 });

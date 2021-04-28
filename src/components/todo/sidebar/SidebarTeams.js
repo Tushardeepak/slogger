@@ -123,7 +123,7 @@ export default function SidebarTeams({ UrlTeamName, userName }) {
           timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
           admin: currentUser.uid,
           checked: false,
-          assignedTo: "",
+          assignedTo: [],
           todoImage: "",
           comment: "",
           checkedBy: "",
@@ -133,6 +133,7 @@ export default function SidebarTeams({ UrlTeamName, userName }) {
       setInputTodo("");
       setPriority(0);
       setLoader(false);
+      handleCloseAddTodo();
     }
   };
 

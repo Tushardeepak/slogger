@@ -43,6 +43,7 @@ function Chat({
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
   const classes = useStyles();
+  const [showImage, setShowImage] = React.useState(true);
 
   const handleDeleteChat = () => {
     db.collection("teams")
@@ -51,6 +52,18 @@ function Chat({
       .doc(id)
       .delete();
   };
+
+  const checkImage = () => {
+    fetch(teamTodoImage).then((res) => {
+      if (res.status === 404) {
+        setShowImage(false);
+      }
+    });
+  };
+
+  React.useEffect(() => {
+    checkImage();
+  }, []);
 
   return (
     <TodoMainCard>
@@ -166,7 +179,7 @@ function Chat({
               <span style={{ color: "rgba(0, 99, 66, 0.7)" }}>Task:</span>{" "}
               {teamTodoText}
             </p>
-            {teamTodoImage !== "" && (
+            {showImage && teamTodoImage !== "" && (
               <a
                 href={teamTodoImage}
                 target="_blank"

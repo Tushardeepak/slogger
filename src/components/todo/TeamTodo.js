@@ -36,6 +36,7 @@ import ListIcon from "@material-ui/icons/List";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import TeamSchedular from "../Schedular/TeamSchedular";
 import ClearIcon from "@material-ui/icons/Clear";
+import PuffLoader from "react-spinners/PuffLoader";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -245,7 +246,7 @@ function TeamTodo({
           timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
           admin: currentUser.uid,
           checked: false,
-          assignedTo: "",
+          assignedTo: [],
           todoImage: "",
           comment: "",
           checkedBy: "",
@@ -363,7 +364,22 @@ function TeamTodo({
   const emptyFunction = () => {};
 
   return firstLoader ? (
-    <p>Loading...</p>
+    <div
+      style={{
+        width: "100%",
+        height: "50vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        color: "#2ec592",
+      }}
+    >
+      <PuffLoader loading={firstLoader} color="#2ec592" />
+      <p style={{ marginTop: "1rem", marginLeft: "0.5rem", fontSize: "small" }}>
+        Loading
+      </p>
+    </div>
   ) : profileSetter ? (
     <div
       style={{
@@ -453,7 +469,7 @@ function TeamTodo({
             </TeamTodoLeftRightBox>
           </TeamTodoLeftContainer>
         )}
-        <TeamTodoMiniActionContainer>
+        <TeamTodoMiniActionContainer className="toolbarForAbove1000">
           <CustomTooltip title="Start meeting" placement="top">
             <a
               href={`https://slogmeet.web.app/${UrlTeamName}`}
@@ -463,7 +479,18 @@ function TeamTodo({
               <VideoCallIcon className="slogMeet" disabled={loader} />
             </a>
           </CustomTooltip>
-          <CustomTooltip title="Filter" placement="top">
+          <CustomTooltip
+            title={
+              priorityFilter === 3
+                ? "High"
+                : priorityFilter === 2
+                ? "Mid"
+                : priorityFilter === 4
+                ? "Filter"
+                : "Low"
+            }
+            placement="top"
+          >
             <div
               style={{
                 backgroundColor:
@@ -515,97 +542,161 @@ function TeamTodo({
         ) : (
           <TeamTodoRightContainer>
             {isSmall && (
-              <TodoRightUpBox>
-                <div className="inputField">
-                  <CreateIcon className="todoIcon" />
-                  <textarea
-                    value={inputTodo}
-                    className="todoInput"
-                    type="text"
-                    placeholder="Write here..."
-                    onChange={(e) => handleInputChange(e.target.value)}
-                    //onKeyDown={(e) => handleSubmitEnter(e)}
-                  />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    paddingLeft: "0 0rem",
-                    width: "100%",
-                  }}
-                >
-                  <div className="priorityBox">
-                    <ThemeProvider theme={PrettoSlider}>
-                      <Slider
-                        getAriaValueText={labelText}
-                        defaultValue={priority}
-                        value={priority}
-                        valueLabelFormat={labelText}
-                        valueLabelDisplay="auto"
-                        onChange={(e, data) => {
-                          setPriority(data);
-                        }}
-                      />
-                    </ThemeProvider>
-                  </div>
-                  <MuiPickersUtilsProvider utils={MomentUtils}>
-                    {/* <CustomTooltip title="Enter deadline" placement="top" arrow> */}
-                    <div className="dateBox" style={{ marginRight: 0 }}>
-                      <p>Start:</p>
-                      <ThemeProvider theme={defaultMaterialTheme}>
-                        <DatePicker
-                          variant="dialog"
-                          value={selectedStartDate}
-                          onChange={handleStartDateChange}
-                          style={{
-                            width: "100%",
-                            textAlign: "center",
-                            cursor: "pointer",
-                            fontSize: "0.7rem",
-                          }}
-                          InputProps={{
-                            endAdornment: <AlarmIcon className="AlarmIcon" />,
-                            disableUnderline: true,
-                          }}
-                        />
-                      </ThemeProvider>
-                    </div>
-                    {/* </CustomTooltip> */}
-                  </MuiPickersUtilsProvider>
-                  <MuiPickersUtilsProvider utils={MomentUtils}>
-                    {/* <CustomTooltip title="Enter deadline" placement="top" arrow> */}
-                    <div className="dateBox">
-                      <p>End:</p>
-                      <ThemeProvider theme={defaultMaterialTheme}>
-                        <DatePicker
-                          variant="dialog"
-                          value={selectedEndDate}
-                          onChange={handleEndDateChange}
-                          style={{
-                            width: "100%",
-                            textAlign: "center",
-                            cursor: "pointer",
-                            fontSize: "0.7rem",
-                          }}
-                          InputProps={{
-                            endAdornment: <AlarmIcon className="AlarmIcon" />,
-                            disableUnderline: true,
-                          }}
-                        />
-                      </ThemeProvider>
-                    </div>
-                    {/* </CustomTooltip> */}
-                  </MuiPickersUtilsProvider>
-                  <Button
-                    disabled={loader}
-                    endIcon={<AddIcon className="addIcon" />}
-                    className={loader ? "AddButtonDisabled" : "AddButton"}
-                    onClick={() => handleSubmit()}
+              <>
+                <TeamTodoMiniActionContainer className="toolbarForBelow1000">
+                  <CustomTooltip title="Start meeting" placement="top">
+                    <a
+                      href={`https://slogmeet.web.app/${UrlTeamName}`}
+                      className="meetingLink"
+                      target="_blank"
+                    >
+                      <VideoCallIcon className="slogMeet" disabled={loader} />
+                    </a>
+                  </CustomTooltip>
+                  <CustomTooltip
+                    title={
+                      priorityFilter === 3
+                        ? "High"
+                        : priorityFilter === 2
+                        ? "Mid"
+                        : priorityFilter === 4
+                        ? "Filter"
+                        : "Low"
+                    }
+                    placement="top"
                   >
-                    ADD
-                  </Button>
-                </div>
-              </TodoRightUpBox>
+                    <div
+                      style={{
+                        backgroundColor:
+                          priorityFilter === 3
+                            ? "rgba(185, 5, 5, 0.8)"
+                            : priorityFilter === 2
+                            ? "rgba(185, 86, 5, 0.8)"
+                            : priorityFilter === 4
+                            ? "rgb(5, 185, 125, 0.8)"
+                            : "rgba(0, 99, 66, 0.8)",
+                      }}
+                      className="meetingLink"
+                      onClick={() => {
+                        if (priorityFilter === 1) setPriorityFilter(2);
+                        if (priorityFilter === 2) setPriorityFilter(3);
+                        if (priorityFilter === 3) setPriorityFilter(4);
+                        if (priorityFilter === 4) setPriorityFilter(1);
+                      }}
+                    >
+                      <ListIcon className="slogMeet" />
+                    </div>
+                  </CustomTooltip>
+                  <CustomTooltip title="Schedular" placement="top">
+                    <div
+                      className="meetingLink"
+                      onClick={() => setOpenSchedular(!openSchedular)}
+                      style={{
+                        background: openSchedular
+                          ? "rgba(0, 99, 66, 0.8)"
+                          : "rgb(5, 185, 125, 0.8)",
+                      }}
+                    >
+                      {openSchedular ? (
+                        <ClearIcon className="slogMeet" />
+                      ) : (
+                        <DateRangeIcon className="slogMeet" />
+                      )}
+                    </div>
+                  </CustomTooltip>
+                </TeamTodoMiniActionContainer>
+                <TodoRightUpBox>
+                  <div className="inputField">
+                    <CreateIcon className="todoIcon" />
+                    <textarea
+                      value={inputTodo}
+                      className="todoInput"
+                      type="text"
+                      placeholder="Write here..."
+                      onChange={(e) => handleInputChange(e.target.value)}
+                      //onKeyDown={(e) => handleSubmitEnter(e)}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      paddingLeft: "0 0rem",
+                      width: "100%",
+                    }}
+                  >
+                    <div className="priorityBox">
+                      <ThemeProvider theme={PrettoSlider}>
+                        <Slider
+                          getAriaValueText={labelText}
+                          defaultValue={priority}
+                          value={priority}
+                          valueLabelFormat={labelText}
+                          valueLabelDisplay="auto"
+                          onChange={(e, data) => {
+                            setPriority(data);
+                          }}
+                        />
+                      </ThemeProvider>
+                    </div>
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                      {/* <CustomTooltip title="Enter deadline" placement="top" arrow> */}
+                      <div className="dateBox" style={{ marginRight: 0 }}>
+                        <p>Start:</p>
+                        <ThemeProvider theme={defaultMaterialTheme}>
+                          <DatePicker
+                            variant="dialog"
+                            value={selectedStartDate}
+                            onChange={handleStartDateChange}
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              cursor: "pointer",
+                              fontSize: "0.7rem",
+                            }}
+                            InputProps={{
+                              endAdornment: <AlarmIcon className="AlarmIcon" />,
+                              disableUnderline: true,
+                            }}
+                          />
+                        </ThemeProvider>
+                      </div>
+                      {/* </CustomTooltip> */}
+                    </MuiPickersUtilsProvider>
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                      {/* <CustomTooltip title="Enter deadline" placement="top" arrow> */}
+                      <div className="dateBox">
+                        <p>End:</p>
+                        <ThemeProvider theme={defaultMaterialTheme}>
+                          <DatePicker
+                            variant="dialog"
+                            value={selectedEndDate}
+                            onChange={handleEndDateChange}
+                            style={{
+                              width: "100%",
+                              textAlign: "center",
+                              cursor: "pointer",
+                              fontSize: "0.7rem",
+                            }}
+                            InputProps={{
+                              endAdornment: <AlarmIcon className="AlarmIcon" />,
+                              disableUnderline: true,
+                            }}
+                          />
+                        </ThemeProvider>
+                      </div>
+                      {/* </CustomTooltip> */}
+                    </MuiPickersUtilsProvider>
+                    <Button
+                      disabled={loader}
+                      endIcon={<AddIcon className="addIcon" />}
+                      className={loader ? "AddButtonDisabled" : "AddButton"}
+                      onClick={() => handleSubmit()}
+                    >
+                      ADD
+                    </Button>
+                  </div>
+                </TodoRightUpBox>
+              </>
             )}
 
             {teamsTodoList.length === 0 ? (
@@ -851,7 +942,7 @@ export default TeamTodo;
 const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
-  tablet: "960px",
+  tablet: "1000px",
   smTablet: "600px",
 });
 
@@ -974,11 +1065,6 @@ const TeamTodoMiniActionContainer = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: rgba(3, 185, 124, 0.08);
-  ${customMedia.lessThan("smTablet")`
-  flex-direction: row;
-  justify-content:space-around;
-  padding: 0.3rem;
-`}
 
   /* .meetingLink {
     width: 30%;
@@ -1031,6 +1117,10 @@ const TeamTodoMiniActionContainer = styled.div`
 const TeamTodoRightContainer = styled.div`
   flex: 0.6;
   padding-right: 1rem;
+
+  ${customMedia.lessThan("tablet")`
+  margin-left: 0.5rem;
+`}
   ${customMedia.lessThan("smTablet")`
   flex:1;
   padding: 0 0.2rem;

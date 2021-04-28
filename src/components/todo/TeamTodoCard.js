@@ -5,10 +5,10 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useAuth } from "../../context/AuthContext";
 import { db, storage } from "../../firebase";
-import moment from "moment";
 import CustomTooltip from "../CustomTooltip";
 import { generateMedia } from "styled-media-query";
 import {
+  Avatar,
   Button,
   IconButton,
   Slide,
@@ -16,9 +16,10 @@ import {
   useTheme,
 } from "@material-ui/core";
 import Material from "./Material";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import DoneIcon from "@material-ui/icons/Done";
 import CalendarModal from "../Schedular/CalendarModal";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import TeamMembers from "./members/TeamMembers";
+import { AvatarGroup } from "@material-ui/lab";
 
 function TeamTodoCard({
   id,
@@ -43,26 +44,13 @@ function TeamTodoCard({
 }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
-  const [assignedTo, setAssignedTo] = useState();
   const [openMaterial, setOpenMaterial] = useState(false);
   const [assignChange, setAssignChange] = useState(false);
   const [transitionIn, setTransitionIn] = useState(true);
+  const [openMembers, setOpenMembers] = useState(false);
   const [edit, setEdit] = useState(false);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
-
-  React.useEffect(() => {
-    if (assigned === "") {
-      setAssignedTo("");
-    } else {
-      setAssignedTo(assigned);
-    }
-  }, [assigned]);
-
-  const handleInputChange = (value) => {
-    setAssignedTo(value);
-    setAssignChange(true);
-  };
 
   const handleDelete = async (id) => {
     setTransitionDirection("left");
@@ -106,17 +94,6 @@ function TeamTodoCard({
         },
         { merge: true }
       );
-  };
-
-  const handleAssignedSubmit = () => {
-    db.collection("teams").doc(urlTeamName).collection("teamTodos").doc(id).set(
-      {
-        assignedTo: assignedTo,
-      },
-      { merge: true }
-    );
-    setAssignedTo("");
-    setAssignChange(false);
   };
 
   const emptyFunction = () => {};
@@ -245,25 +222,25 @@ function TeamTodoCard({
               <div style={{ width: "100%", flex: 1, marginBottom: "0.5rem" }}>
                 <div className="inputField">
                   <p className="assignedTo">Assigned to :</p>
-                  <input
-                    value={assignedTo}
-                    className="todoInput"
-                    type="text"
-                    onChange={
-                      admin === currentUser.uid
-                        ? (e) => handleInputChange(e.target.value)
-                        : () => emptyFunction()
-                    }
-                    // onKeyDown={(e) => handleSubmitEnter(e)}
-                  />
-                  {admin === currentUser.uid
-                    ? assignChange && (
-                        <DoneIcon
-                          className="assignIcon"
-                          onClick={() => handleAssignedSubmit()}
+                  <div className="assignedMembers">
+                    <AvatarGroup max={5} className="memberAvatar">
+                      {assigned.map((member) => (
+                        <Avatar
+                          src={member.profileImage}
+                          className="memberAvatar"
                         />
-                      )
-                    : ""}
+                      ))}
+                    </AvatarGroup>
+                  </div>
+                  <div style={{ flex: 1 }}></div>
+                  {admin === currentUser.uid ? (
+                    <AddCircleIcon
+                      className="assignIcon"
+                      onClick={() => setOpenMembers(true)}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
             </>
@@ -272,25 +249,25 @@ function TeamTodoCard({
               <div style={{ width: "100%", flex: "1" }}>
                 <div className="inputField">
                   <p className="assignedTo">Assigned to :</p>
-                  <input
-                    value={assignedTo}
-                    className="todoInput"
-                    type="text"
-                    onChange={
-                      admin === currentUser.uid
-                        ? (e) => handleInputChange(e.target.value)
-                        : () => emptyFunction()
-                    }
-                    // onKeyDown={(e) => handleSubmitEnter(e)}
-                  />
-                  {admin === currentUser.uid
-                    ? assignChange && (
-                        <DoneIcon
-                          className="assignIcon"
-                          onClick={() => handleAssignedSubmit()}
+                  <div className="assignedMembers">
+                    <AvatarGroup max={6} className="memberAvatar">
+                      {assigned.map((member) => (
+                        <Avatar
+                          src={member.profileImage}
+                          className="memberAvatar"
                         />
-                      )
-                    : ""}
+                      ))}
+                    </AvatarGroup>
+                  </div>
+                  <div style={{ flex: 1 }}></div>
+                  {admin === currentUser.uid ? (
+                    <AddCircleIcon
+                      className="assignIcon"
+                      onClick={() => setOpenMembers(true)}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
               <div
@@ -461,6 +438,15 @@ function TeamTodoCard({
             setOpenSchedular={setOpenSchedular}
           />
         )}
+        {openMembers && (
+          <TeamMembers
+            todoId={id}
+            open={openMembers}
+            handleClose={() => setOpenMembers(false)}
+            urlTeamName={urlTeamName}
+            assigned={assigned}
+          />
+        )}
       </TodoMainCard>
     </Slide>
   );
@@ -471,7 +457,7 @@ export default TeamTodoCard;
 const customMedia = generateMedia({
   lgDesktop: "1350px",
   mdDesktop: "1150px",
-  tablet: "960px",
+  tablet: "1000px",
   smTablet: "600px",
 });
 
@@ -527,6 +513,9 @@ const TodoTextBox = styled.div`
   .assignedTo {
     color: rgb(0, 90, 60);
     font-size: 0.7rem;
+    ${customMedia.lessThan("tablet")`
+         display:none;
+    `};
     ${customMedia.lessThan("smTablet")`
          font-size: 0.5rem;
     `};
@@ -534,8 +523,7 @@ const TodoTextBox = styled.div`
 
   .assignIcon {
     color: rgb(3, 185, 124);
-    font-size: 1.2rem;
-    flex: 0.1;
+    font-size: 1.2rem !important;
     padding-right: 0.3rem;
     cursor: pointer;
     ${customMedia.lessThan("smTablet")`
@@ -559,6 +547,9 @@ const TodoTextBox = styled.div`
     align-items: center;
     flex: 0.9;
     overflow: hidden;
+    ${customMedia.lessThan("tablet")`
+        padding: 0rem;
+    `};
     ${customMedia.lessThan("smTablet")`
          margin:0.1rem 0;
          height: 1.5rem;

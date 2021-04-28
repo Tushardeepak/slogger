@@ -145,6 +145,7 @@ export default function SidebarPersonal() {
         });
       setInputTodo("");
       setLoader(false);
+      handleClose();
     } else {
       setError(true);
     }
