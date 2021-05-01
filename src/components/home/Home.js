@@ -24,6 +24,7 @@ import Discussion from "../todo/Discussion";
 import { db } from "../../firebase";
 import SnackBar from "../snackbar/SnackBar";
 import Profile from "../profile/Profile";
+import Board from "../board/Board";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -102,6 +103,7 @@ function Home(props) {
   const [open, setOpen] = React.useState(false);
   const [userName, setUserName] = React.useState("");
   const [profileImage, setProfileImage] = React.useState("");
+  const [greeting, setGreeting] = React.useState("");
   const [discussionLock, setDiscussionLock] = React.useState(true);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
@@ -133,6 +135,38 @@ function Home(props) {
           }
         });
       });
+    document.addEventListener("keydown", (event) => {
+      if (event.ctrlKey) {
+        if (c < 4) {
+          ++c;
+          setValue(c);
+        } else {
+          setValue(0);
+          c = 0;
+        }
+
+        event.preventDefault();
+      }
+    });
+  }, []);
+  var c = 0;
+
+  React.useEffect(() => {
+    var data = [
+        [22, "Working late! "],
+        [17, "Good evening! "],
+        [12, "Good afternoon! "],
+        [7, "Good morning! "],
+        [4, "Whoa, early bird! "],
+        [0, "Late night work! "],
+      ],
+      hr = new Date().getHours();
+    for (var i = 0; i < data.length; i++) {
+      if (hr >= data[i][0]) {
+        setGreeting(data[i][1]);
+        break;
+      }
+    }
   }, []);
 
   return (
@@ -197,13 +231,19 @@ function Home(props) {
               <Tab
                 disabled={discussionLock}
                 className={classes.label}
-                label={!isSmall ? "Chat" : "DISCUSSION"}
+                label="BOARD"
                 {...a11yProps(2)}
+              />
+              <Tab
+                disabled={discussionLock}
+                className={classes.label}
+                label={!isSmall ? "Chat" : "DISCUSSION"}
+                {...a11yProps(3)}
               />
               <Tab
                 className={classes.label}
                 label="Profile"
-                {...a11yProps(3)}
+                {...a11yProps(4)}
               />
             </Tabs>
           </AppBar>
@@ -219,13 +259,21 @@ function Home(props) {
             />
           </TabPanel>
           <TabPanel value={value} index={2}>
+            <Board
+              urlTeamName={props.match.params.teamName}
+              userName={userName}
+              profileImage={profileImage}
+              setTabValue={setValue}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={3}>
             <Discussion
               UrlTeamName={props.match.params.teamName}
               userName={userName}
               profileImage={profileImage}
             />
           </TabPanel>
-          <TabPanel value={value} index={3}>
+          <TabPanel value={value} index={4}>
             <Profile />
           </TabPanel>
         </Paper>
@@ -255,7 +303,7 @@ function Home(props) {
           <SnackBar
             open={open}
             handleClose={() => setOpen(false)}
-            text={`Welcome! ${userName}`}
+            text={`${greeting} ${userName}`}
             home={true}
           />
         )}

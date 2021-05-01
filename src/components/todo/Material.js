@@ -41,6 +41,7 @@ export default function Material({
   profileImage,
   setTabValue,
   assignedBy,
+  completed,
 }) {
   const [editComment, setEditComment] = useState(comment);
   const [done, setDone] = useState(false);
@@ -230,7 +231,7 @@ export default function Material({
                 *Please add some description or title
               </p>
             )}
-            {!openSmallTextBox && !showImages && (
+            {!openSmallTextBox && !showImages && !completed && (
               <div style={{ flex: 1, width: "100%" }}>
                 <Button
                   className="uploadView"
@@ -330,20 +331,22 @@ export default function Material({
             )}
             {!showImages && !openSmallTextBox ? (
               <>
-                <Button
-                  className="uploadView"
-                  style={{
-                    overflow: "hidden",
-                    fontSize: "0.7rem",
-                    height: "1.5rem",
-                    color: "#fff",
-                    backgroundColor: "rgb(5, 185, 125, 0.8)",
-                    marginBottom: "1rem",
-                  }}
-                  onClick={() => setShowImages(true)}
-                >
-                  Add images
-                </Button>
+                {!completed && (
+                  <Button
+                    className="uploadView"
+                    style={{
+                      overflow: "hidden",
+                      fontSize: "0.7rem",
+                      height: "1.5rem",
+                      color: "#fff",
+                      backgroundColor: "rgb(5, 185, 125, 0.8)",
+                      marginBottom: "1rem",
+                    }}
+                    onClick={() => setShowImages(true)}
+                  >
+                    Add images
+                  </Button>
+                )}
                 {imageList.length !== 0 && (
                   <Button
                     className="uploadView"

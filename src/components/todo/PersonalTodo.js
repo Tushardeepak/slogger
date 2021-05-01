@@ -18,7 +18,6 @@ import AddIcon from "@material-ui/icons/Add";
 import MomentUtils from "@date-io/moment";
 import { createMuiTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import green from "@material-ui/core/colors/green";
 import AlarmIcon from "@material-ui/icons/AddAlarm";
 import { db } from "../../firebase";
 import { useAuth } from "../../context/AuthContext";
@@ -289,16 +288,15 @@ function PersonalTodo() {
   }
 
   useEffect(() => {
-    handleEndDateChange(selectedStartDate);
-  }, [selectedStartDate]);
-
-  useEffect(() => {
     if (
       new Date(selectedEndDate).getTime() <
       new Date(selectedStartDate).getTime()
     ) {
       handleEndDateChange(selectedStartDate);
     }
+    // if (new Date(selectedStartDate).getTime() < new Date().getTime()) {
+    //   handleStartDateChange(new Date());
+    // }
   }, [selectedEndDate]);
 
   const emptyFunction = () => {};

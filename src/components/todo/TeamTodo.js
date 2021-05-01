@@ -251,6 +251,8 @@ function TeamTodo({
           comment: "",
           checkedBy: "",
           assignedBy: userName,
+          assignedById: currentUser.uid,
+          state: "current",
           priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
         });
       setInputTodo("");
@@ -359,6 +361,9 @@ function TeamTodo({
     ) {
       handleEndDateChange(selectedStartDate);
     }
+    // if (new Date(selectedStartDate).getTime() < new Date().getTime()) {
+    //   handleStartDateChange(new Date());
+    // }
   }, [selectedEndDate]);
 
   const emptyFunction = () => {};
@@ -866,6 +871,11 @@ function TeamTodo({
                       }
                     }
                   })
+                  .filter((list) => {
+                    if (list.state !== "upcoming" && list.checked === false) {
+                      return list;
+                    }
+                  })
                   .map((todo) => (
                     <TeamTodoCard
                       key={todo.id}
@@ -908,14 +918,14 @@ function TeamTodo({
         <SnackBar
           open={openMakeSnackBar}
           handleClose={() => setOpenMakeSnackBar(false)}
-          text={`Team ${currentTeamName} Created`}
+          text={`${currentTeamName} Created`}
         />
       )}
       {openJoinSnackBar && (
         <SnackBar
           open={openJoinSnackBar}
           handleClose={() => setOpenJoinSnackBar(false)}
-          text={`Welcome to team ${currentTeamName}`}
+          text={`Welcome to ${currentTeamName}`}
         />
       )}
       {openDeleteSnackBar && (
@@ -1060,7 +1070,7 @@ const TeamTodoMiniActionContainer = styled.div`
   margin: 0.5rem;
   padding: 0.5rem 0.3rem;
   box-shadow: rgba(3, 185, 124, 0.308) 0px 1px 4px;
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;

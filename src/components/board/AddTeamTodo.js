@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -46,7 +46,7 @@ const defaultMaterialTheme = createMuiTheme({
     },
     MuiDialog: {
       paperWidthSm: {
-        width: "300px",
+        width: "300px !important",
       },
     },
     MuiPickersDay: {
@@ -74,28 +74,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   );
 });
 
-export default function CalendarModal({
+export default function AddTeamTodo({
   open,
   handleClose,
-  event,
-  getAllEvents,
-  getChild,
-  setPersonalTabValue,
-  team,
   urlTeamName,
-  setOpenSchedular,
-  board,
+  userName,
+  setTransitionDirectionUpcoming,
+  pri,
+  current,
 }) {
-  const [todoText, setTodoText] = useState(event.title);
-  const [selectedStartDate, handleStartDateChange] = useState(event.start);
-  const [selectedEndDate, handleEndDateChange] = useState(event.end);
-  const [priority, setPriority] = useState(
-    event.backgroundColor === "rgba(185, 5, 5, 0.8)"
-      ? 100
-      : event.backgroundColor === "rgba(185, 86, 5, 0.8)"
-      ? 50
-      : 0
-  );
+  const [todoText, setTodoText] = useState("");
+  const [selectedStartDate, handleStartDateChange] = useState(new Date());
+  const [selectedEndDate, handleEndDateChange] = useState(new Date());
+  const [priority, setPriority] = useState(0);
   const { currentUser } = useAuth();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
@@ -144,49 +135,35 @@ export default function CalendarModal({
       new Date(selectedStartDate).getTime() <=
         new Date(selectedEndDate).getTime()
     ) {
-      console.log(event._def.publicId);
-      if (team) {
-        db.collection("teams")
-          .doc(urlTeamName)
-          .collection("teamTodos")
-          .doc(event._def.publicId)
-          .set(
-            {
-              todoText: todoText,
-              todoStartTime: selectedStartDate.toISOString(),
-              todoEndTime: selectedEndDate.toISOString(),
-              priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
-            },
-            { merge: true }
-          );
-        setOpenSchedular(false);
-      } else {
-        db.collection("users")
-          .doc(currentUser.uid)
-          .collection("todos")
-          .doc(event._def.publicId)
-          .set(
-            {
-              todoText: todoText,
-              todoStartDate: selectedStartDate.toISOString(),
-              todoEndDate: selectedEndDate.toISOString(),
-              priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
-            },
-            { merge: true }
-          );
-        setPersonalTabValue(0);
-      }
-
-      // getChild(getAllEvents());
-      setPriority(0);
+      db.collection("teams")
+        .doc(urlTeamName)
+        .collection("teamTodos")
+        .add({
+          todoText: todoText,
+          todoEndTime: selectedEndDate.toISOString(),
+          todoStartTime: selectedStartDate.toISOString(),
+          timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+          admin: currentUser.uid,
+          checked: false,
+          assignedTo: [],
+          todoImage: "",
+          comment: "",
+          checkedBy: "",
+          assignedBy: userName,
+          assignedById: currentUser.uid,
+          state: current ? "current" : "upcoming",
+          priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
+        });
       handleClose();
+      setTransitionDirectionUpcoming("down");
     }
   };
+
   function labelText(value) {
     return priority < 33 ? "Low" : priority > 66 ? "Top" : "Med";
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       new Date(selectedEndDate).getTime() <
       new Date(selectedStartDate).getTime()
@@ -212,21 +189,12 @@ export default function CalendarModal({
         className="modalTitle"
         style={{ paddingLeft: "30px" }}
       >
-        Edit
+        Add Upcoming task
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
-          <p
-            style={{
-              marginLeft: "0.5rem",
-              fontSize: "15px",
-              color: "rgb(0, 90, 60)",
-              marginBottom: "0.5rem",
-            }}
-          >
-            {event._def.extendedProps.teamName}
-          </p>
           <textarea
+            placeholder="Write..."
             className="todoTextarea"
             value={todoText}
             onChange={(e) => setTodoText(e.target.value)}
@@ -284,7 +252,7 @@ export default function CalendarModal({
             </div>
           </div>
 
-          {!board && (
+          {pri && (
             <>
               <p
                 style={{
@@ -325,7 +293,7 @@ export default function CalendarModal({
           color="primary"
           onClick={handleSubmit}
         >
-          save
+          add
         </Button>
       </DialogActions>
     </Dialog>

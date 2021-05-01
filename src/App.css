@@ -10,10 +10,12 @@
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
 }
 @media only screen and (max-width: 600px) {
   ::-webkit-scrollbar {
     width: 3px;
+    height: 3px;
   }
 }
 
@@ -31,5 +33,5 @@
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(0, 26, 17);
+  background: rgb(153, 153, 153);
 }

@@ -33,6 +33,12 @@ export default createMuiTheme({
     MuiPickersDay: {
       daySelected: {
         backgroundColor: "rgb(2, 88, 60)",
+        "&:hover": {
+          backgroundColor: "rgb(2, 88, 60)",
+        },
+      },
+      current: {
+        color: "rgb(2, 88, 60)",
       },
     },
     MuiButton: {
@@ -62,6 +68,13 @@ export default createMuiTheme({
         width: "1.5rem",
         backgroundColor: "rgb(2, 88, 60, 0.5)",
         fontSize: "0.6rem",
+      },
+    },
+    MuiPickersModal: {
+      dialogRoot: {
+        maxWidth: "310px",
+        minWidth: "310px",
+        borderRadius: "5px",
       },
     },
   },

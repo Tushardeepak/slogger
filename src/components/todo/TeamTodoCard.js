@@ -82,18 +82,23 @@ function TeamTodoCard({
   };
 
   const handleChecked = () => {
-    setLocalCheck(!localCheck);
-    db.collection("teams")
-      .doc(urlTeamName)
-      .collection("teamTodos")
-      .doc(id)
-      .set(
-        {
-          checked: localCheck,
-          checkedBy: localCheck ? userName : "",
-        },
-        { merge: true }
-      );
+    setLocalCheck(true);
+    setTransitionDirection("left");
+    setTimeout(() => {
+      setTransitionIn(false);
+      db.collection("teams")
+        .doc(urlTeamName)
+        .collection("teamTodos")
+        .doc(id)
+        .set(
+          {
+            checked: true,
+            checkedBy: userName,
+            checkedByProfile: profileImage,
+          },
+          { merge: true }
+        );
+    }, 1000);
   };
 
   const emptyFunction = () => {};
@@ -103,7 +108,7 @@ function TeamTodoCard({
       <TodoMainCard>
         <TodoStartIcon>
           {/* <CustomTooltip title="Double tap" arrow placement="top"> */}
-          {checked ? (
+          {localCheck ? (
             <CheckBoxIcon
               className="todoStartIcon"
               onClick={() => handleChecked()}
@@ -226,6 +231,7 @@ function TeamTodoCard({
                     <AvatarGroup max={5} className="memberAvatar">
                       {assigned.map((member) => (
                         <Avatar
+                          alt={member.name}
                           src={member.profileImage}
                           className="memberAvatar"
                         />
@@ -253,6 +259,7 @@ function TeamTodoCard({
                     <AvatarGroup max={6} className="memberAvatar">
                       {assigned.map((member) => (
                         <Avatar
+                          alt={member.name}
                           src={member.profileImage}
                           className="memberAvatar"
                         />

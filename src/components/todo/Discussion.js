@@ -388,7 +388,7 @@ const TeamTodoContainer = styled.div`
 `;
 
 const TeamTodoLeftContainer = styled.div`
-  flex: 0.45;
+  flex: 0.4;
   border-right: 2px solid rgba(0, 141, 94, 0.295);
   display: flex;
   overflow: hidden;
@@ -479,7 +479,7 @@ const TeamTodoLeftRightBox = styled.div`
 const TeamTodoRightContainer = styled.div`
   border-radius: 20px;
   margin: 0 0.5rem;
-  flex: 0.55;
+  flex: 0.6;
   overflow-y: scroll;
   padding: 0 1rem;
   margin-bottom: 3.5rem;
@@ -512,7 +512,7 @@ const TodoRightDownBox = styled.div`
   border-radius: 5px;
   margin: 0.2rem 0;
   margin-bottom: 0;
-  width: 52%;
+  width: 57%;
   background-color: rgb(206, 252, 236);
   /* @media (max-height: 650px) {
     bottom: 0.8rem;

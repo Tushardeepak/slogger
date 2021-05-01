@@ -1,0 +1,238 @@
+/* modal edits */
+.modalTitle {
+  color: #0b9768;
+  margin-bottom: -1rem !important;
+}
+
+.todoTextarea {
+  resize: none;
+  width: 94%;
+  margin-left: 7px;
+  height: 3rem;
+  padding: 0.5rem;
+  background: #b1e9d6;
+  color: #0b9768;
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+}
+.todoTextarea::placeholder {
+  color: #0b9768;
+}
+
+.alarmModalIcon {
+  color: rgb(3, 185, 124);
+  font-size: 1.5rem !important;
+  padding-right: 0.3rem;
+  cursor: pointer;
+}
+.timeHeading {
+  flex: 0.5;
+  font-size: 0.7rem;
+  color: rgb(0, 90, 60);
+  font-weight: 300;
+  margin-left: 0.5rem;
+}
+.dataContainer {
+  background-color: rgba(3, 185, 124, 0.308);
+  border-radius: 0.5rem;
+  width: 50% !important;
+  margin: 0rem 0.5rem;
+  padding-top: 0.5rem;
+}
+.dateBox {
+  overflow: hidden;
+  width: 90%;
+  height: 1rem;
+  border: none;
+  padding: 0.5rem 0.7rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.priority {
+  margin: 0.5rem !important;
+  border: 2px solid rgb(5, 185, 125) !important;
+  color: rgb(5, 185, 125, 0.8) !important;
+  width: 70% !important;
+  height: 50% !important;
+  overflow: hidden !important;
+  transition: all 0.5s ease-in-out !important;
+}
+.selectedTopPriority {
+  margin: 0.5rem !important;
+  border: 2px solid rgba(185, 5, 5) !important;
+  background-color: rgba(185, 5, 5, 0.8) !important;
+  color: #fff !important;
+  width: 70% !important;
+  height: 50% !important;
+  overflow: hidden !important;
+  transition: all 0.5s ease-in-out !important;
+}
+.selectedEarlyPriority {
+  margin: 0.5rem !important;
+  border: 2px solid rgba(185, 86, 5) !important;
+  background-color: rgba(185, 86, 5, 0.8) !important;
+  color: #fff !important;
+  width: 70% !important;
+  height: 50% !important;
+  overflow: hidden !important;
+  transition: all 0.5s ease-in-out !important;
+}
+.selectedPriority {
+  margin: 0.5rem !important;
+  border: 2px solid rgb(5, 185, 125) !important;
+  background-color: rgb(5, 185, 125, 0.8) !important;
+  color: #fff !important;
+  width: 70% !important;
+  height: 50% !important;
+  overflow: hidden !important;
+  transition: all 0.5s ease-in-out !important;
+}
+
+/* timeline */
+
+.css-vtfjjl-Circle {
+  border: 2px solid rgb(0, 66, 44) !important;
+  background: rgb(2, 155, 104) !important;
+}
+.css-ic9qte-VerticalCircleWrapper::after {
+  background: rgb(4, 153, 103) !important;
+}
+.css-1f02b8t-TitleWrapper.active {
+  background: rgb(5, 185, 125, 0.8) !important;
+  color: #fff !important;
+  font-weight: 400 !important;
+}
+.css-jke8bq-TimelineCardTitle.active {
+  color: rgb(6, 116, 79) !important;
+}
+.css-1ukmm8p-TimelineNavButton {
+  background: rgb(7, 202, 137) !important;
+}
+.css-1o36iba-TimelineNavButton {
+  background: rgb(7, 202, 137) !important;
+}
+.css-vtfjjl-Circle:not(.using-icon).active::after {
+  background: rgb(134, 218, 190) !important;
+  border: none;
+}
+.css-1nnu7kd-TimelineItemContentWrapper {
+  min-height: auto !important;
+  height: auto !important;
+}
+.css-16u30nb-TimelineControlContainer {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 1000000 !important;
+}
+.css-ouzaa4-TimelineContentDetailsWrapper::-webkit-scrollbar-thumb {
+  background-color: rgb(6, 116, 79) !important;
+  outline: 1px solid rgb(6, 116, 79) !important;
+}
+.css-g5lqm7-Wrapper.js-focus-visible .focus-visible {
+  outline: 2px solid rgb(6, 116, 79) !important;
+}
+.css-50wxdz-SlideShowProgressBar-SlideShowProgressBar {
+  background: rgb(6, 116, 79) !important;
+}
+.css > * {
+  background: rgb(6, 116, 79) !important;
+}
+.SlideShowProgressBar {
+  background: rgb(6, 116, 79) !important;
+}
+.css-1bo9lbh-ShowMore:hover {
+  color: rgb(6, 116, 79) !important;
+}
+.css-1dujl4k-TimelineMainWrapper {
+  padding: 0 !important;
+}
+.css-1dujl4k-TimelineMainWrapper::-webkit-scrollbar-thumb {
+  display: none !important;
+}
+.css-1dujl4k-TimelineMainWrapper::-webkit-scrollbar-track {
+  display: none !important;
+}
+.timelineTextarea {
+  resize: none;
+  width: 92%;
+  height: 5rem;
+  padding: 0.5rem;
+  background: #b1e9d6;
+  color: #076344;
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+}
+.timelineTextarea::placeholder {
+  color: #076344;
+}
+.dataContainerTimeline {
+  margin-top: 0.1rem;
+  background-color: rgba(3, 185, 124, 0.308);
+  border-radius: 0.5rem;
+  width: 96% !important;
+  padding-top: 0.5rem;
+}
+.addButtonTimeline {
+  background-color: #0fbb82 !important;
+  color: #fff !important;
+  width: 100% !important;
+}
+.editTimelineContainer {
+  margin-top: 0.5rem;
+  width: 98%;
+  height: 55%;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.timelineContentBox {
+  background-color: #0fbb82 !important;
+  border-radius: 5px;
+  margin: 0.4rem;
+  margin-left: 0;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  display: flex;
+  padding: 0.3rem;
+  padding-left: 1rem;
+}
+.timelineText {
+  flex: 1;
+  color: #fff !important;
+}
+.timelineEditIcons {
+  color: #0a835b !important;
+  transform: scale(0.8);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.timelineEditIcons:hover {
+  transform: scale(0.9);
+}
+@media (max-width: 600px) {
+  .todoTextarea {
+    height: 4rem;
+  }
+  .dataContainer {
+    width: 98% !important;
+    margin-bottom: 0.5rem;
+  }
+  .dateBox {
+    height: 2rem;
+  }
+  .alarmModalIcon {
+    margin-top: -0.5rem;
+  }
+}
+@media (max-height: 400px) {
+  .addButtonModal {
+    display: none !important;
+  }
+  .editTimelineContainer {
+    display: none !important;
+  }
+}
