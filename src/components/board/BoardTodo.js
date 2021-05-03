@@ -438,7 +438,7 @@ function BoardTodo({
             profileImage={profileImage}
             userName={userName}
             setTabValue={setTabValue}
-            completed={true}
+            completed={state === "upcoming" || checked ? true : false}
           />
         )}
       </TodoMainCard>

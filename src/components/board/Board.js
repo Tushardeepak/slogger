@@ -94,13 +94,14 @@ function Board({ urlTeamName, userName, setTabValue, profileImage }) {
         flexDirection: "column",
       }}
     >
-      <img src={selectTeam} style={{ height: "10rem", width: "10rem" }} />
+      <img src={selectTeam} style={{ height: "13rem", width: "13rem" }} />
 
       <Button
         className="uploadView"
         style={{
+          padding: "0.5rem",
           marginTop: "1rem",
-          fontSize: "0.65rem",
+          fontSize: "0.8rem",
           height: "1.2rem",
           color: "#fff",
           backgroundColor: "rgb(5, 185, 125,0.9)",

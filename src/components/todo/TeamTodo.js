@@ -37,6 +37,7 @@ import DateRangeIcon from "@material-ui/icons/DateRange";
 import TeamSchedular from "../Schedular/TeamSchedular";
 import ClearIcon from "@material-ui/icons/Clear";
 import PuffLoader from "react-spinners/PuffLoader";
+import selectTeam from "../../assets/images/selectTeam.svg";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -475,7 +476,7 @@ function TeamTodo({
           </TeamTodoLeftContainer>
         )}
         <TeamTodoMiniActionContainer className="toolbarForAbove1000">
-          <CustomTooltip title="Start meeting" placement="top">
+          <CustomTooltip title="Start meeting" placement="right" arrow >
             <a
               href={`https://slogmeet.web.app/${UrlTeamName}`}
               className="meetingLink"
@@ -485,6 +486,7 @@ function TeamTodo({
             </a>
           </CustomTooltip>
           <CustomTooltip
+          arrow
             title={
               priorityFilter === 3
                 ? "High"
@@ -494,7 +496,7 @@ function TeamTodo({
                 ? "Filter"
                 : "Low"
             }
-            placement="top"
+            placement="right"
           >
             <div
               style={{
@@ -518,7 +520,7 @@ function TeamTodo({
               <ListIcon className="slogMeet" />
             </div>
           </CustomTooltip>
-          <CustomTooltip title="Schedular" placement="top">
+          <CustomTooltip title="Schedular" placement="right" arrow>
             <div
               className="meetingLink"
               onClick={() => setOpenSchedular(!openSchedular)}
@@ -549,7 +551,7 @@ function TeamTodo({
             {isSmall && (
               <>
                 <TeamTodoMiniActionContainer className="toolbarForBelow1000">
-                  <CustomTooltip title="Start meeting" placement="top">
+                  <CustomTooltip title="Start meeting" placement="right">
                     <a
                       href={`https://slogmeet.web.app/${UrlTeamName}`}
                       className="meetingLink"
@@ -703,8 +705,35 @@ function TeamTodo({
                 </TodoRightUpBox>
               </>
             )}
+            {UrlTeamName === undefined && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  paddingTop: "5rem",
+                }}
+              >
+                <img
+                  src={selectTeam}
+                  style={{ height: "10rem", width: "10rem" }}
+                />
 
-            {teamsTodoList.length === 0 ? (
+                <p
+                  className="uploadView"
+                  style={{
+                    marginTop: "1rem",
+                    fontSize: "0.8rem",
+                    color: "rgb(5, 185, 125,0.9)",
+                    marginBottom: "0.2rem",
+                  }}
+                >
+                  Select a team to view
+                </p>
+              </div>
+            )}
+            {teamsTodoList.length === 0 && UrlTeamName !== undefined ? (
               thisIsAdmin ? (
                 <div
                   className="teamNoTodoImage"
@@ -1067,51 +1096,31 @@ const TeamTodoLeftRightBox = styled.div`
 `;
 
 const TeamTodoMiniActionContainer = styled.div`
-  margin: 0.5rem;
-  padding: 0.5rem 0.3rem;
-  box-shadow: rgba(3, 185, 124, 0.308) 0px 1px 4px;
+  margin: 0.5rem 0rem;
+  padding: 0 0.3rem;
+  /* box-shadow: rgba(3, 185, 124, 0.308) 0px 1px 4px; */
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(3, 185, 124, 0.08);
-
-  /* .meetingLink {
-    width: 30%;
-    margin: 0.2rem 0rem;
-    margin-left: 0.2rem;
-    text-decoration: none;
-    ${customMedia.lessThan("smTablet")`
-     width: 50% !important;
-     margin:0.1rem 0rem !important;
-     margin-left: 0.2rem !important;
-    `};
-  }
-  .meetingJoinLink {
-    width: 12%;
-    margin: 0.2rem 0.5rem;
-    text-decoration: none;
-    ${customMedia.lessThan("smTablet")`
-     width: 17% !important;
-     
-    `};
-  } */
+  /* background-color: rgba(3, 185, 124, 0.08); */
 
   .meetingLink {
-    margin-top: 2rem;
+    margin-bottom: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgb(5, 185, 125, 0.8);
-    border-radius: 200%;
+    border-radius: 0 200% 200% 200%;
     padding: 0.5rem;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    box-shadow: rgba(3, 185, 124, 0.308) 0px 1px 4px;
     cursor: pointer;
     ${customMedia.lessThan("smTablet")`
       margin-top: 0rem;
       padding: 0.4rem;
     `}
   }
+
   .slogMeet {
     height: 1.5rem !important;
     width: 1.5rem !important;
@@ -1138,7 +1147,7 @@ const TeamTodoRightContainer = styled.div`
   .rightDownContainer {
     padding: 0 0.1rem;
     width: 99%;
-    height: 81%;
+    height: 93%;
     overflow-y: scroll;
     overflow-x: hidden;
   }

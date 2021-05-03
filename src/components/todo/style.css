@@ -399,12 +399,14 @@
     padding: 0.3rem !important;
   }
   .meetingLink {
-    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-radius: 5px !important;
+    margin-right: 1rem !important;
   }
   .toolbarForAbove1000 {
     display: none !important;
     flex-direction: row !important;
-    justify-content: space-evenly !important;
+    justify-content: start !important;
   }
 }
 

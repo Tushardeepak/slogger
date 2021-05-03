@@ -93,7 +93,7 @@
 
 /* timeline */
 
-.css-vtfjjl-Circle {
+/* .css-vtfjjl-Circle {
   border: 2px solid rgb(0, 66, 44) !important;
   background: rgb(2, 155, 104) !important;
 }
@@ -156,6 +156,10 @@
 }
 .css-1dujl4k-TimelineMainWrapper::-webkit-scrollbar-track {
   display: none !important;
+} */
+
+section {
+  min-height: auto !important;
 }
 .timelineTextarea {
   resize: none;

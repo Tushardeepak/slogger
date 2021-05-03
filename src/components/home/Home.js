@@ -135,19 +135,19 @@ function Home(props) {
           }
         });
       });
-    document.addEventListener("keydown", (event) => {
-      if (event.ctrlKey) {
-        if (c < 4) {
-          ++c;
-          setValue(c);
-        } else {
-          setValue(0);
-          c = 0;
-        }
+    // document.addEventListener("keydown", (event) => {
+    //   if (event.ctrlKey) {
+    //     if (c < 4) {
+    //       ++c;
+    //       setValue(c);
+    //     } else {
+    //       setValue(0);
+    //       c = 0;
+    //     }
 
-        event.preventDefault();
-      }
-    });
+    //     event.preventDefault();
+    //   }
+    // });
   }, []);
   var c = 0;
 

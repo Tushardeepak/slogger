@@ -141,6 +141,7 @@ function BoardSection({ urlTeamName, userName, setTabValue, profileImage }) {
                   checkedByProfile={todo.checkedByProfile}
                 />
               ))}
+          <div style={{ height: "2rem", width: "13rem" }}></div>
         </TaskContainer>
       </UpcomingContainer>
       <CurrentContainer>
@@ -194,6 +195,7 @@ function BoardSection({ urlTeamName, userName, setTabValue, profileImage }) {
                   checkedByProfile={todo.checkedByProfile}
                 />
               ))}
+          <div style={{ height: "2rem", width: "13rem" }}></div>
         </TaskContainer>
       </CurrentContainer>
       <CompletedContainer>
@@ -247,6 +249,7 @@ function BoardSection({ urlTeamName, userName, setTabValue, profileImage }) {
                   checkedByProfile={todo.checkedByProfile}
                 />
               ))}
+          <div style={{ height: "2rem", width: "13rem" }}></div>
         </TaskContainer>
       </CompletedContainer>
       {openAddUpcoming && (
@@ -327,7 +330,7 @@ const TaskContainer = styled.div`
 `;
 
 const CurrentContainer = styled.div`
-  flex: 2.5;
+  flex: 3;
   width: 98%;
   height: 100%;
   margin: 0 0.5rem;

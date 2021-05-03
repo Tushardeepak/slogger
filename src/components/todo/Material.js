@@ -145,7 +145,7 @@ export default function Material({
       teamTodoImage: "",
     });
     setSent(true);
-    setTabValue(2);
+    setTabValue(3);
   };
 
   const handleAddTo = () => {
