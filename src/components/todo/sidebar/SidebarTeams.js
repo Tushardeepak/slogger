@@ -55,7 +55,7 @@ const defaultMaterialTheme = createMuiTheme({
   },
 });
 
-export default function SidebarTeams({ UrlTeamName, userName }) {
+export default function SidebarTeams({ UrlTeamName, userName, discussion }) {
   const [make, setMake] = useState(false);
   const [openMaker, setOpenMaker] = useState(false);
   const [openMakeSnackBar, setOpenMakeSnackBar] = useState(false);
@@ -217,9 +217,14 @@ export default function SidebarTeams({ UrlTeamName, userName }) {
         <Button className="addItemsTeams" onClick={handleClickOpen}>
           <p>{UrlTeamName === undefined ? "Select Team" : UrlTeamName}</p>
         </Button>
-        <Button className="addItemsTeams" onClick={() => setOpenAddTodo(true)}>
-          Add task
-        </Button>
+        {!discussion && (
+          <Button
+            className="addItemsTeams"
+            onClick={() => setOpenAddTodo(true)}
+          >
+            Add task
+          </Button>
+        )}
       </div>
       <Dialog
         fullScreen

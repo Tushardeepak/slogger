@@ -233,7 +233,7 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
     <div>
       <TeamTodoContainer>
         {!isSmall ? (
-          <SidebarTeams UrlTeamName={UrlTeamName} />
+          <SidebarTeams UrlTeamName={UrlTeamName} discussion={true} />
         ) : (
           <TeamTodoLeftContainer>
             <TeamTodoLeftLeftBox>
