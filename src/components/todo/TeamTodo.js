@@ -281,6 +281,7 @@ function TeamTodo({
           todoImage: doc.data().todoImage,
           comment: doc.data().comment,
           priority: doc.data().priority,
+          assignedById: doc.data().assignedById,
         }));
         setTeamsTodoList(list);
       });
@@ -476,7 +477,7 @@ function TeamTodo({
           </TeamTodoLeftContainer>
         )}
         <TeamTodoMiniActionContainer className="toolbarForAbove1000">
-          <CustomTooltip title="Start meeting" placement="right" arrow >
+          <CustomTooltip title="Start meeting" placement="right" arrow>
             <a
               href={`https://slogmeet.web.app/${UrlTeamName}`}
               className="meetingLink"
@@ -486,7 +487,7 @@ function TeamTodo({
             </a>
           </CustomTooltip>
           <CustomTooltip
-          arrow
+            arrow
             title={
               priorityFilter === 3
                 ? "High"
@@ -585,6 +586,7 @@ function TeamTodo({
                       }}
                       className="meetingLink"
                       onClick={() => {
+                        setTransitionDirection("down");
                         if (priorityFilter === 1) setPriorityFilter(2);
                         if (priorityFilter === 2) setPriorityFilter(3);
                         if (priorityFilter === 3) setPriorityFilter(4);
@@ -921,6 +923,7 @@ function TeamTodo({
                       todoImage={todo.todoImage}
                       comment={todo.comment}
                       priority={todo.priority}
+                      assignedById={todo.assignedById}
                       userName={userName}
                       profileImage={profileImage}
                       setTabValue={setTabValue}
@@ -1147,7 +1150,7 @@ const TeamTodoRightContainer = styled.div`
   .rightDownContainer {
     padding: 0 0.1rem;
     width: 99%;
-    height: 93%;
+    height: 77% !important;
     overflow-y: scroll;
     overflow-x: hidden;
   }
@@ -1156,6 +1159,16 @@ const TeamTodoRightContainer = styled.div`
     height:70% !important;
     flex: 1;
   `}
+  }
+  @media (max-width: 600px) {
+    .rightDownContainer {
+      height: 55% !important;
+    }
+  }
+  @media (min-height: 800px) {
+    .rightDownContainer {
+      height: 75% !important;
+    }
   }
 `;
 

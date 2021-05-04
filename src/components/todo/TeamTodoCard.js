@@ -20,6 +20,7 @@ import CalendarModal from "../Schedular/CalendarModal";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import TeamMembers from "./members/TeamMembers";
 import { AvatarGroup } from "@material-ui/lab";
+import firebase from "firebase";
 
 function TeamTodoCard({
   id,
@@ -41,11 +42,11 @@ function TeamTodoCard({
   setTransitionDirection,
   priority,
   setOpenSchedular,
+  assignedById,
 }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
   const [openMaterial, setOpenMaterial] = useState(false);
-  const [assignChange, setAssignChange] = useState(false);
   const [transitionIn, setTransitionIn] = useState(true);
   const [openMembers, setOpenMembers] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -98,6 +99,18 @@ function TeamTodoCard({
           },
           { merge: true }
         );
+
+      db.collection("users").doc(assignedById).collection("notifications").add({
+        todoId: id,
+        completedByName: userName,
+        notificationType: "taskCompleted",
+        completedById: currentUser.uid,
+        teamName: urlTeamName,
+        todo: text,
+        endDate: endDate,
+        notiDate: new Date().toISOString(),
+        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
     }, 1000);
   };
 
@@ -239,14 +252,11 @@ function TeamTodoCard({
                     </AvatarGroup>
                   </div>
                   <div style={{ flex: 1 }}></div>
-                  {admin === currentUser.uid ? (
-                    <AddCircleIcon
-                      className="assignIcon"
-                      onClick={() => setOpenMembers(true)}
-                    />
-                  ) : (
-                    ""
-                  )}
+
+                  <AddCircleIcon
+                    className="assignIcon"
+                    onClick={() => setOpenMembers(true)}
+                  />
                 </div>
               </div>
             </>
@@ -267,14 +277,11 @@ function TeamTodoCard({
                     </AvatarGroup>
                   </div>
                   <div style={{ flex: 1 }}></div>
-                  {admin === currentUser.uid ? (
-                    <AddCircleIcon
-                      className="assignIcon"
-                      onClick={() => setOpenMembers(true)}
-                    />
-                  ) : (
-                    ""
-                  )}
+
+                  <AddCircleIcon
+                    className="assignIcon"
+                    onClick={() => setOpenMembers(true)}
+                  />
                 </div>
               </div>
               <div
@@ -452,6 +459,9 @@ function TeamTodoCard({
             handleClose={() => setOpenMembers(false)}
             urlTeamName={urlTeamName}
             assigned={assigned}
+            userName={userName}
+            endDate={endDate}
+            todo={text}
           />
         )}
       </TodoMainCard>

@@ -1,0 +1,74 @@
+.notificationBell {
+  transform: scale(0.8);
+  color: #fff !important;
+}
+.notificationIconBtn:hover .notificationBell {
+  color: rgb(1, 63, 42, 0.6) !important;
+}
+.notificationListContainer {
+  background-color: rgba(8, 121, 83, 0.342);
+}
+.notiContainer {
+  height: auto;
+  padding: 0.5rem 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin: 0.5rem;
+  padding-bottom: 0.2rem;
+  border-radius: 10px;
+  word-break: break-word;
+  background-color: #fff !important;
+  cursor: pointer;
+  position: relative;
+}
+.notiHead {
+  display: flex;
+  font-size: x-small;
+  justify-content: space-between;
+}
+.notiBadge {
+  padding: 2px 5px;
+  border-radius: 5px;
+  background-color: rgba(33, 153, 113, 0.16);
+  color: rgba(33, 153, 113);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.notiBadgeCompleted {
+  background-color: rgba(255, 255, 0, 0.425);
+  color: rgb(161, 161, 3);
+  padding: 2px 5px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.notiDate {
+  color: rgba(33, 153, 113);
+}
+.task {
+  margin: 0.5rem 0;
+  font-size: small;
+  color: gray;
+}
+.footerNoti {
+  display: flex;
+  justify-content: space-between;
+  color: rgb(182, 181, 181);
+}
+.footerName {
+  font-size: x-small;
+}
+.endDateBox {
+  font-size: x-small;
+}
+.feedBackBtn {
+  font-size: 0.5rem !important;
+  text-transform: none !important;
+  background-color: rgba(33, 153, 113, 0.16) !important;
+  color: rgba(33, 153, 113) !important;
+  position: absolute !important;
+  z-index: 1000000000 !important;
+  transform: translateX(-100%) !important;
+}
+@media (max-width: 600px) {
+  .notiContainer {
+    margin-left: 0.9rem;
+  }
+}

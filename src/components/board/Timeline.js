@@ -276,6 +276,7 @@ function Timeline({ urlTeamName }) {
           cardHeight={150}
           slideItemDuration={4000}
           allowDynamicUpdate={true}
+          disableNavOnKey={true}
           theme={{ primary: "green", secondary: "rgba(3, 185, 124, 0.308)" }}
         />
       </TimelineRight>

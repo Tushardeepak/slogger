@@ -25,6 +25,7 @@ import { db } from "../../firebase";
 import SnackBar from "../snackbar/SnackBar";
 import Profile from "../profile/Profile";
 import Board from "../board/Board";
+import Notification from "../notification/Notification";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -191,6 +192,7 @@ function Home(props) {
             <Typography variant="h6" className={classes.title}>
               Slogger
             </Typography>
+            <Notification />
             <Button
               autoFocus
               color="inherit"

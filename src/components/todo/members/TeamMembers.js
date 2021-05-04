@@ -10,6 +10,7 @@ import { db } from "../../../firebase";
 import selectTeam from "../../../assets/images/selectTeam.svg";
 import TeamMemberCard from "./TeamMemberCard";
 import { useAuth } from "../../../context/AuthContext";
+import firebase from "firebase";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Zoom direction="up" ref={ref} {...props} />;
@@ -21,6 +22,9 @@ export default function TeamMembers({
   urlTeamName,
   todoId,
   assigned,
+  userName,
+  todo,
+  endDate,
 }) {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
@@ -48,32 +52,57 @@ export default function TeamMembers({
 
   const handleSubmit = () => {
     var _list = [];
-    selected.forEach((selectedId) => {
-      db.collection("users")
-        .doc(selectedId)
-        .collection("profile")
-        .onSnapshot((snapshot) => {
-          const profile = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            memberId: selectedId,
-            name: doc.data().name,
-            profileImage: doc.data().profileImage,
-            email: doc.data().email,
-          }));
-          _list.push(profile[0]);
-          db.collection("teams")
-            .doc(urlTeamName)
-            .collection("teamTodos")
-            .doc(todoId)
-            .set(
-              {
-                assignedTo: [..._list],
-              },
-              { merge: true }
-            );
+    if (selected.length !== 0) {
+      selected.forEach((selectedId) => {
+        db.collection("users")
+          .doc(selectedId)
+          .collection("profile")
+          .onSnapshot((snapshot) => {
+            const profile = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              memberId: selectedId,
+              name: doc.data().name,
+              profileImage: doc.data().profileImage,
+              email: doc.data().email,
+            }));
+            _list.push(profile[0]);
+            db.collection("teams")
+              .doc(urlTeamName)
+              .collection("teamTodos")
+              .doc(todoId)
+              .set(
+                {
+                  assignedTo: [..._list],
+                },
+                { merge: true }
+              );
+          });
+
+        db.collection("users").doc(selectedId).collection("notifications").add({
+          todoId: todoId,
+          assignedByName: userName,
+          notificationType: "taskAssigned",
+          assignedById: currentUser.uid,
+          teamName: urlTeamName,
+          todo: todo,
+          endDate: endDate,
+          notiDate: new Date().toISOString(),
+          timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
-    });
-    setAllSelectedMemberList(_list);
+      });
+      setAllSelectedMemberList(_list);
+    } else {
+      db.collection("teams")
+        .doc(urlTeamName)
+        .collection("teamTodos")
+        .doc(todoId)
+        .set(
+          {
+            assignedTo: [],
+          },
+          { merge: true }
+        );
+    }
     handleClose();
   };
 
@@ -123,18 +152,14 @@ export default function TeamMembers({
                   }}
                 />
               ) : (
-                allMemberIdList?.map((memberId) =>
-                  memberId.id === currentUser.uid ? (
-                    ""
-                  ) : (
-                    <TeamMemberCard
-                      key={memberId.id}
-                      id={memberId.id}
-                      setSelected={setSelected}
-                      selected={selected}
-                    />
-                  )
-                )
+                allMemberIdList?.map((memberId) => (
+                  <TeamMemberCard
+                    key={memberId.id}
+                    id={memberId.id}
+                    setSelected={setSelected}
+                    selected={selected}
+                  />
+                ))
               )}
             </div>
           </DialogContentText>

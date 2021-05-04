@@ -77,5 +77,14 @@ export default createMuiTheme({
         borderRadius: "5px",
       },
     },
+    MuiBadge: {
+      anchorOriginTopRightRectangle: {
+        background: "rgb(2, 87, 59)",
+        color: "#fff",
+        transform: "scale(0.9)",
+        right: "-0.5rem",
+        top: "-0.5rem",
+      },
+    },
   },
 });

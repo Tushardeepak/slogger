@@ -1,10 +1,18 @@
-import { Button, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Button,
+  IconButton,
+  makeStyles,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import styled from "styled-components";
 import { generateMedia } from "styled-media-query";
 import "../todo/heightMedia.css";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import Notification from "../notification/Notification";
 
 const useStyles = makeStyles((theme) => ({
   rippleClose: {
@@ -18,6 +26,7 @@ function NavBar({ page, home }) {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
   const classes = makeStyles();
+  const [openNotification, setOpenNotification] = useState(false);
 
   const handleSignOut = async () => {
     await logOut();
@@ -83,6 +92,8 @@ function NavBar({ page, home }) {
         </NavBarDateBox>
       </NavLinksContainer>
       <NavBarEndContainer>
+        <Notification />
+
         {home ? (
           <Button
             classes={{ root: classes.rippleClose }}
@@ -106,6 +117,12 @@ function NavBar({ page, home }) {
           Log Out
         </Button>
       </NavBarEndContainer>
+      {openNotification && (
+        <Notification
+          open={openNotification}
+          handleClose={() => setOpenNotification(false)}
+        />
+      )}
     </NavBarContainer>
   ) : (
     <NavBarContainer0Page>
@@ -117,6 +134,8 @@ function NavBar({ page, home }) {
       <NavBarEndContainer0Page>
         {currentUser !== null ? (
           <>
+            <Notification />
+
             <Button
               classes={{ root: classes.rippleClose }}
               onClick={() => history.push("/help")}

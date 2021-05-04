@@ -2,10 +2,12 @@ import { Avatar, Checkbox } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { db } from "../../../firebase";
 import PuffLoader from "react-spinners/PuffLoader";
+import MemberProfile from "../../profile/MemberProfile";
 
 function TeamMemberCard({ id, setSelected, selected }) {
   const [member, setMember] = useState({});
   const [loader, setLoader] = useState(false);
+  const [openMemberModal, setOpenMemberModal] = useState(false);
 
   useEffect(() => {
     setLoader(true);
@@ -53,9 +55,13 @@ function TeamMemberCard({ id, setSelected, selected }) {
       />
       <Avatar
         src={member.profileImage}
-        style={{ marginLeft: "1.5rem", marginRight: "1rem" }}
+        style={{ marginLeft: "1.5rem", marginRight: "1rem", cursor: "pointer" }}
+        onClick={() => setOpenMemberModal(true)}
       />
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        style={{ display: "flex", flexDirection: "column", cursor: "pointer" }}
+        onClick={() => setOpenMemberModal(true)}
+      >
         <p
           style={{
             overflow: "hidden",
@@ -78,6 +84,13 @@ function TeamMemberCard({ id, setSelected, selected }) {
           {member.email}
         </p>
       </div>
+      {openMemberModal && (
+        <MemberProfile
+          open={openMemberModal}
+          handleClose={() => setOpenMemberModal(false)}
+          id={id}
+        />
+      )}
     </div>
   );
 }
