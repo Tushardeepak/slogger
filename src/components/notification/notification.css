@@ -5,8 +5,8 @@
 .notificationIconBtn:hover .notificationBell {
   color: rgb(1, 63, 42, 0.6) !important;
 }
-.notificationListContainer {
-}
+/* .notificationListContainer {
+} */
 .notiContainer {
   height: auto;
   padding: 0.5rem 0.5rem;
