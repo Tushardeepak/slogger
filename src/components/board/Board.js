@@ -1,11 +1,13 @@
 import { AppBar, Box, Button, makeStyles, Tab, Tabs } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import BoardSection from "./BoardSection";
 import selectTeam from "../../assets/images/selectTeam.svg";
 import Timeline from "./Timeline";
 import { generateMedia } from "styled-media-query";
+import { db } from "../../firebase";
+import { useAuth } from "../../context/AuthContext";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -79,6 +81,20 @@ const useStyles = makeStyles((theme) => ({
 function Board({ urlTeamName, userName, setTabValue, profileImage }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [currTeamAdmin, setCurrTeamAdmin] = React.useState(false);
+  const { currentUser } = useAuth();
+
+  useEffect(() => {
+    db.collection("teams").onSnapshot((snapshot) => {
+      snapshot.docs.filter(
+        (doc) =>
+          doc.id === urlTeamName &&
+          doc.data().admin === currentUser.uid &&
+          setCurrTeamAdmin(true)
+      );
+    });
+  }, [urlTeamName]);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -146,6 +162,7 @@ function Board({ urlTeamName, userName, setTabValue, profileImage }) {
           userName={userName}
           profileImage={profileImage}
           setTabValue={setTabValue}
+          currTeamAdmin={currTeamAdmin}
         />
       </TabPanel>
       <TabPanel

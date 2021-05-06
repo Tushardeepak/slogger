@@ -151,7 +151,7 @@ export default function SidebarTimeline({ urlTeamName }) {
 
   return (
     <div>
-      <Button className="addItemsPersonal" onClick={handleClickOpen}>
+      <Button className="addItemsTimeline" onClick={handleClickOpen}>
         Add Card
       </Button>
       <Dialog

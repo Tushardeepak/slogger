@@ -72,6 +72,7 @@ function TeamCard({
             borderRadius: "0 5px 5px 0",
             height: "auto",
           }}
+          onClick={() => handleDelete()}
         >
           <DeleteIcon
             style={{
@@ -80,7 +81,6 @@ function TeamCard({
               cursor: "pointer",
               transform: "scale(0.8)",
             }}
-            onClick={() => handleDelete()}
           />
         </Button>
       ) : (
@@ -130,6 +130,7 @@ function TeamCard({
             borderRadius: "0 5px 5px 0",
             height: "auto",
           }}
+          onClick={() => handleDelete()}
         >
           <DeleteIcon
             style={{
@@ -138,7 +139,6 @@ function TeamCard({
               cursor: "pointer",
               transform: "scale(0.8)",
             }}
-            onClick={() => handleDelete()}
           />
         </Button>
       ) : (

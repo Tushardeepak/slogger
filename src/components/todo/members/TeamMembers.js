@@ -11,6 +11,7 @@ import selectTeam from "../../../assets/images/selectTeam.svg";
 import TeamMemberCard from "./TeamMemberCard";
 import { useAuth } from "../../../context/AuthContext";
 import firebase from "firebase";
+import emailjs from "emailjs-com";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Zoom direction="up" ref={ref} {...props} />;
@@ -66,6 +67,27 @@ export default function TeamMembers({
               email: doc.data().email,
             }));
             _list.push(profile[0]);
+
+            window.Email.send({
+              Host: "smtp.gmail.com",
+              Username: "withslogger@gmail.com",
+              Password: "slogger2220",
+              To: profile[0].email,
+              From: "withslogger@gmail.com",
+              Subject: `Task assigned - ${urlTeamName}/SLOGGER[${new Date().getTime()}]`,
+              Body: `You have been assigned a task: <br /><br />${todo}<br /><br /><b>ASSIGNED BY: ${userName} (${urlTeamName})<br />DEADLINE: ${endDate?.substring(
+                8,
+                10
+              )}
+              ${"/"}
+              ${endDate?.substring(5, 7)}
+              ${"/"}
+              ${endDate?.substring(
+                0,
+                4
+              )} </b><br /><br /><br />Thank you,<br />Slogger`,
+            }).then(console.log("Mail sent to assignees"));
+
             db.collection("teams")
               .doc(urlTeamName)
               .collection("teamTodos")

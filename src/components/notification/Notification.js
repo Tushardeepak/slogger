@@ -12,6 +12,8 @@ import { db } from "../../firebase";
 import { useAuth } from "../../context/AuthContext";
 import moment from "moment";
 import FeedbackModal from "./FeedbackModal";
+import { useHistory } from "react-router";
+import MemberProfile from "../profile/MemberProfile";
 
 const useStyles = makeStyles({
   list: {
@@ -23,9 +25,13 @@ const useStyles = makeStyles({
   fullList: {
     width: "auto",
   },
+  drawerBackground: {
+    background: "rgba(8, 121, 83, 0.542)",
+    backdropFilter: "blur(3px) !important",
+  },
 });
 
-export default function Notification() {
+export default function Notification({ setTabValue }) {
   const classes = useStyles();
   const [state, setState] = useState({
     top: false,
@@ -39,10 +45,14 @@ export default function Notification() {
   const { currentUser } = useAuth();
   const [notiList, setNotiList] = useState([]);
   const [openFeedback, setOpenFeedback] = useState(false);
+  const [openMemberModal, setOpenMemberModal] = useState(false);
+  const [currMemberId, setCurrMemberId] = useState("");
   const [currCompletedById, setCurrCompletedById] = useState("");
   const [currCompletedByName, setCurrCompletedByName] = useState("");
   const [currTodo, setCurrTodo] = useState("");
   const [currTeam, setCurrTeam] = useState("");
+  const [readList, setReadList] = useState(0);
+  const history = useHistory();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -75,8 +85,12 @@ export default function Notification() {
           todo: doc.data().todo,
           completedByName: doc.data().completedByName,
           completedById: doc.data().completedById,
+          memberJoinName: doc.data().memberJoinName,
+          memberJoinId: doc.data().memberJoinId,
+          read: doc.data().read,
         }));
-        console.log(list);
+        const read = list.filter((l) => l.read === true);
+        setReadList(read);
         setNotiList(list);
       });
   };
@@ -92,6 +106,38 @@ export default function Notification() {
     return () => clearInterval(timer);
   }, []);
 
+  const handlePushTeamName = (teamName, id) => {
+    history.push(`/home/${teamName}`);
+    setTabValue(1);
+    db.collection("users")
+      .doc(currentUser.uid)
+      .collection("notifications")
+      .doc(id)
+      .set(
+        {
+          read: true,
+        },
+        { merge: true }
+      );
+    toggleDrawer(anchor, false);
+  };
+
+  const handleMemberOpen = (MemberId, id) => {
+    setCurrMemberId(MemberId);
+    setOpenMemberModal(true);
+    db.collection("users")
+      .doc(currentUser.uid)
+      .collection("notifications")
+      .doc(id)
+      .set(
+        {
+          read: true,
+        },
+        { merge: true }
+      );
+    toggleDrawer(anchor, false);
+  };
+
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -103,17 +149,42 @@ export default function Notification() {
     >
       <List className="notificationListContainer">
         {!isSmall && (
-          <ClearIcon
-            onClick={() => toggleDrawer(anchor, false)}
-            style={{ padding: "1rem" }}
-          />
+          <p
+            style={{
+              padding: "1rem",
+              fontSize: "xx-small",
+              color: "rgb(1, 63, 42)",
+            }}
+          >
+            {"swipe -> to close"}
+          </p>
+        )}
+        {notiList.length === 0 && (
+          <div
+            style={{
+              height: "100vh",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "rgb(1, 63, 42)",
+            }}
+          >
+            <p>No Notifications</p>
+          </div>
         )}
         {notiList?.map((noti) => (
           <>
             {noti.notificationType === "taskAssigned" && (
-              <div key={noti.id} className="notiContainer">
+              <div
+                key={noti.id}
+                className="notiContainer"
+                onClick={() => handlePushTeamName(noti.teamName, noti.id)}
+              >
                 <div className="notiHead">
-                  <p className="notiBadge">Task assigned</p>
+                  <p className={noti.read ? "notiRead" : "notiBadge"}>
+                    Task assigned
+                  </p>
                   <p className="notiDate">
                     {noti.date?.substring(8, 10)}
                     {"/"}
@@ -142,9 +213,15 @@ export default function Notification() {
               </div>
             )}
             {noti.notificationType === "taskCompleted" && (
-              <div key={noti.id} className="notiContainer">
+              <div
+                key={noti.id}
+                className="notiContainer"
+                onClick={() => handlePushTeamName(noti.teamName, noti.id)}
+              >
                 <div className="notiHead">
-                  <p className="notiBadgeCompleted">Task completed</p>
+                  <p className={noti.read ? "notiRead" : "notiBadgeCompleted"}>
+                    Task completed
+                  </p>
                   <p className="notiDate">
                     {noti.date?.substring(8, 10)}
                     {"/"}
@@ -176,6 +253,35 @@ export default function Notification() {
                 </div>
               </div>
             )}
+            {noti.notificationType === "teamJoin" && (
+              <div
+                key={noti.id}
+                className="notiContainer"
+                onClick={() => handleMemberOpen(noti.memberJoinId, noti.id)}
+              >
+                <div className="notiHead">
+                  <p className={noti.read ? "notiRead" : "notiBadgeJoin"}>
+                    Team join
+                  </p>
+                  <p className="notiDate">
+                    {noti.date?.substring(8, 10)}
+                    {"/"}
+                    {noti.date?.substring(5, 7)}
+                    {"/"}
+                    {noti.date?.substring(0, 4)}
+                  </p>
+                </div>
+                <p className="task">
+                  {noti.memberJoinName} has joined your team.
+                </p>
+                <div className="footerNoti">
+                  <div className="footerName">
+                    <p>{noti.teamName}</p>
+                  </div>
+                  <div className="endDateBox"></div>
+                </div>
+              </div>
+            )}
           </>
         ))}
       </List>
@@ -189,6 +295,13 @@ export default function Notification() {
           teamName={currTeam}
         />
       )}
+      {openMemberModal && (
+        <MemberProfile
+          open={openMemberModal}
+          handleClose={() => setOpenMemberModal(false)}
+          id={currMemberId}
+        />
+      )}
     </div>
   );
   const anchor = "right";
@@ -196,21 +309,24 @@ export default function Notification() {
   return (
     <div>
       <React.Fragment key={anchor}>
-        <IconButton
-          style={{ height: "2rem", width: "2rem" }}
-          onClick={toggleDrawer(anchor, true)}
-          className="notificationIconBtn"
-        >
-          <Badge badgeContent={notiList.length} showZero>
-            <NotificationsIcon className="notificationBell" />
-          </Badge>
-        </IconButton>
+        {notiList.length - readList.length >= 0 && (
+          <IconButton
+            style={{ height: "2rem", width: "2rem" }}
+            onClick={toggleDrawer(anchor, true)}
+            className="notificationIconBtn"
+          >
+            <Badge badgeContent={notiList.length - readList.length} showZero>
+              <NotificationsIcon className="notificationBell" />
+            </Badge>
+          </IconButton>
+        )}
 
         <SwipeableDrawer
           anchor={anchor}
           open={state[anchor]}
           onClose={toggleDrawer(anchor, false)}
           onOpen={toggleDrawer(anchor, true)}
+          classes={{ paperAnchorRight: classes.drawerBackground }}
         >
           {list(anchor)}
         </SwipeableDrawer>

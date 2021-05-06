@@ -111,7 +111,25 @@ function TeamTodoCard({
         notiDate: new Date().toISOString(),
         timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
-    }, 1000);
+    }, 500);
+    db.collection("users")
+      .doc(assignedById)
+      .collection("profile")
+      .onSnapshot((snapshot) => {
+        const adminProfile = snapshot.docs.map((doc) => ({
+          email: doc.data().email,
+        }));
+        console.log(adminProfile);
+        window.Email.send({
+          Host: "smtp.gmail.com",
+          Username: "withslogger@gmail.com",
+          Password: "slogger2220",
+          To: adminProfile[0].email,
+          From: "withslogger@gmail.com",
+          Subject: `Task completed - ${urlTeamName}/SLOGGER[${new Date().getTime()}]`,
+          Body: `<b>Your task:<b> ${text}<br />Has been completed.<br /><br /><b>COMPLETED BY: ${userName} (${urlTeamName})</b><br /><br /><br />Thank you,<br />Slogger`,
+        }).then(console.log("Task completion mail sent"));
+      });
   };
 
   const emptyFunction = () => {};

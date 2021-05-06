@@ -23,6 +23,7 @@ export default function AddingTeamModal({
   make,
   setCurrentTeamName,
   openSnackbar,
+  userName,
 }) {
   const [inputTeamName, setInputTeamName] = useState("");
   const [teamList, setTeamList] = useState([]);
@@ -91,6 +92,24 @@ export default function AddingTeamModal({
     history.push(`/home/${inputTeamName}`);
     handleClose();
     openSnackbar(true);
+    db.collection("teams").onSnapshot((snapshot) => {
+      snapshot.docs.filter(
+        (doc) =>
+          doc.id === inputTeamName &&
+          db
+            .collection("users")
+            .doc(doc.data().admin)
+            .collection("notifications")
+            .add({
+              memberJoinName: userName,
+              notificationType: "teamJoin",
+              memberJoinId: currentUser.uid,
+              teamName: inputTeamName,
+              notiDate: new Date().toISOString(),
+              timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+            })
+      );
+    });
   };
 
   const addTeamNameToUser = () => {

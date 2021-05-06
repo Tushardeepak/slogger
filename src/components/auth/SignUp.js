@@ -14,6 +14,7 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import CustomTooltip from "../CustomTooltip";
 import signUpLoader from "../../assets/images/signUpLoader.gif";
+import firebase from "firebase";
 
 function SignUp() {
   const [authToggle, setAuthToggle] = useState(false);
@@ -26,6 +27,8 @@ function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [userEmailVerified, setUserEmailVerified] = useState(false);
+  const [pleaseVerified, setPleaseVerified] = useState(false);
   const { signUp, signIn, currentUser } = useAuth();
   const history = useHistory();
   const theme = useTheme();
@@ -49,15 +52,29 @@ function SignUp() {
       try {
         setLoader(true);
         const USER = await signUp(email, password);
-        db.collection("users").doc(USER?.uid).collection("profile").add({
-          email: email,
-          // firstName: firstName,
-          //lastName: lastName,
-        });
-        setLoader(false);
-        history.push("/home");
+        if (USER.user.emailVerified) {
+          setUserEmailVerified(false);
+          db.collection("users").doc(USER?.uid).collection("profile").add({
+            email: email,
+            // firstName: firstName,
+            //lastName: lastName,
+          });
+          setLoader(false);
+          history.push("/home");
+        } else {
+          setLoader(false);
+          setUserEmailVerified(true);
+          USER.user.sendEmailVerification();
+          setAuthToggle(true);
+        }
       } catch (error) {
         console.log(error);
+        setLoader(false);
+        if (error.code === "auth/email-already-in-use") {
+          setAuthToggle(true);
+          setUserEmailVerified(true);
+          setPleaseVerified(true);
+        }
       }
     }
   };
@@ -68,8 +85,12 @@ function SignUp() {
     } else {
       try {
         setLoader(true);
-        await signIn(email, password);
-        history.push("/home");
+        const USER = await signIn(email, password);
+        if (USER.user.emailVerified) {
+          history.push("/home");
+        } else {
+          setPleaseVerified(true);
+        }
         setLoader(false);
       } catch (error) {
         console.log(error);
@@ -93,8 +114,10 @@ function SignUp() {
   };
 
   React.useEffect(() => {
-    if (currentUser !== null) {
-      history.push("/home");
+    if (currentUser !== null && currentUser.user !== undefined) {
+      if (currentUser.user.emailVerified) {
+        history.push("/home");
+      }
     }
   }, []);
 
@@ -123,6 +146,21 @@ function SignUp() {
             {/* <img src={signUpImage} /> */}
             <h2>SLOGGER</h2>
             <div className="signUpFormBottom">
+              {userEmailVerified && (
+                <h4
+                  style={{
+                    color: "rgb(5, 185, 125)",
+                    padding: "0.5rem",
+                    width: "100%",
+                    textAlign: "center",
+                  }}
+                >
+                  {pleaseVerified
+                    ? "Please verify account before sign in"
+                    : "Check your mail for verification"}
+                </h4>
+              )}
+
               <CustomTooltip
                 title="Alaric : Enter your email."
                 arrow
@@ -216,53 +254,8 @@ function SignUp() {
       ) : (
         <SignUpBox>
           <SignUpForm>
-            {/* <img src={signUpImage} /> */}
             <h2>SLOGGER</h2>
             <div className="signUpFormBottom">
-              {/* <div className="inputFieldSignUp">
-                <CustomTooltip
-                  title="Alaric: What's your first name?"
-                  arrow
-                  placement="top"
-                >
-                  <div
-                    className="inputFieldSignUp"
-                    style={{ background: "none" }}
-                  >
-                    <ArrowForwardIosIcon className="EmailAccount shortScreen" />
-                    <input
-                      type="text"
-                      value={firstName}
-                      placeholder="First Name"
-                      autocomplete="new-password"
-                      className="firstName"
-                      className="inputSignUp"
-                      onChange={(e) =>
-                        handleChange(setFirstName, e.target.value)
-                      }
-                    ></input>
-                  </div>
-                </CustomTooltip>
-                <CustomTooltip title="Alaric: Last name?" arrow placement="top">
-                  <div
-                    className="inputFieldSignUp"
-                    style={{ background: "none" }}
-                  >
-                    <ArrowForwardIosIcon className="EmailAccount shortScreen" />
-                    <input
-                      type="text"
-                      value={lastName}
-                      placeholder="Last Name"
-                      autocomplete="new-password"
-                      className="firstName"
-                      className="inputSignUp"
-                      onChange={(e) =>
-                        handleChange(setLastName, e.target.value)
-                      }
-                    ></input>
-                  </div>
-                </CustomTooltip>
-              </div> */}
               <CustomTooltip
                 title="Alaric: Enter a valid email, It's good for future."
                 arrow

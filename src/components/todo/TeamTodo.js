@@ -394,6 +394,7 @@ function TeamTodo({
         height: "70vh",
         display: "flex",
         justifyContent: "center",
+        flexDirection:"column",
         alignItems: "center",
         textAlign: "center",
         color: "rgba(0, 141, 94, 0.595)",
@@ -401,6 +402,22 @@ function TeamTodo({
     >
       To use this feature,
       <br /> Set your profile in Profile section
+      <Button
+        className="uploadView"
+        style={{
+          padding: "0.5rem",
+          marginTop: "1rem",
+          fontSize: "0.8rem",
+          height: "1.2rem",
+          color: "#fff",
+          backgroundColor: "rgb(5, 185, 125,0.9)",
+          marginBottom: "0.2rem",
+          textTransform: "none",
+        }}
+        onClick={() => setTabValue(4)}
+      >
+        Go to profile
+      </Button>
     </div>
   ) : (
     <div>
@@ -476,69 +493,75 @@ function TeamTodo({
             </TeamTodoLeftRightBox>
           </TeamTodoLeftContainer>
         )}
+
         <TeamTodoMiniActionContainer className="toolbarForAbove1000">
-          <CustomTooltip title="Start meeting" placement="right" arrow>
-            <a
-              href={`https://slogmeet.web.app/${UrlTeamName}`}
-              className="meetingLink"
-              target="_blank"
-            >
-              <VideoCallIcon className="slogMeet" disabled={loader} />
-            </a>
-          </CustomTooltip>
-          <CustomTooltip
-            arrow
-            title={
-              priorityFilter === 3
-                ? "High"
-                : priorityFilter === 2
-                ? "Mid"
-                : priorityFilter === 4
-                ? "Filter"
-                : "Low"
-            }
-            placement="right"
-          >
-            <div
-              style={{
-                backgroundColor:
+          {UrlTeamName !== undefined && (
+            <>
+              <CustomTooltip title="Start meeting" placement="right" arrow>
+                <a
+                  href={`https://slogmeet.web.app/${UrlTeamName}`}
+                  className="meetingLink"
+                  target="_blank"
+                >
+                  <VideoCallIcon className="slogMeet" disabled={loader} />
+                </a>
+              </CustomTooltip>
+              <CustomTooltip
+                arrow
+                title={
                   priorityFilter === 3
-                    ? "rgba(185, 5, 5, 0.8)"
+                    ? "High"
                     : priorityFilter === 2
-                    ? "rgba(185, 86, 5, 0.8)"
+                    ? "Mid"
                     : priorityFilter === 4
-                    ? "rgb(5, 185, 125, 0.8)"
-                    : "rgba(0, 99, 66, 0.8)",
-              }}
-              className="meetingLink"
-              onClick={() => {
-                if (priorityFilter === 1) setPriorityFilter(2);
-                if (priorityFilter === 2) setPriorityFilter(3);
-                if (priorityFilter === 3) setPriorityFilter(4);
-                if (priorityFilter === 4) setPriorityFilter(1);
-              }}
-            >
-              <ListIcon className="slogMeet" />
-            </div>
-          </CustomTooltip>
-          <CustomTooltip title="Schedular" placement="right" arrow>
-            <div
-              className="meetingLink"
-              onClick={() => setOpenSchedular(!openSchedular)}
-              style={{
-                background: openSchedular
-                  ? "rgba(0, 99, 66, 0.8)"
-                  : "rgb(5, 185, 125, 0.8)",
-              }}
-            >
-              {openSchedular ? (
-                <ClearIcon className="slogMeet" />
-              ) : (
-                <DateRangeIcon className="slogMeet" />
-              )}
-            </div>
-          </CustomTooltip>
+                    ? "Filter"
+                    : "Low"
+                }
+                placement="right"
+              >
+                <div
+                  style={{
+                    backgroundColor:
+                      priorityFilter === 3
+                        ? "rgba(185, 5, 5, 0.8)"
+                        : priorityFilter === 2
+                        ? "rgba(185, 86, 5, 0.8)"
+                        : priorityFilter === 4
+                        ? "rgb(5, 185, 125, 0.8)"
+                        : "rgba(0, 99, 66, 0.8)",
+                  }}
+                  className="meetingLink"
+                  onClick={() => {
+                    if (priorityFilter === 1) setPriorityFilter(2);
+                    if (priorityFilter === 2) setPriorityFilter(3);
+                    if (priorityFilter === 3) setPriorityFilter(4);
+                    if (priorityFilter === 4) setPriorityFilter(1);
+                  }}
+                >
+                  <ListIcon className="slogMeet" />
+                </div>
+              </CustomTooltip>
+              <CustomTooltip title="Schedular" placement="right" arrow>
+                <div
+                  className="meetingLink"
+                  onClick={() => setOpenSchedular(!openSchedular)}
+                  style={{
+                    background: openSchedular
+                      ? "rgba(0, 99, 66, 0.8)"
+                      : "rgb(5, 185, 125, 0.8)",
+                  }}
+                >
+                  {openSchedular ? (
+                    <ClearIcon className="slogMeet" />
+                  ) : (
+                    <DateRangeIcon className="slogMeet" />
+                  )}
+                </div>
+              </CustomTooltip>
+            </>
+          )}
         </TeamTodoMiniActionContainer>
+
         {openSchedular ? (
           <TeamTodoRightContainer style={{ overflowY: "scroll" }}>
             <TeamSchedular
@@ -549,7 +572,7 @@ function TeamTodo({
           </TeamTodoRightContainer>
         ) : (
           <TeamTodoRightContainer>
-            {isSmall && (
+            {isSmall && UrlTeamName !== undefined && (
               <>
                 <TeamTodoMiniActionContainer className="toolbarForBelow1000">
                   <CustomTooltip title="Start meeting" placement="right">
@@ -944,6 +967,7 @@ function TeamTodo({
           make={make}
           setCurrentTeamName={setCurrentTeamName}
           openSnackbar={make ? setOpenMakeSnackBar : setOpenJoinSnackBar}
+          userName={userName}
         />
       )}
       {openMakeSnackBar && (
@@ -964,7 +988,7 @@ function TeamTodo({
         <SnackBar
           open={openDeleteSnackBar}
           handleClose={() => setOpenDeleteSnackBar(false)}
-          text={`Team ${currentTeamName} deleted`}
+          text={`${currentTeamName} deleted`}
         />
       )}
       {openSnack && (
@@ -1145,7 +1169,6 @@ const TeamTodoRightContainer = styled.div`
 `}
   ${customMedia.lessThan("smTablet")`
   flex:1;
-  padding: 0 0.2rem;
 `}
   .rightDownContainer {
     padding: 0 0.1rem;
@@ -1162,12 +1185,12 @@ const TeamTodoRightContainer = styled.div`
   }
   @media (max-width: 600px) {
     .rightDownContainer {
-      height: 55% !important;
+      height: 60% !important;
     }
   }
   @media (min-height: 800px) {
     .rightDownContainer {
-      height: 75% !important;
+      height: 79% !important;
     }
   }
 `;
@@ -1267,7 +1290,7 @@ const TodoRightUpBox = styled.div`
          margin:0.1rem 0;
          font-size:0.7rem !important;
     `};
-    P {
+    p {
       margin-right: 0.7rem;
       color: rgb(0, 90, 60);
       ${customMedia.lessThan("smTablet")`

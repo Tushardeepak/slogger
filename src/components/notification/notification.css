@@ -6,7 +6,6 @@
   color: rgb(1, 63, 42, 0.6) !important;
 }
 .notificationListContainer {
-  background-color: rgba(8, 121, 83, 0.342);
 }
 .notiContainer {
   height: auto;
@@ -32,9 +31,23 @@
   color: rgba(33, 153, 113);
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
-.notiBadgeCompleted {
+.notiBadgeJoin {
   background-color: rgba(255, 255, 0, 0.425);
   color: rgb(161, 161, 3);
+  padding: 2px 5px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.notiBadgeCompleted {
+  background-color: rgba(128, 0, 128, 0.26);
+  color: rgb(65, 3, 122);
+  padding: 2px 5px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.notiRead {
+  background-color: rgba(190, 190, 190, 0.404);
+  color: grey;
   padding: 2px 5px;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;

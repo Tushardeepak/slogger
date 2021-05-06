@@ -15,7 +15,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function BoardSection({ urlTeamName, userName, setTabValue, profileImage }) {
+function BoardSection({
+  urlTeamName,
+  userName,
+  setTabValue,
+  profileImage,
+  currTeamAdmin,
+}) {
   const classes = useStyles();
   const [openAddUpcoming, setOpenAddUpcoming] = useState(false);
   const [openAddCurrent, setOpenAddCurrent] = useState(false);
@@ -139,6 +145,7 @@ function BoardSection({ urlTeamName, userName, setTabValue, profileImage }) {
                   profileImage={profileImage}
                   setTabValue={setTabValue}
                   checkedByProfile={todo.checkedByProfile}
+                  currTeamAdmin={currTeamAdmin}
                 />
               ))}
           <div style={{ height: "2rem", width: "13rem" }}></div>
@@ -193,6 +200,7 @@ function BoardSection({ urlTeamName, userName, setTabValue, profileImage }) {
                   profileImage={profileImage}
                   setTabValue={setTabValue}
                   checkedByProfile={todo.checkedByProfile}
+                  currTeamAdmin={currTeamAdmin}
                 />
               ))}
           <div style={{ height: "2rem", width: "13rem" }}></div>
@@ -247,6 +255,7 @@ function BoardSection({ urlTeamName, userName, setTabValue, profileImage }) {
                   profileImage={profileImage}
                   setTabValue={setTabValue}
                   checkedByProfile={todo.checkedByProfile}
+                  currTeamAdmin={currTeamAdmin}
                 />
               ))}
           <div style={{ height: "2rem", width: "13rem" }}></div>

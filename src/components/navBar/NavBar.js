@@ -11,7 +11,6 @@ import { useAuth } from "../../context/AuthContext";
 import styled from "styled-components";
 import { generateMedia } from "styled-media-query";
 import "../todo/heightMedia.css";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import Notification from "../notification/Notification";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,14 +18,13 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0,
   },
 }));
-function NavBar({ page, home }) {
+function NavBar({ page, home, setTabValue }) {
   const [sup, setSup] = useState("");
   const { currentUser, logOut } = useAuth();
   const history = useHistory();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
   const classes = makeStyles();
-  const [openNotification, setOpenNotification] = useState(false);
 
   const handleSignOut = async () => {
     await logOut();
@@ -92,7 +90,7 @@ function NavBar({ page, home }) {
         </NavBarDateBox>
       </NavLinksContainer>
       <NavBarEndContainer>
-        <Notification />
+        <Notification setTabValue={setTabValue} />
 
         {home ? (
           <Button
@@ -117,12 +115,6 @@ function NavBar({ page, home }) {
           Log Out
         </Button>
       </NavBarEndContainer>
-      {openNotification && (
-        <Notification
-          open={openNotification}
-          handleClose={() => setOpenNotification(false)}
-        />
-      )}
     </NavBarContainer>
   ) : (
     <NavBarContainer0Page>
@@ -134,7 +126,7 @@ function NavBar({ page, home }) {
       <NavBarEndContainer0Page>
         {currentUser !== null ? (
           <>
-            <Notification />
+            <Notification setTabValue={setTabValue} />
 
             <Button
               classes={{ root: classes.rippleClose }}

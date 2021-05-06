@@ -243,26 +243,6 @@ function DeleteUserTeamModal({
                 {todoSideDelete ? "deleted" : "delete"}
               </Button>
             </div>
-            {/* <div style={{ display: "flex", alignItems: "center" }}>
-              <p style={{ flex: 0.7 }}>Delete from database: </p>
-              <Button
-                disabled={
-                  todoSideDelete ? (databaseSideDelete ? true : false) : true
-                }
-                // className="addButton"
-                className={
-                  todoSideDelete
-                    ? databaseSideDelete
-                      ? "addButtonDisabled"
-                      : "addButton"
-                    : "addButtonDisabled"
-                }
-                style={{ flex: 0.3 }}
-                onClick={() => databaseDelete()}
-              >
-                {databaseSideDelete ? "deleted" : "delete"}
-              </Button>
-            </div> */}
             <div style={{ display: "flex", alignItems: "center" }}>
               <p style={{ flex: 0.7 }}>Delete from your side: </p>
               <Button

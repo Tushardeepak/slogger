@@ -277,7 +277,7 @@ function Timeline({ urlTeamName }) {
           slideItemDuration={4000}
           allowDynamicUpdate={true}
           disableNavOnKey={true}
-          theme={{ primary: "green", secondary: "rgba(3, 185, 124, 0.308)" }}
+          theme={{ primary: "#0FBB82", secondary: "rgba(3, 185, 124, 0.308)" }}
         />
       </TimelineRight>
       {isSmall && <TimelineSpace></TimelineSpace>}

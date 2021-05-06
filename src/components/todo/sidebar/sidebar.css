@@ -9,6 +9,16 @@
   font-size: 0.7rem !important;
   overflow: hidden;
 }
+.addItemsTimeline {
+  border: 2px solid rgb(5, 185, 125) !important;
+  background-color: rgb(5, 185, 125) !important;
+  color: #fff !important;
+  width: 98% !important;
+  height: 1.5rem !important;
+  font-weight: 300 !important;
+  font-size: 0.7rem !important;
+  overflow: hidden;
+}
 .addItemsTeams {
   border: 2px solid rgb(5, 185, 125) !important;
   background-color: rgb(5, 185, 125) !important;

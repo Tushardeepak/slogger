@@ -53,6 +53,7 @@ function BoardTodo({
   checkedBy,
   assignedBy,
   checkedByProfile,
+  currTeamAdmin,
 }) {
   const { currentUser } = useAuth();
   const [localCheck, setLocalCheck] = useState(checked);
@@ -154,9 +155,24 @@ function BoardTodo({
               alignItems: "center",
             }}
           >
-            {assignedById === currentUser.uid && (
-              <div style={{ display: "flex" }}>
-                {checked === false && (
+            <div style={{ display: "flex" }}>
+              {assignedById === currentUser.uid ? (
+                <>
+                  {checked === false && (
+                    <Button
+                      classes={{ root: classes.addBtn }}
+                      className="uploadView"
+                      style={{
+                        fontSize: "0.65rem",
+                        color: "#fff",
+                        backgroundColor: "rgb(5, 185, 125,0.9)",
+                        marginRight: "0.4rem",
+                      }}
+                      onClick={() => setEdit(true)}
+                    >
+                      <EditIcon style={{ transform: "scale(0.7)" }} />
+                    </Button>
+                  )}
                   <Button
                     classes={{ root: classes.addBtn }}
                     className="uploadView"
@@ -165,26 +181,76 @@ function BoardTodo({
                       color: "#fff",
                       backgroundColor: "rgb(5, 185, 125,0.9)",
                       marginRight: "0.4rem",
+                      marginBottom: "0.2rem",
                     }}
-                    onClick={() => setEdit(true)}
+                    onClick={() => handleDelete(id)}
                   >
-                    <EditIcon style={{ transform: "scale(0.7)" }} />
+                    <DeleteIcon style={{ transform: "scale(0.7)" }} />
                   </Button>
-                )}
-                <Button
-                  classes={{ root: classes.addBtn }}
-                  className="uploadView"
-                  style={{
-                    fontSize: "0.65rem",
-                    color: "#fff",
-                    backgroundColor: "rgb(5, 185, 125,0.9)",
-                    marginRight: "0.4rem",
-                    marginBottom: "0.2rem",
-                  }}
-                  onClick={() => handleDelete(id)}
-                >
-                  <DeleteIcon style={{ transform: "scale(0.7)" }} />
-                </Button>
+
+                  <Button
+                    classes={{ root: classes.addBtn }}
+                    className="uploadView"
+                    style={{
+                      fontSize: "0.65rem",
+                      color: "#fff",
+                      backgroundColor: "rgb(5, 185, 125,0.9)",
+                      marginRight: "1rem",
+                      marginBottom: "0.2rem",
+                    }}
+                    onClick={() => setOpenMaterial(true)}
+                  >
+                    <PostAddIcon style={{ transform: "scale(0.7)" }} />
+                  </Button>
+                </>
+              ) : currTeamAdmin ? (
+                <>
+                  {checked === false && (
+                    <Button
+                      classes={{ root: classes.addBtn }}
+                      className="uploadView"
+                      style={{
+                        fontSize: "0.65rem",
+                        color: "#fff",
+                        backgroundColor: "rgb(5, 185, 125,0.9)",
+                        marginRight: "0.4rem",
+                      }}
+                      onClick={() => setEdit(true)}
+                    >
+                      <EditIcon style={{ transform: "scale(0.7)" }} />
+                    </Button>
+                  )}
+                  <Button
+                    classes={{ root: classes.addBtn }}
+                    className="uploadView"
+                    style={{
+                      fontSize: "0.65rem",
+                      color: "#fff",
+                      backgroundColor: "rgb(5, 185, 125,0.9)",
+                      marginRight: "0.4rem",
+                      marginBottom: "0.2rem",
+                    }}
+                    onClick={() => handleDelete(id)}
+                  >
+                    <DeleteIcon style={{ transform: "scale(0.7)" }} />
+                  </Button>
+
+                  <Button
+                    classes={{ root: classes.addBtn }}
+                    className="uploadView"
+                    style={{
+                      fontSize: "0.65rem",
+                      color: "#fff",
+                      backgroundColor: "rgb(5, 185, 125,0.9)",
+                      marginRight: "1rem",
+                      marginBottom: "0.2rem",
+                    }}
+                    onClick={() => setOpenMaterial(true)}
+                  >
+                    <PostAddIcon style={{ transform: "scale(0.7)" }} />
+                  </Button>
+                </>
+              ) : (
                 <Button
                   classes={{ root: classes.addBtn }}
                   className="uploadView"
@@ -199,8 +265,8 @@ function BoardTodo({
                 >
                   <PostAddIcon style={{ transform: "scale(0.7)" }} />
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
             <div style={{ flex: 1 }}></div>
             <div style={{ display: "flex" }}>
               <div

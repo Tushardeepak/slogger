@@ -18,7 +18,6 @@ import PersonalTodo from "../todo/PersonalTodo";
 import TeamTodo from "../todo/TeamTodo";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
-import SlogPage from "../todo/SlogPage";
 import { generateMedia } from "styled-media-query";
 import Discussion from "../todo/Discussion";
 import { db } from "../../firebase";
@@ -177,7 +176,7 @@ function Home(props) {
           <div
             style={{
               width: "92%",
-              height: "56px",
+              height: "50px",
               color: "#fff",
               background: "rgba(0, 145, 96, 0.2)",
               paddingLeft: "15px",
@@ -192,7 +191,7 @@ function Home(props) {
             <Typography variant="h6" className={classes.title}>
               Slogger
             </Typography>
-            <Notification />
+            <Notification setTabValue={setValue} />
             <Button
               autoFocus
               color="inherit"
@@ -205,7 +204,11 @@ function Home(props) {
             </Button>
           </div>
         ) : (
-          <NavBar style={{ position: "fixed" }} page={1} />
+          <NavBar
+            style={{ position: "fixed" }}
+            page={1}
+            setTabValue={setValue}
+          />
         )}
 
         <Paper className="mainPaper" elevation={5}>
@@ -258,6 +261,7 @@ function Home(props) {
               setDiscussionLock={setDiscussionLock}
               profileImage={profileImage}
               setTabValue={setValue}
+              userName={userName}
             />
           </TabPanel>
           <TabPanel value={value} index={2}>
@@ -309,6 +313,7 @@ function Home(props) {
             home={true}
           />
         )}
+        
       </HomeContainer>
     </div>
   );
