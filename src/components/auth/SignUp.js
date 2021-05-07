@@ -144,7 +144,7 @@ function SignUp() {
         <SignUpBox>
           <SignUpForm>
             {/* <img src={signUpImage} /> */}
-            <h2>SLOGGER</h2>
+            <h2 onClick={() => history.push("/")}>SLOGGER</h2>
             <div className="signUpFormBottom">
               {userEmailVerified && (
                 <h4
@@ -254,7 +254,7 @@ function SignUp() {
       ) : (
         <SignUpBox>
           <SignUpForm>
-            <h2>SLOGGER</h2>
+            <h2 onClick={() => history.push("/")}>SLOGGER</h2>
             <div className="signUpFormBottom">
               <CustomTooltip
                 title="Alaric: Enter a valid email, It's good for future."
