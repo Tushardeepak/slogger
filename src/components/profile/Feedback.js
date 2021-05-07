@@ -3,10 +3,13 @@ import { useAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
 import EndoCards from "./EndoCards";
 import nothing from "../../assets/images/nothing.svg";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 
 function Feedback() {
   const [allEndoIdList, setAllEndoIdList] = useState([]);
   const { currentUser } = useAuth();
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
   const getAllMembers = () => {
     db.collection("users")
       .doc(currentUser.uid)
@@ -40,7 +43,7 @@ function Feedback() {
         <div
           style={{
             height: "60%",
-            width: "60%",
+            width: isSmall ? "60%" : "89%",
             position: "absolute",
             display: "flex",
             justifyContent: "center",

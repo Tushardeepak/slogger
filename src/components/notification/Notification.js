@@ -162,7 +162,7 @@ export default function Notification({ setTabValue }) {
         {notiList.length === 0 && (
           <div
             style={{
-              height: "100vh",
+              height: "70vh",
               width: "100%",
               display: "flex",
               alignItems: "center",

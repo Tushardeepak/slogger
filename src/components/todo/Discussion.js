@@ -101,6 +101,9 @@ const useStyles = makeStyles((theme) => ({
   flexContainer: {
     borderBottom: "2px solid rgba(196, 196, 196, 0.5)",
   },
+  btn: {
+    minWidth: "45px",
+  },
 }));
 
 const defaultMaterialTheme = createMuiTheme({
@@ -350,8 +353,13 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
                   overflow: "hidden",
                 }}
                 onClick={handleSend}
+                classes={{ root: classes.btn }}
               >
-                Send
+                {!isSmall ? (
+                  <SendIcon style={{ fontSize: "0.9rem" }} />
+                ) : (
+                  "Send"
+                )}
               </Button>
             </TodoRightDownBox>
           </TeamTodoRightContainer>
@@ -540,7 +548,7 @@ const TodoRightDownBox = styled.div`
     color: rgb(5, 185, 125);
     font-size: 0.8rem;
     @media (max-width: 600px) {
-      font-size: 1.1rem !important;
+      font-size: 0.8rem !important;
     }
     /* @media (max-height: 500px) {
       height: 3rem !important;

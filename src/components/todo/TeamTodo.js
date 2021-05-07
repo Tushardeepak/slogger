@@ -257,6 +257,8 @@ function TeamTodo({
           priority: priority < 33 ? 1 : priority > 66 ? 3 : 2,
         });
       setInputTodo("");
+      handleStartDateChange(new Date());
+      handleEndDateChange(new Date());
       setPriority(0);
       setLoader(false);
     }
@@ -1185,7 +1187,7 @@ const TeamTodoRightContainer = styled.div`
   }
   @media (max-width: 600px) {
     .rightDownContainer {
-      height: 60% !important;
+      height: 37% !important;
     }
   }
   @media (min-height: 800px) {

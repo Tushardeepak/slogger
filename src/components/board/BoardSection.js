@@ -306,7 +306,7 @@ const UpcomingContainer = styled.div`
 
 const HeaderSection = styled.div`
   height: 1.5rem;
-  width: 100%;
+  width: 98%;
   display: flex;
   align-items: center;
   border-bottom: 2px solid rgba(0, 141, 94, 0.295);
@@ -332,7 +332,7 @@ const HeaderSection = styled.div`
 `;
 
 const TaskContainer = styled.div`
-  width: 100%;
+  width: 98%;
   height: 93%;
   overflow-y: scroll;
   overflow-x: hidden;

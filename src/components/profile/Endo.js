@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { db } from "../../firebase";
 import EndoCards from "./EndoCards";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 import nothing from "../../assets/images/nothing.svg";
 
 function Endo() {
   const [allEndoIdList, setAllEndoIdList] = useState([]);
   const { currentUser } = useAuth();
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
   const getAllMembers = () => {
     db.collection("users")
       .doc(currentUser.uid)
@@ -36,7 +39,7 @@ function Endo() {
         <div
           style={{
             height: "60%",
-            width: "60%",
+            width: isSmall ? "60%" : "89%",
             position: "absolute",
             display: "flex",
             justifyContent: "center",

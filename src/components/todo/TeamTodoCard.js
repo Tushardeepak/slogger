@@ -127,7 +127,7 @@ function TeamTodoCard({
           To: adminProfile[0].email,
           From: "withslogger@gmail.com",
           Subject: `Task completed - ${urlTeamName}/SLOGGER[${new Date().getTime()}]`,
-          Body: `<b>Your task:<b> ${text}<br />Has been completed.<br /><br /><b>COMPLETED BY: ${userName} (${urlTeamName})</b><br /><br /><br />Thank you,<br />Slogger`,
+          Body: `<b>Your task:</b> ${text}<br /><br />Has been completed.<br /><br /><b>COMPLETED BY: ${userName} (${urlTeamName})</b><br /><br /><br />Thank you,<br />Slogger`,
         }).then(console.log("Task completion mail sent"));
       });
   };

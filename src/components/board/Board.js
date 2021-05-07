@@ -1,4 +1,13 @@
-import { AppBar, Box, Button, makeStyles, Tab, Tabs } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Button,
+  makeStyles,
+  Tab,
+  Tabs,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -8,6 +17,7 @@ import Timeline from "./Timeline";
 import { generateMedia } from "styled-media-query";
 import { db } from "../../firebase";
 import { useAuth } from "../../context/AuthContext";
+import SidebarTeams from "../todo/sidebar/SidebarTeams";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -83,6 +93,8 @@ function Board({ urlTeamName, userName, setTabValue, profileImage }) {
   const [value, setValue] = React.useState(0);
   const [currTeamAdmin, setCurrTeamAdmin] = React.useState(false);
   const { currentUser } = useAuth();
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   useEffect(() => {
     db.collection("teams").onSnapshot((snapshot) => {
@@ -131,6 +143,11 @@ function Board({ urlTeamName, userName, setTabValue, profileImage }) {
     </div>
   ) : (
     <BoardContainer>
+      {!isSmall ? (
+        <SidebarTeams UrlTeamName={urlTeamName} userName={userName} />
+      ) : (
+        ""
+      )}
       <AppBar className={classes.AppBar} position="static">
         <Tabs
           classes={{
