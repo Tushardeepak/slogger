@@ -106,7 +106,7 @@ function TodoCard({
               86400000 && !checked ? (
               <p className="missed">missed</p>
             ) : new Date(todoEndDate).toString().substring(0, 15) ===
-              new Date().toString().substring(0, 15) ? (
+                new Date().toString().substring(0, 15) && !checked ? (
               <p className="missed">due today</p>
             ) : (
               <p className="missed" style={{ opacity: 0 }}>

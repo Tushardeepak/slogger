@@ -23,7 +23,7 @@ function App() {
               alignItems: "center",
             }}
           >
-            <img src={signUpLoader} style={{ transform: "scale(0.7)" }} />
+            <img src={signUpLoader} style={{ transform: "scale(0.3)" }} />
           </div>
         }
       >

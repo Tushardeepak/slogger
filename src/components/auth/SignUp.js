@@ -402,7 +402,7 @@ const SignUpContainer = styled.div`
 
   .signUpLoader {
     object-fit: contain;
-    transform: scale(0.6);
+    transform: scale(0.3);
   }
 `;
 

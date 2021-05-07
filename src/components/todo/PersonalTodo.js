@@ -863,10 +863,10 @@ const TodoContainer = styled.div`
     cursor: pointer;
     margin-left: 1rem;
     background-color: rgb(5, 185, 125, 0.8);
-    font-size: 0.5rem;
+    font-size: 0.6rem;
     border-radius: 10px;
     color: #fff;
-    padding: 2px 5px;
+    padding: 4px 6px;
     transition: all 0.5s ease-in-out;
   }
   .clearFilter:hover {

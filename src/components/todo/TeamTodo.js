@@ -394,7 +394,7 @@ function TeamTodo({
         height: "70vh",
         display: "flex",
         justifyContent: "center",
-        flexDirection:"column",
+        flexDirection: "column",
         alignItems: "center",
         textAlign: "center",
         color: "rgba(0, 141, 94, 0.595)",
@@ -1207,7 +1207,7 @@ const TodoRightUpBox = styled.div`
 
   .inputField {
     width: 100%;
-    height: 2rem;
+    height: 2.5rem;
     background-color: rgba(3, 185, 124, 0.308);
     border-radius: 5px;
     border: none;
@@ -1223,7 +1223,6 @@ const TodoRightUpBox = styled.div`
     `};
   }
   .todoInput {
-    overflow: hidden;
     width: 100%;
     height: 100%;
     outline: none;
