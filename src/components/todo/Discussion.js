@@ -1,41 +1,20 @@
-import {
-  Button,
-  useMediaQuery,
-  useTheme,
-  AppBar,
-  Tab,
-  Tabs,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Button, useMediaQuery, useTheme, makeStyles } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { db } from "../../firebase";
-import AddingTeamModal from "./Dialog";
 import TeamCard from "./TeamCard";
 import { useAuth } from "../../context/AuthContext";
 import { generateMedia } from "styled-media-query";
-import AlarmIcon from "@material-ui/icons/AddAlarm";
-import {
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-  DatePicker,
-} from "@material-ui/pickers";
-import AddIcon from "@material-ui/icons/Add";
-import MomentUtils from "@date-io/moment";
-import CreateIcon from "@material-ui/icons/Create";
 import { createMuiTheme } from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/styles";
 import green from "@material-ui/core/colors/green";
-import CustomTooltip from "../CustomTooltip";
 import firebase from "firebase";
 import "./heightMedia.css";
-import profileSetterImage from "../../assets/images/profileSetterImage.svg";
 import Chat from "./Chat";
 import SendIcon from "@material-ui/icons/Send";
 import SidebarTeams from "./sidebar/SidebarTeams";
+import selectTeam from "../../assets/images/selectTeam.svg";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -273,16 +252,33 @@ function Discussion({ UrlTeamName, userName, profileImage }) {
         )}
         {/* ::::::::::::::::: */}
         {UrlTeamName === undefined ? (
-          <TeamTodoRightContainer
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              color: "rgba(0, 141, 94)",
-              marginBottom: 0,
-            }}
-          >
-            Select a team to start discussion
+          <TeamTodoRightContainer>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                paddingTop: "7rem",
+              }}
+            >
+              <img
+                src={selectTeam}
+                style={{ height: "10rem", width: "10rem" }}
+              />
+
+              <p
+                className="uploadView"
+                style={{
+                  marginTop: "1rem",
+                  fontSize: "0.8rem",
+                  color: "rgb(5, 185, 125,0.9)",
+                  marginBottom: "0.2rem",
+                }}
+              >
+                Select a team to start discussion
+              </p>
+            </div>
           </TeamTodoRightContainer>
         ) : deleteTeam ? (
           <TeamTodoRightContainer

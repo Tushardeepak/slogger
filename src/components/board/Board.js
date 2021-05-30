@@ -144,7 +144,11 @@ function Board({ urlTeamName, userName, setTabValue, profileImage }) {
   ) : (
     <BoardContainer>
       {!isSmall ? (
-        <SidebarTeams UrlTeamName={urlTeamName} userName={userName} />
+        <SidebarTeams
+          UrlTeamName={urlTeamName}
+          userName={userName}
+          discussion={true}
+        />
       ) : (
         ""
       )}

@@ -217,7 +217,7 @@ export default function SidebarTeams({ UrlTeamName, userName, discussion }) {
         <Button className="addItemsTeams" onClick={handleClickOpen}>
           <p>{UrlTeamName === undefined ? "Select Team" : UrlTeamName}</p>
         </Button>
-        {!discussion && UrlTeamName === undefined && (
+        {!discussion && UrlTeamName !== undefined && (
           <Button
             className="addItemsTeams"
             onClick={() => setOpenAddTodo(true)}

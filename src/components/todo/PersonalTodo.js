@@ -139,6 +139,7 @@ function PersonalTodo() {
   const history = useHistory();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+  const [showFilter, setShowFilter] = useState(true);
 
   const { currentUser } = useAuth();
 
@@ -436,18 +437,34 @@ function PersonalTodo() {
             aria-label="simple tabs example"
             style={{ position: "relative" }}
           >
-            <Tab className={classes.label} label="ALL" {...a11yProps(0)} />
+            <Tab
+              className={classes.label}
+              label="ALL"
+              {...a11yProps(0)}
+              onClick={() => {
+                setShowFilter(true);
+                setTransitionDirection("down");
+              }}
+            />
             <Tab
               className={classes.label}
               label="CHECKED"
               {...a11yProps(1)}
               disabled={todoList.length === 0 ? true : false}
+              onClick={() => {
+                setShowFilter(true);
+                setTransitionDirection("down");
+              }}
             />
             <Tab
               className={classes.label}
               label="UNCHECKED"
               {...a11yProps(2)}
               disabled={todoList.length === 0 ? true : false}
+              onClick={() => {
+                setShowFilter(true);
+                setTransitionDirection("down");
+              }}
             />
 
             <Tab
@@ -458,125 +475,128 @@ function PersonalTodo() {
                 backgroundColor: "rgb(2, 92, 62)",
                 color: "#fff",
               }}
+              onClick={() => setShowFilter(false)}
             />
           </Tabs>
         </AppBar>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            disableUnderline
-            style={{
-              height: "2rem",
-              marginTop: "0.5rem",
-              marginBottom: "0.2rem",
-              background: "#d1faec",
-              borderRadius: 10,
-              width: isSmall ? "13%" : "30%",
-              padding: "2px 10px",
-              textAlign: "center",
-              color: "#2ec592",
-              fontSize: "0.7rem",
-            }}
-          >
-            <MenuItem
+        {showFilter && (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              disableUnderline
               style={{
+                height: "2rem",
+                marginTop: "0.5rem",
+                marginBottom: "0.2rem",
+                background: "#d1faec",
+                borderRadius: 10,
+                width: isSmall ? "13%" : "30%",
+                padding: "2px 10px",
+                textAlign: "center",
                 color: "#2ec592",
                 fontSize: "0.7rem",
               }}
-              value="All (Day)"
             >
-              All (Day)
-            </MenuItem>
-            <MenuItem
+              <MenuItem
+                style={{
+                  color: "#2ec592",
+                  fontSize: "0.7rem",
+                }}
+                value="All (Day)"
+              >
+                All (Day)
+              </MenuItem>
+              <MenuItem
+                style={{
+                  color: "#2ec592",
+                  fontSize: "0.7rem",
+                }}
+                value="Today"
+              >
+                Today
+              </MenuItem>
+              <MenuItem
+                style={{
+                  color: "#2ec592",
+                  fontSize: "0.7rem",
+                }}
+                value="Missed"
+              >
+                Missed
+              </MenuItem>
+            </Select>
+            <Select
+              value={priorityFilter}
+              onChange={(e) => setPriorityFilter(e.target.value)}
+              disableUnderline
               style={{
+                height: "2rem",
+                marginTop: "0.5rem",
+                marginBottom: "0.2rem",
+                marginLeft: "1rem",
+                background: "#d1faec",
+                borderRadius: 10,
+                width: isSmall ? "13%" : "30%",
+                padding: "2px 10px",
+                textAlign: "center",
                 color: "#2ec592",
                 fontSize: "0.7rem",
               }}
-              value="Today"
             >
-              Today
-            </MenuItem>
-            <MenuItem
-              style={{
-                color: "#2ec592",
-                fontSize: "0.7rem",
-              }}
-              value="Missed"
-            >
-              Missed
-            </MenuItem>
-          </Select>
-          <Select
-            value={priorityFilter}
-            onChange={(e) => setPriorityFilter(e.target.value)}
-            disableUnderline
-            style={{
-              height: "2rem",
-              marginTop: "0.5rem",
-              marginBottom: "0.2rem",
-              marginLeft: "1rem",
-              background: "#d1faec",
-              borderRadius: 10,
-              width: isSmall ? "13%" : "30%",
-              padding: "2px 10px",
-              textAlign: "center",
-              color: "#2ec592",
-              fontSize: "0.7rem",
-            }}
-          >
-            <MenuItem
-              style={{
-                color: "#2ec592",
-                fontSize: "0.7rem",
-              }}
-              value="All (Priority)"
-            >
-              All (Priority)
-            </MenuItem>
-            <MenuItem
-              style={{
-                color: "#2ec592",
-                fontSize: "0.7rem",
-              }}
-              value="Top priority"
-            >
-              Top priority
-            </MenuItem>
-            <MenuItem
-              style={{
-                color: "#2ec592",
-                fontSize: "0.7rem",
-              }}
-              value="Mid priority"
-            >
-              Mid priority
-            </MenuItem>
-            <MenuItem
-              style={{
-                color: "#2ec592",
-                fontSize: "0.7rem",
-              }}
-              value="Low priority"
-            >
-              Low priority
-            </MenuItem>
-          </Select>
-          {filter !== "All (Day)" || priorityFilter !== "All (Priority)" ? (
-            <p
-              className="clearFilter"
-              onClick={() => {
-                setFilter("All (Day)");
-                setPriorityFilter("All (Priority)");
-              }}
-            >
-              Clear all{" "}
-              <ClearIcon style={{ fontSize: "0.7rem", marginLeft: "2px" }} />
-            </p>
-          ) : (
-            ""
-          )}
-        </div>
+              <MenuItem
+                style={{
+                  color: "#2ec592",
+                  fontSize: "0.7rem",
+                }}
+                value="All (Priority)"
+              >
+                All (Priority)
+              </MenuItem>
+              <MenuItem
+                style={{
+                  color: "#2ec592",
+                  fontSize: "0.7rem",
+                }}
+                value="Top priority"
+              >
+                Top priority
+              </MenuItem>
+              <MenuItem
+                style={{
+                  color: "#2ec592",
+                  fontSize: "0.7rem",
+                }}
+                value="Mid priority"
+              >
+                Mid priority
+              </MenuItem>
+              <MenuItem
+                style={{
+                  color: "#2ec592",
+                  fontSize: "0.7rem",
+                }}
+                value="Low priority"
+              >
+                Low priority
+              </MenuItem>
+            </Select>
+            {filter !== "All (Day)" || priorityFilter !== "All (Priority)" ? (
+              <p
+                className="clearFilter"
+                onClick={() => {
+                  setFilter("All (Day)");
+                  setPriorityFilter("All (Priority)");
+                }}
+              >
+                Clear all{" "}
+                <ClearIcon style={{ fontSize: "0.7rem", marginLeft: "2px" }} />
+              </p>
+            ) : (
+              ""
+            )}
+          </div>
+        )}
         <TabPanel
           style={{
             width: "100%",

@@ -74,19 +74,22 @@ export default function Delete({
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle
-        id="alert-dialog-slide-title"
-        className="title"
-      ></DialogTitle>
+      <DialogTitle id="alert-dialog-slide-title" className="title">
+        {cannotDelete ? <p>Are you sure? </p> : <p>Are you sure?</p>}
+      </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
           {cannotDelete ? (
             <p>
-              Team will be deleted on your side only,
-              <br /> Are you sure?{" "}
+              Team will be deleted on your side only. All the items and todos
+              will be delete for this team for you only. This will not affect
+              the other members.
             </p>
           ) : (
-            <p>Are you sure?</p>
+            <p>
+              All the items and todo will be delete for this team and cannot be
+              retrieved. This will also affect the other members.
+            </p>
           )}
         </DialogContentText>
       </DialogContent>

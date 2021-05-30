@@ -78,7 +78,7 @@ export default function TimelineEdit({
   id,
   date,
   content,
-  setTransitionIn,
+  title,
 }) {
   const [todoText, setTodoText] = useState(content);
   const [selectedStartDate, handleStartDateChange] = useState(new Date(date));
@@ -128,12 +128,11 @@ export default function TimelineEdit({
   const handleDelete = () => {
     db.collection("teams")
       .doc(urlTeamName)
-      .collection("teamTodos")
+      .collection("timeline")
       .doc(id)
       .delete();
 
     handleClose();
-    setTransitionIn(false);
   };
 
   return (
@@ -151,12 +150,12 @@ export default function TimelineEdit({
         className="modalTitle"
         style={{ paddingLeft: "30px" }}
       >
-        {del ? "Are you sure?" : "Edit card"}
+        {del ? "Are you sure?" : `Edit card   ( ${title} )`}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
           {del ? (
-            ""
+            `The content with the date ( ${title} ) will the deleted and cannot be retrieved. `
           ) : (
             <>
               <textarea

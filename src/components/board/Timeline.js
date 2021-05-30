@@ -67,6 +67,7 @@ function Timeline({ urlTeamName }) {
   const [currId, setCurrId] = useState("");
   const [currCardDetailedText, setCurrCardDetailedText] = useState("");
   const [currTimeStamp, setCurrTimeStamp] = useState("");
+  const [currTitle, setCurrTitle] = useState("");
   const [items, setItems] = useState([]);
   const [items2, setItems2] = useState([]);
   const [sort, setSort] = useState(true);
@@ -186,20 +187,20 @@ function Timeline({ urlTeamName }) {
           </div>
           <div style={{ display: "flex", width: "96%", marginTop: "0.3rem" }}>
             <Button
-              style={{ marginRight: "0.3rem", flex: 0.7 }}
-              className="addButtonTimeline"
-              color="primary"
-              onClick={handleSubmit}
-            >
-              add
-            </Button>
-            <Button
               style={{ flex: 0.3 }}
               className="addButtonTimeline"
               color="primary"
               onClick={() => setSort(!sort)}
             >
               {sort ? "Reverse" : "undo"}
+            </Button>
+            <Button
+              style={{ marginLeft: "0.3rem", flex: 0.7 }}
+              className="addButtonTimeline"
+              color="primary"
+              onClick={handleSubmit}
+            >
+              add
             </Button>
           </div>
           <div className="editTimelineContainer">
@@ -216,6 +217,7 @@ function Timeline({ urlTeamName }) {
                       <EditIcon
                         className="timelineEditIcons"
                         onClick={() => {
+                          setCurrTitle(item.title);
                           setCurrId(item.id);
                           setCurrTimeStamp(item.timeStamp);
                           setCurrCardDetailedText(item.cardDetailedText);
@@ -225,6 +227,7 @@ function Timeline({ urlTeamName }) {
                       <DeleteIcon
                         className="timelineEditIcons"
                         onClick={() => {
+                          setCurrTitle(item.title);
                           setCurrId(item.id);
                           setCurrTimeStamp(item.timeStamp);
                           setCurrCardDetailedText(item.cardDetailedText);
@@ -288,6 +291,7 @@ function Timeline({ urlTeamName }) {
           del={false}
           urlTeamName={urlTeamName}
           id={currId}
+          title={currTitle}
           date={currTimeStamp}
           content={currCardDetailedText}
           setTransitionIn={setTransitionIn}
@@ -300,6 +304,7 @@ function Timeline({ urlTeamName }) {
           del={true}
           urlTeamName={urlTeamName}
           id={currId}
+          title={currTitle}
           date={currTimeStamp}
           content={currCardDetailedText}
           setTransitionIn={setTransitionIn}

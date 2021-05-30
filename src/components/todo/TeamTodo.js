@@ -739,7 +739,7 @@ function TeamTodo({
                   justifyContent: "center",
                   alignItems: "center",
                   flexDirection: "column",
-                  paddingTop: "5rem",
+                  paddingTop: "7rem",
                 }}
               >
                 <img

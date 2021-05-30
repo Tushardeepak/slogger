@@ -5,7 +5,7 @@ import Slide from "@material-ui/core/Slide";
 import "./sidebar.css";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme, DialogActions } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -279,6 +279,15 @@ export default function SidebarTimeline({ urlTeamName }) {
                 ))}
           </div>
         </TimelineLeft>
+        <DialogActions>
+          <Button
+            className="addButtonModal"
+            onClick={handleClose}
+            color="primary"
+          >
+            Cancel
+          </Button>
+        </DialogActions>
         {openEdit && (
           <TimelineEdit
             open={openEdit}

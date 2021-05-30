@@ -151,12 +151,12 @@ export default function Notification({ setTabValue }) {
         {!isSmall && (
           <p
             style={{
-              padding: "1rem",
-              fontSize: "small",
+              padding: " 0 1rem",
+              fontSize: "X-small",
               color: "rgb(1, 63, 42)",
             }}
           >
-            {"swipe to close"}
+            {"Swipe to close"}
           </p>
         )}
         {notiList.length === 0 && (
