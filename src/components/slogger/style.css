@@ -1,70 +1,161 @@
 .banner {
   width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  height: 110vh;
   position: relative;
 }
-
-.video {
+.scrollToTop {
+  position: fixed;
+  z-index: 100;
+  bottom: 1rem;
+  right: 1rem;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 0.5rem;
+  background-color: rgba(0, 128, 0, 0.207);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+.scrollToTop:hover {
+  background-color: rgba(0, 128, 0, 0.407);
+}
+.bannerWave1 {
   position: absolute;
-  object-fit: cover;
+  transform: rotate(180deg) translateY(45%) scale(1.1);
+}
+.bannerWave2 {
+  position: absolute;
+  transform: rotate(180deg) translateY(25%) scale(1.5) translateX(-15%);
+}
+.bestBG {
+  margin-top: 4rem;
   width: 100%;
   height: 100vh;
+  object-fit: cover;
+  position: absolute;
   left: 0;
   top: 0;
-  z-index: -3;
-  opacity: 0.2;
+  z-index: -1;
 }
-.bannerText {
-  text-align: center;
-  text-transform: uppercase;
-  font-family: "Times New Roman", Times, serif;
-  font-size: 1rem;
-  margin: 0.5rem;
-  margin-bottom: 1.5rem;
-  font-weight: 200;
+.bannerHeading {
+  font-family: "Shadows Into Light";
+  font-size: 4.5rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  margin-left: 4rem;
   color: #272142;
 }
-
-.banner img {
-  margin-top: -3rem;
-  object-fit: contain;
-  width: 35%;
-  height: 35%;
+.bannerText {
+  font-weight: 500;
+  font-size: 1.1rem !important;
+  color: #272142;
+  margin-left: 4rem;
 }
-
+.bannerText p {
+  font-family: "roboto" !important;
+}
 .bannerBtn {
-  margin: 0.3rem !important;
-  background-color: #272142 !important;
-  color: #fff !important;
+  margin-left: 4rem !important;
+  margin-top: 1.2rem !important;
   padding: 0.5rem 2rem !important;
   font-size: 0.7rem !important;
-  border: 2px solid #272142 !important;
   transition: all 0.5s ease-in-out !important;
-}
-.bannerBtn:hover {
+  border-radius: 5rem !important;
   background-color: transparent !important;
   color: #272142 !important;
   border: 2px solid #272142 !important;
 }
-.downSvgSlogger1 {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-color: transparent;
-  width: 100%;
-  z-index: -1;
+.bannerBtn:hover {
+  background-color: #272142 !important;
+  color: #fff !important;
+  border: 2px solid #272142 !important;
 }
-.downSvgSlogger2 {
+.bannerNavBox {
   position: absolute;
-  bottom: 3px;
-  left: 0;
-  background-color: transparent;
-  width: 103%;
-  z-index: -2;
+  display: flex;
+  right: 1rem;
+  top: 0;
+  margin-top: 0rem;
+}
+.bannerNavBar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5rem;
+  margin: 0.2rem;
+  /* background-color: #272142f6; */
+  border-radius: 1rem;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  height: 1rem;
+  width: 5rem;
+}
+.bannerNavBar p {
+  color: rgb(0, 65, 0);
+}
+.bannerNavBar p::before {
+  content: "";
+  position: absolute;
+  bottom: 0.4rem;
+  width: 8%;
+  height: 40%;
+  background-color: rgba(0, 128, 0, 0.207);
+  border-radius: 0.3rem;
+  transition: all 0.3s ease-in-out;
+}
+.bannerNavBar:hover p::before {
+  bottom: -0.1rem;
+  width: 15%;
+  height: 20%;
+  background-color: rgba(0, 128, 0, 0.411);
+}
+
+.bannerNavBar span {
+  color: #8a8a8a;
+  font-size: 1rem;
+  position: absolute;
+  right: 1rem;
+  top: 4rem;
+  text-align: right;
+  width: 90%;
+}
+.bannerNavP1 span {
+  display: none;
+}
+.bannerNavBar:hover .bannerNavP1 span {
+  display: flex;
+}
+
+.bannerNavP2 span {
+  display: none;
+}
+.bannerNavBar:hover .bannerNavP2 span {
+  display: flex;
+}
+.bannerNavP3 span {
+  display: none;
+}
+.bannerNavBar:hover .bannerNavP3 span {
+  display: flex;
+}
+.bannerNavP4 span {
+  display: none;
+}
+.bannerNavBar:hover .bannerNavP4 span {
+  display: flex;
+}
+.bannerNavP5 span {
+  display: none;
+}
+.bannerNavBar:hover .bannerNavP5 span {
+  display: flex;
+}
+.bannerNavIcon {
+  margin-right: 0.5rem;
+  height: 1rem !important;
+  width: 1rem !important;
 }
 .sloggerBuild {
   width: 100%;
@@ -85,112 +176,253 @@
   font-family: "Shadows Into Light", cursive;
 }
 .serviceBox {
-  width: 90%;
+  margin-top: 5rem;
+  width: 100%;
   height: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 .contentBox {
   padding-top: 0.5rem;
-  width: 20rem;
+  width: 17rem;
   height: auto;
   margin: 2rem;
   margin-right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgb(205, 245, 255);
-  background: linear-gradient(
-    17deg,
-    rgba(205, 245, 255, 0.6787757339263831) 0%,
-    rgba(255, 255, 255, 1) 75%
-  );
-  border-radius: 82% 18% 81% 19% / 24% 80% 20% 76%;
-  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
 }
+
 .iconBox {
-  background-color: #272142;
+  background-color: #21422fc7;
   border-radius: 200px;
-  height: 4.5rem;
-  width: 4.55rem;
+  height: 3rem;
+  width: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.5s ease-in-out;
+  border: 2px solid transparent;
+}
+.contentBox:hover .iconBox {
+  background-color: #fff;
+  border: 2px dotted #21422fc7;
 }
 .icon {
   color: #fff;
-  height: 2.5rem !important;
-  width: 2.5rem !important;
+  height: 1.5rem !important;
+  width: 1.5rem !important;
+}
+.contentBox:hover .icon {
+  color: #21422fc7;
 }
 .contentHeading {
-  font-size: 1.7rem;
+  font-size: 1.2rem;
   color: #272142;
   margin: 1.5rem;
   margin-bottom: 0;
 }
 .contentPara {
-  font-size: 1rem;
+  font-size: 0.7rem;
   color: #272142;
   margin: 1.5rem;
   text-align: center;
 }
-.screenHeading {
-  color: #272142;
-  text-align: center;
-  font-size: 2.7rem;
-  margin-top: 1rem;
-}
-.screenSubHeading {
-  color: #272142;
-  text-align: center;
-  font-size: 1.2rem;
-  font-family: "Times New Roman", Times, serif;
-  font-weight: 400;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-}
-.screenContainer {
-  height: auto;
+
+/* sections */
+
+.sloggerSections {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
+  height: 100vh;
+  position: relative;
+  margin-top: 5rem;
 }
-.screenContentBox {
-  width: 35%;
-  height: auto;
-}
-.screenContentBoxReverse {
-  height: auto;
-}
-.screenContentSubHeading {
-  color: #272142d7;
-  font-size: 0.7rem;
-}
-.screenContentHeading {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-weight: 700;
-  font-size: 2.5rem;
-  color: #272142;
-  margin-bottom: 2rem;
-}
-.screenContentPara {
-  font-size: 1rem;
-  color: #272142;
-  margin-top: 0.5rem;
-  font-weight: 300;
-}
-.screenImg {
+.sloggerSectionImg {
   object-fit: contain;
-  width: 20rem;
-  height: 20rem;
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  right: -4rem;
+  bottom: 0;
+}
+.sloggerSectionImgReverse {
+  object-fit: contain;
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  left: -2rem;
+  bottom: 0;
+}
+.sloggerSectionHead {
+  color: #272142;
+  font-size: 2rem;
+  margin-left: 5rem;
+  font-weight: 600;
+}
+.sloggerSectionHead span {
+  font-size: 4rem;
+  color: #21422fc7;
+  font-weight: 1000;
+  position: relative;
+}
+.sloggerSectionHead span::before {
+  content: "";
+  position: absolute;
+  bottom: 0.4rem;
+  width: 110%;
+  height: 35%;
+  background-color: rgba(0, 128, 0, 0.207);
+  border-radius: 0.3rem;
+  transition: all 0.3s ease-in-out;
+}
+.sloggerSectionHeadReverse {
+  color: #272142;
+  font-size: 2rem;
+  margin-right: 5rem;
+  font-weight: 600;
+  text-align: right;
+}
+.sloggerSectionHeadReverse span {
+  font-size: 4rem;
+  color: #21422fc7;
+  font-weight: 1000;
+  position: relative;
+}
+.sloggerSectionHeadReverse span::before {
+  content: "";
+  position: absolute;
+  bottom: 0.4rem;
+  left: -10%;
+  width: 110%;
+  height: 35%;
+  background-color: rgba(0, 128, 0, 0.207);
+  border-radius: 0.3rem;
+  transition: all 0.3s ease-in-out;
+}
+.sloggerSectionPara {
+  margin-left: 7rem;
+  margin-top: 3rem;
+}
+.sloggerSectionPara p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+.sloggerSectionParaReverse {
+  margin-right: 5rem;
+  margin-left: auto;
+  margin-top: 3rem;
+  width: 27rem;
+  text-align: right;
+}
+.sloggerSectionParaReverse p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+.familyBtn {
+  margin-top: 3rem !important;
+  border: 2px solid rgba(0, 128, 0, 0.807) !important;
+  color: rgba(0, 128, 0, 0.807) !important;
+}
+.familyBtn:hover {
+  border: 2px solid rgba(0, 128, 0, 0.807) !important;
+  background-color: rgba(0, 128, 0, 0.508) !important;
+  color: #fff !important;
+}
+.sloggerSectionParaIcon {
+  height: 2rem !important;
+  width: 2rem !important;
+  color: rgba(0, 128, 0, 0.207) !important;
 }
 
-.screenImgBox {
-  width: 35%;
-  height: auto;
+.freeSection {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  font-family: sans-serif;
+  align-items: center;
+  color: #272142;
+  text-align: center;
+  flex-direction: column;
 }
+.freeSection .andIts {
+  font-size: 4rem;
+  font-weight: 600;
+  position: relative;
+}
+.freeSection .andIts::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  left: -200%;
+  width: 320%;
+  height: 45%;
+  background-color: rgba(0, 128, 0, 0.207);
+  border-radius: 0.3rem;
+  transition: all 0.3s ease-in-out;
+}
+.freeSection .free {
+  font-size: 10rem;
+  position: relative;
+  margin-top: -3rem;
+}
+.freeSection .free::before {
+  content: "";
+  position: absolute;
+  bottom: 1rem;
+  left: -15%;
+  width: 220%;
+  height: 30%;
+  background-color: rgba(0, 128, 0, 0.207);
+  border-radius: 0.3rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.contactSection {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  width: 100%;
+  height: 80vh;
+  position: relative;
+  margin-bottom: 10rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+.contactSectionImg {
+  object-fit: contain;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: -1;
+  border-radius: 0 0 5rem 20rem;
+}
+.contactSection p {
+  font-size: 3rem;
+  color: #272142;
+}
+.contactBtn {
+  border: 2px solid rgba(0, 71, 0, 0.907) !important;
+  margin-left: -2rem !important;
+  color: rgba(0, 71, 0, 0.907) !important;
+  transition: all0.5s ease-in-out;
+  text-transform: none !important;
+}
+.contactBtn:hover {
+  background-color: rgba(0, 71, 0, 0.907) !important;
+}
+.contactBtn:hover a {
+  color: #fff !important;
+}
+/* section end */
 
 /* footer */
 
@@ -212,6 +444,9 @@
 .footerContainer a {
   text-decoration: none;
   color: #999;
+}
+.footerContainer a:hover {
+  color: rgb(70, 70, 70);
 }
 .footerColumn {
   width: 70%;
@@ -285,26 +520,43 @@
 
 @media (max-width: 700px) {
   .banner {
-    height: 90vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  .video {
-    height: 90vh;
+  .bannerNavBox {
+    display: none;
   }
   .serviceBox {
-    width: 100%;
+    margin-top: 0;
     grid-template-columns: 1fr;
-    margin-left: -1.5rem;
+    margin-left: 2rem;
   }
-  .banner img {
-    margin-top: -5rem;
-    object-fit: contain;
-    width: 45%;
-    height: 45%;
+  .contentBox {
+    margin: 0 2rem;
+  }
+  .contentPara {
+  }
+  .bannerHeading {
+    margin-top: 20%;
+    margin-left: 0%;
+    margin-bottom: 10%;
   }
   .bannerText {
-    /* margin-top: -2rem; */
-    font-size: 0.7rem !important;
+    margin-left: 0%;
+    text-align: center;
+    font-size: 1.7rem !important;
   }
+  .bannerBtn {
+    margin-left: 0% !important;
+    margin-bottom: 2rem !important;
+  }
+  .bestBG {
+    margin-top: 90%;
+    height: 55%;
+  }
+
   .sloggerHeadingMain {
     font-size: 1.3rem;
     margin-bottom: 2rem;
@@ -312,8 +564,57 @@
   .sloggerHeading {
     font-size: 2rem;
   }
-  .screenHeading {
-    font-size: 2.2rem;
+  .sloggerSectionHead {
+    margin-left: 0rem;
+    transform: scale(0.8);
+  }
+  .sloggerSectionPara {
+    margin-left: 1rem;
+  }
+  .sloggerSectionImg {
+    height: 30%;
+    width: 80%;
+    left: 50%;
+  }
+  .sloggerSectionHeadReverse {
+    transform: scale(0.8);
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
+  }
+  .sloggerSectionHeadReverse span {
+    font-size: 3.8rem;
+  }
+  .sloggerSectionParaReverse {
+    text-align: left;
+    width: 17rem;
+  }
+  .familyBtn {
+    margin-top: 16rem !important;
+    margin-left: 4rem !important;
+  }
+  .freeSection {
+    margin-bottom: 0;
+  }
+  .freeSection p {
+    transform: scale(0.6);
+  }
+  .contactSection {
+    margin-top: 0;
+    padding-top: 0;
+    height: 40vh;
+  }
+  .contactSectionImg {
+    width: 200%;
+    margin-top: 20%;
+    margin-left: -20%;
+  }
+  .contactSection p {
+    font-size: 2rem;
+  }
+  .sloggerSectionImgReverse {
+    height: 30%;
+    width: 80%;
   }
   .footerContainer {
     padding-top: 3rem;
@@ -358,22 +659,8 @@
   }
 }
 @media (max-width: 500px) {
-  .banner img {
-    margin-top: -3rem;
-    object-fit: contain;
-    width: 85%;
-    height: 85%;
-  }
-  .bannerText {
-    margin-top: -10rem;
-    font-size: 0.6rem !important;
-  }
 }
-@media (max-height: 600px) {
-  .bannerText {
-    margin-top: -8rem;
-    font-size: 0.6rem !important;
-  }
+@media (max-height: 550px) {
   .contentBox {
     margin: 0;
   }

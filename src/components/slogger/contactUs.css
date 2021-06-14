@@ -1,0 +1,76 @@
+.contactUsPage {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.contactUsImage {
+  height: 50%;
+  width: 40%;
+  margin-left: 15%;
+}
+.contactUsPageHead {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: rgba(0, 71, 0, 0.607);
+  display: flex;
+  align-items: center;
+}
+.contactUsPageHeadIcon {
+  margin-right: 1rem;
+  cursor: pointer;
+}
+.contactPageForm {
+  display: flex;
+  flex-direction: column;
+  width: 200%;
+  margin-left: 20%;
+}
+.contactInput {
+  margin: 1rem;
+  border: none;
+  outline: none;
+  padding: 1rem;
+  border-bottom: 2px solid rgba(0, 71, 0, 0.607);
+  margin-bottom: 0;
+}
+.contactArea {
+  margin: 1rem;
+  border: none;
+  outline: none;
+  padding: 1rem;
+  border-bottom: 2px solid rgba(0, 71, 0, 0.607);
+  margin-bottom: 0;
+  max-height: 5rem;
+}
+.contactSend {
+  background-color: rgba(0, 71, 0, 0.607) !important;
+  color: #fff !important;
+  width: 20% !important;
+  margin: 2rem auto !important;
+}
+.screenContentPara {
+  font-weight: 400;
+  margin-top: 1rem;
+}
+.extensionBtn {
+  background-color: rgba(0, 71, 0, 0.607) !important;
+  color: #fff !important;
+  margin: 2rem auto !important;
+}
+@media screen and (max-width: 600px) {
+  .contactUsPage {
+    flex-direction: column;
+    margin-top: 3rem;
+  }
+  .contactPageForm {
+    margin-left: 10%;
+    width: auto;
+  }
+  .contactUsPageHeadIcon {
+    margin-left: 1rem;
+  }
+}

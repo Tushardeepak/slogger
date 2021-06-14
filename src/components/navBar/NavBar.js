@@ -90,7 +90,7 @@ function NavBar({ page, home, setTabValue }) {
         </NavBarDateBox>
       </NavLinksContainer>
       <NavBarEndContainer>
-        <Notification setTabValue={setTabValue} />
+        {currentUser != null && <Notification setTabValue={setTabValue} />}
 
         {home ? (
           <Button
@@ -190,7 +190,7 @@ const NavBarContainer = styled.div`
 
   h1 {
     font-size: 1.2rem;
-    margin-left: 1rem;
+    margin-left: 2rem;
     color: rgb(1, 63, 42);
     font-family: "Shadows Into Light", cursive;
     ${customMedia.lessThan("smTablet")`
@@ -213,8 +213,8 @@ const NavBarContainer0Page = styled.div`
   margin-bottom: 0.5rem;
   color: #fff;
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
 
   h2 {
     font-size: 1.2rem;

@@ -351,7 +351,7 @@ const TimelineRight = styled.div`
    flex: 0.9;
     height: 93%;
   `};
-  @media (max-height: 600px) {
+  @media (max-height: 550px) {
     height: 85% !important;
   }
 `;
