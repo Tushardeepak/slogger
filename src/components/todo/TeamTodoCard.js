@@ -480,6 +480,7 @@ function TeamTodoCard({
             userName={userName}
             endDate={endDate}
             todo={text}
+            setTabValue={setTabValue}
           />
         )}
       </TodoMainCard>

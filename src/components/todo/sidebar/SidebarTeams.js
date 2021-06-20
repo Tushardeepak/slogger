@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -24,7 +24,9 @@ import AlarmIcon from "@material-ui/icons/AddAlarm";
 import AddIcon from "@material-ui/icons/Add";
 import green from "@material-ui/core/colors/green";
 import CreateIcon from "@material-ui/icons/Create";
-import { Slider } from "@material-ui/core";
+import { Slider, Tab, Tabs } from "@material-ui/core";
+import PropTypes from "prop-types";
+import ChatMemberCard from "../members/ChatMemberCard";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -37,7 +39,78 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     flex: 1,
   },
+  root: {
+    backgroundColor: "transparent",
+    width: "100%",
+  },
+  AppBar: {
+    backgroundColor: "transparent !important",
+    boxShadow: "none",
+    color: "#000",
+    marginTop: "-1rem",
+    paddingTop: "0.5rem",
+  },
+  Tabs: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: 0,
+    minHeight: "1rem",
+  },
+  indicator: {
+    backgroundColor: "rgb(5, 185, 125)",
+    height: 3,
+    borderRadius: "7px",
+    width: "9rem",
+  },
+  label: {
+    fontStyle: "normal",
+    fontWeight: "500",
+    fontSize: "0.6rem",
+    color: "#565656",
+    textTransform: "uppercase",
+    paddingTop: "10px",
+    borderRadius: "10px 10px 0 0",
+  },
+  flexContainer: {
+    borderBottom: "2px solid rgba(196, 196, 196, 0.5)",
+  },
+  btn: {
+    minWidth: "45px",
+  },
 }));
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <div style={{ overflow: "hidden", height: "95%" }} p={1}>
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
@@ -63,6 +136,7 @@ export default function SidebarTeams({ UrlTeamName, userName, discussion }) {
   const [openDeleteSnackBar, setOpenDeleteSnackBar] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [currentTeamName, setCurrentTeamName] = useState("");
+  const [currentChatName, setCurrentChatName] = useState("");
   const [teams, setTeams] = useState([]);
   const [joinedTeams, setJoinedTeams] = useState([]);
   const classes = useStyles();
@@ -75,6 +149,8 @@ export default function SidebarTeams({ UrlTeamName, userName, discussion }) {
   const [loader, setLoader] = useState(false);
   const history = useHistory();
   const { currentUser, logOut } = useAuth();
+  const [chatListWith, setChatListWith] = useState([]);
+  const [value, setValue] = React.useState(0);
 
   const handleSignOut = async () => {
     await logOut();
@@ -207,15 +283,57 @@ export default function SidebarTeams({ UrlTeamName, userName, discussion }) {
     },
   });
 
+  React.useEffect(() => {
+    db.collection("users")
+      .doc(currentUser.uid)
+      .collection("myChats")
+      .onSnapshot((snapshot) => {
+        const list = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          withId: doc.data().withId,
+        }));
+        setChatListWith(list);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    if (UrlTeamName !== undefined) {
+      if (UrlTeamName.split("-")[0] === "chats") {
+        const currName = chatListWith.filter(
+          (list) => list.id === UrlTeamName.split("-")[1]
+        );
+        db.collection("users")
+          .doc(currName[0].withId)
+          .collection("profile")
+          .onSnapshot((snapshot) => {
+            const profile = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              name: doc.data().name,
+            }));
+            setCurrentChatName(profile[0].name);
+          });
+      }
+    }
+  }, [UrlTeamName]);
+
   function labelText(value) {
     return priority < 33 ? "Low" : priority > 66 ? "Top" : "Med";
   }
-
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  const emptyFunction = () => {};
   return (
     <div>
       <div style={{ display: "flex", width: "98%" }}>
         <Button className="addItemsTeams" onClick={handleClickOpen}>
-          <p>{UrlTeamName === undefined ? "Select Team" : UrlTeamName}</p>
+          <p>
+            {UrlTeamName === undefined
+              ? "Select Team"
+              : UrlTeamName.split("-")[0] === "chats"
+              ? currentChatName
+              : UrlTeamName}
+          </p>
         </Button>
         {!discussion && UrlTeamName !== undefined && (
           <Button
@@ -257,6 +375,93 @@ export default function SidebarTeams({ UrlTeamName, userName, discussion }) {
             </Button> */}
           </Toolbar>
         </AppBar>
+        {discussion && (
+          <AppBar className={classes.AppBar} position="static">
+            <Tabs
+              classes={{
+                indicator: classes.indicator,
+                flexContainer: classes.flexContainer,
+              }}
+              variant="fullWidth"
+              scrollButtons="auto"
+              className={classes.Tabs}
+              value={value}
+              onChange={handleChange}
+              aria-label="simple tabs example"
+              style={{ position: "relative" }}
+            >
+              <Tab className={classes.label} label="Teams" {...a11yProps(0)} />
+              <Tab
+                className={classes.label}
+                label="Personal"
+                {...a11yProps(1)}
+              />
+            </Tabs>
+          </AppBar>
+        )}
+        <TabPanel
+          style={{
+            width: "100%",
+            overflowY: "scroll",
+            marginBottom: "0.5rem",
+            height: "100%",
+          }}
+          value={value}
+          index={0}
+        >
+          <div style={{ display: "flex", height: "100%" }}>
+            <TeamTodoLeftLeftBox>
+              <h3 style={{ overflow: "hidden" }}>My Teams</h3>
+              <MyTeamContainer>
+                {teams.map((team) => (
+                  <TeamCard
+                    sidebarClose={emptyFunction}
+                    key={team.id}
+                    id={team.id}
+                    teamName={team.teamName}
+                    UrlTeamName={UrlTeamName}
+                    discussion={true}
+                  ></TeamCard>
+                ))}
+              </MyTeamContainer>
+            </TeamTodoLeftLeftBox>
+            <TeamTodoLeftRightBox>
+              <h3 style={{ overflow: "hidden" }}>Joined Teams</h3>
+              <MyTeamContainer>
+                {joinedTeams.map((team) => (
+                  <TeamCard
+                    sidebarClose={emptyFunction}
+                    key={team.id}
+                    id={team.id}
+                    teamName={team.teamName}
+                    UrlTeamName={UrlTeamName}
+                    discussion={true}
+                  ></TeamCard>
+                ))}
+              </MyTeamContainer>
+            </TeamTodoLeftRightBox>
+          </div>
+        </TabPanel>
+        <TabPanel
+          style={{
+            width: "101%",
+            overflowY: "scroll",
+            marginBottom: "0.5rem",
+            height: "100%",
+          }}
+          value={value}
+          index={1}
+        >
+          {chatListWith?.map((chatWith) => (
+            <ChatMemberCard
+              key={chatWith.id}
+              id={chatWith.withId}
+              chatId={chatWith.id}
+              UrlTeamName={UrlTeamName}
+            />
+          ))}
+        </TabPanel>
+
         <TeamTodoLeftContainer>
           <TeamTodoLeftLeftBox>
             <Button

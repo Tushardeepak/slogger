@@ -77,7 +77,11 @@ export default function AddingTeamModal({ open, handleClose, setSent }) {
             <label>Message</label>
             <textarea name="message" className="input" />
             <div style={{ display: "flex" }}>
-              <button className="addButton" onClick={() => handleClose()}>
+              <button
+                className="addButton"
+                style={{ marginRight: "1rem" }}
+                onClick={() => handleClose()}
+              >
                 Cancel
               </button>
               <input type="submit" value="Send" className="addButton" />

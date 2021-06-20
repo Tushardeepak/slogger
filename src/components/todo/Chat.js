@@ -12,6 +12,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+import MemberProfile from "../profile/MemberProfile";
 
 const useStyles = makeStyles((theme) => ({
   timeBtnChat: {
@@ -31,6 +32,9 @@ function Chat({
   UrlTeamName,
   teamTodoText,
   teamTodoImage,
+  setTabValue,
+  setDiscussionTabValue,
+  personalChat,
 }) {
   const { currentUser } = useAuth();
   var timeDifference = new Date().getTimezoneOffset();
@@ -44,13 +48,22 @@ function Chat({
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
   const classes = useStyles();
   const [showImage, setShowImage] = React.useState(true);
+  const [openMemberProfile, setOpenMemberProfile] = React.useState(false);
 
   const handleDeleteChat = () => {
-    db.collection("teams")
-      .doc(UrlTeamName)
-      .collection("discussion")
-      .doc(id)
-      .delete();
+    if (UrlTeamName.split("-")[0] === "chats") {
+      db.collection("personalChats")
+        .doc(UrlTeamName.split("-")[1])
+        .collection("myChats")
+        .doc(id)
+        .delete();
+    } else {
+      db.collection("teams")
+        .doc(UrlTeamName)
+        .collection("discussion")
+        .doc(id)
+        .delete();
+    }
   };
 
   const checkImage = () => {
@@ -120,15 +133,18 @@ function Chat({
         </>
       ) : (
         <div style={{ display: "flex", width: "100%", alignItems: "center" }}>
-          <Avatar
-            src={senderProfileImage}
-            alt={name}
-            className="senderAvatar"
-          />
+          {!personalChat && (
+            <Avatar
+              src={senderProfileImage}
+              alt={name}
+              className="senderAvatar"
+              onClick={() => setOpenMemberProfile(true)}
+            />
+          )}
           <div
             style={{ display: "flex", flexDirection: "column", width: "100%" }}
           >
-            {currentUser.uid === senderId ? (
+            {currentUser.uid === senderId || personalChat ? (
               ""
             ) : (
               <p className="senderName">{name}</p>
@@ -219,6 +235,16 @@ function Chat({
         )
       ) : (
         ""
+      )}
+      {openMemberProfile && (
+        <MemberProfile
+          open={openMemberProfile}
+          handleClose={() => setOpenMemberProfile(false)}
+          id={senderId}
+          setTabValue={setTabValue}
+          setDiscussionTabValue={setDiscussionTabValue}
+          handleTeamMembersModalClose={() => {}}
+        />
       )}
     </TodoMainCard>
   );

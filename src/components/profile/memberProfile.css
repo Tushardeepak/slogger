@@ -25,10 +25,24 @@
 .memberProfileLinkContainer {
   display: flex;
   width: 100%;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.chatMemberBtn {
+  display: flex !important;
+  align-items: center !important;
+  background-color: rgb(4, 110, 75) !important;
+  color: #fff !important;
+  font-size: 0.7rem !important;
+  font-weight: 300 !important;
+  padding: 0.3rem !important;
+  margin-right: 1rem !important;
+  text-transform: none !important;
 }
 .MemberProfileLinkIcon {
   color: rgb(4, 110, 75);
   margin: 0 0.5rem;
+  font-size: 1.2rem !important;
 }
 .memberProfileBioBox {
   margin: 0.5rem 0.7rem;
@@ -58,7 +72,7 @@
   color: rgb(4, 110, 75);
 }
 .memberEndoTextarea {
-  height: 4rem;
+  height: 3rem;
   width: 94%;
   margin: 0 0.5rem;
   padding: 0.2rem;
@@ -68,6 +82,7 @@
   outline: none;
   background-color: rgb(233, 230, 230);
 }
+
 @media (max-width: 600px) {
   .MemberTopBar {
     flex-direction: column;

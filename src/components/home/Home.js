@@ -277,6 +277,7 @@ function Home(props) {
               UrlTeamName={props.match.params.teamName}
               userName={userName}
               profileImage={profileImage}
+              setTabValue={setValue}
             />
           </TabPanel>
           <TabPanel value={value} index={4}>
@@ -313,7 +314,6 @@ function Home(props) {
             home={true}
           />
         )}
-        
       </HomeContainer>
     </div>
   );

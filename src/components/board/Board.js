@@ -110,7 +110,7 @@ function Board({ urlTeamName, userName, setTabValue, profileImage }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  return urlTeamName === undefined ? (
+  return urlTeamName === undefined || urlTeamName.split("-")[0] === "chats" ? (
     <div
       style={{
         height: "89%",

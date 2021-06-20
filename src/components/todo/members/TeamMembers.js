@@ -26,6 +26,7 @@ export default function TeamMembers({
   userName,
   todo,
   endDate,
+  setTabValue,
 }) {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
@@ -180,6 +181,8 @@ export default function TeamMembers({
                     id={memberId.id}
                     setSelected={setSelected}
                     selected={selected}
+                    setTabValue={setTabValue}
+                    handleTeamMembersModalClose={handleClose}
                   />
                 ))
               )}

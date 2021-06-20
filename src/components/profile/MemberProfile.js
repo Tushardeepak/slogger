@@ -4,7 +4,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import { Avatar, Fade, useMediaQuery, useTheme } from "@material-ui/core";
 import { db } from "../../firebase";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -14,12 +13,21 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import "./memberProfile.css";
 import { useAuth } from "../../context/AuthContext";
 import EndoCards from "./EndoCards";
+import ChatIcon from "@material-ui/icons/Chat";
+import { useHistory } from "react-router";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction="up" ref={ref} {...props} />;
 });
 
-export default function MemberProfile({ open, handleClose, id }) {
+export default function MemberProfile({
+  open,
+  handleClose,
+  id,
+  setTabValue,
+  setDiscussionTabValue,
+  handleTeamMembersModalClose,
+}) {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
   const [profileImage, setProfileImage] = useState("");
@@ -35,6 +43,7 @@ export default function MemberProfile({ open, handleClose, id }) {
   const [endoText, setEndoText] = useState("");
   const [allEndoIdList, setAllEndoIdList] = useState([]);
   const { currentUser } = useAuth();
+  const history = useHistory();
 
   const handleSubmit = () => {
     if (endoText !== "") {
@@ -98,6 +107,40 @@ export default function MemberProfile({ open, handleClose, id }) {
       });
   }, []);
 
+  const handleOpenChats = () => {
+    db.collection("personalChats")
+      .doc(`${currentUser.uid + id}`)
+      .set({
+        chatName: `${currentUser.uid + id}`,
+      });
+
+    db.collection("users")
+      .doc(currentUser.uid)
+      .collection("myChats")
+      .doc(`${currentUser.uid + id}`)
+      .set(
+        {
+          withId: id,
+        },
+        { merge: true }
+      );
+    db.collection("users")
+      .doc(id)
+      .collection("myChats")
+      .doc(`${currentUser.uid + id}`)
+      .set(
+        {
+          withId: currentUser.uid,
+        },
+        { merge: true }
+      );
+    setTabValue(3);
+    setDiscussionTabValue(1);
+    handleTeamMembersModalClose();
+    handleClose();
+    history.push(`/home/chats-${currentUser.uid + id}`);
+  };
+
   return (
     <div>
       <Dialog
@@ -123,7 +166,8 @@ export default function MemberProfile({ open, handleClose, id }) {
             <div
               style={{
                 width: "100%",
-                height: !isSmall ? "550px" : "400px",
+                //height: !isSmall ? "550px" : "400px",
+                height: "100%",
                 overflowY: "scroll",
               }}
             >
@@ -140,7 +184,6 @@ export default function MemberProfile({ open, handleClose, id }) {
                 </div>
               </div>
               <div className="memberProfileLinkContainer">
-                <div style={{ flex: 1 }}></div>
                 {!facebook === "" || !facebook === "NoLink" ? (
                   ""
                 ) : (
@@ -169,6 +212,22 @@ export default function MemberProfile({ open, handleClose, id }) {
                     <LinkedInIcon className="MemberProfileLinkIcon" />
                   </a>
                 )}
+                <div style={{ flex: 1 }}></div>
+
+                <Button
+                  className="chatMemberBtn"
+                  onClick={() => handleOpenChats()}
+                >
+                  <ChatIcon
+                    style={{
+                      color: "#fff",
+                      height: "1rem",
+                      width: "1rem",
+                      marginRight: "0.5rem",
+                    }}
+                  />
+                  Chat
+                </Button>
               </div>
               {bio !== "" && bio !== "NoBio" && (
                 <div className="memberProfileBioBox">

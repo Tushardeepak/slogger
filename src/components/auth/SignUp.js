@@ -119,6 +119,10 @@ function SignUp() {
         history.push("/home");
       }
     }
+
+    if (history.location.search !== "") {
+      setAuthToggle(true);
+    }
   }, []);
 
   return (
@@ -158,6 +162,31 @@ function SignUp() {
                   {pleaseVerified
                     ? "Please verify account before sign in"
                     : "Check your mail for verification"}
+                </h4>
+              )}
+              {userEmailVerified ? (
+                <h4
+                  style={{
+                    color: "rgb(5, 185, 125)",
+                    padding: "0.5rem",
+                    width: "100%",
+                    textAlign: "center",
+                  }}
+                >
+                  {pleaseVerified
+                    ? "Please verify account before sign in"
+                    : "Check your mail for verification"}
+                </h4>
+              ) : (
+                <h4
+                  style={{
+                    color: "rgb(5, 185, 125)",
+                    padding: "0.5rem",
+                    width: "100%",
+                    textAlign: "center",
+                  }}
+                >
+                  Please sign in again
                 </h4>
               )}
 
@@ -246,7 +275,14 @@ function SignUp() {
                 Register
               </span>
             </p>
-            <p style={{ color: "rgba(3, 185, 124, 0.608)", padding: "0 3rem" }}>
+            <p
+              style={{
+                color: "rgba(3, 185, 124, 0.608)",
+                padding: "0 3rem",
+                cursor: "pointer",
+              }}
+              onClick={() => history.push("/help")}
+            >
               Need Help?
             </p>
           </div>

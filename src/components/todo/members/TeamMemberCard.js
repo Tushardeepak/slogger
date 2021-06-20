@@ -4,7 +4,13 @@ import { db } from "../../../firebase";
 import PuffLoader from "react-spinners/PuffLoader";
 import MemberProfile from "../../profile/MemberProfile";
 
-function TeamMemberCard({ id, setSelected, selected }) {
+function TeamMemberCard({
+  id,
+  setSelected,
+  selected,
+  setTabValue,
+  handleTeamMembersModalClose,
+}) {
   const [member, setMember] = useState({});
   const [loader, setLoader] = useState(false);
   const [openMemberModal, setOpenMemberModal] = useState(false);
@@ -35,6 +41,8 @@ function TeamMemberCard({ id, setSelected, selected }) {
       setSelected(_checkList.filter((check) => check !== memberId));
     }
   };
+
+  const emptyFunction = () => {};
 
   return loader ? (
     <PuffLoader loading={loader} color="#2ec592" size={30} />
@@ -89,6 +97,9 @@ function TeamMemberCard({ id, setSelected, selected }) {
           open={openMemberModal}
           handleClose={() => setOpenMemberModal(false)}
           id={id}
+          setTabValue={setTabValue}
+          setDiscussionTabValue={emptyFunction}
+          handleTeamMembersModalClose={handleTeamMembersModalClose}
         />
       )}
     </div>

@@ -8,7 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { db } from "../../firebase";
 import { useAuth } from "../../context/AuthContext";
 import firebase from "firebase";
-import { Fade } from "@material-ui/core";
+import { Fade, useMediaQuery, useTheme } from "@material-ui/core";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction="" ref={ref} {...props} />;
@@ -24,6 +24,8 @@ export default function FeedbackModal({
 }) {
   const [feedbackText, setFeedbackText] = useState("");
   const { currentUser } = useAuth();
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleSend = () => {
     if (feedbackText !== "") {
@@ -43,6 +45,7 @@ export default function FeedbackModal({
       open={open}
       TransitionComponent={Transition}
       keepMounted
+      fullScreen={!isSmall}
       onClose={handleClose}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"

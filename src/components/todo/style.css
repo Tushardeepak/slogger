@@ -365,6 +365,7 @@
   height: 2rem !important;
   width: 2rem !important;
   margin-right: 0.5rem;
+  cursor: pointer !important;
 }
 .helpNeeded {
   font-size: 9px !important;

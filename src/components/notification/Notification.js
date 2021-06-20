@@ -122,9 +122,9 @@ export default function Notification({ setTabValue }) {
     toggleDrawer(anchor, false);
   };
 
-  const handleMemberOpen = (MemberId, id) => {
+  const handleMemberOpen = (MemberId, id, teamName) => {
     setCurrMemberId(MemberId);
-    setOpenMemberModal(true);
+    //setOpenMemberModal(true);
     db.collection("users")
       .doc(currentUser.uid)
       .collection("notifications")
@@ -135,8 +135,13 @@ export default function Notification({ setTabValue }) {
         },
         { merge: true }
       );
+
+    setTabValue(1);
+    history.push(`/home/${teamName}`);
     toggleDrawer(anchor, false);
   };
+
+  const emptyFunction = () => {};
 
   const list = (anchor) => (
     <div
@@ -257,7 +262,9 @@ export default function Notification({ setTabValue }) {
               <div
                 key={noti.id}
                 className="notiContainer"
-                onClick={() => handleMemberOpen(noti.memberJoinId, noti.id)}
+                onClick={() =>
+                  handleMemberOpen(noti.memberJoinId, noti.id, noti.teamName)
+                }
               >
                 <div className="notiHead">
                   <p className={noti.read ? "notiRead" : "notiBadgeJoin"}>
@@ -300,6 +307,8 @@ export default function Notification({ setTabValue }) {
           open={openMemberModal}
           handleClose={() => setOpenMemberModal(false)}
           id={currMemberId}
+          setTabValue={emptyFunction}
+          setDiscussionTabValue={emptyFunction}
         />
       )}
     </div>

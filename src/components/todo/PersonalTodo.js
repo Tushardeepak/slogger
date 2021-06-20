@@ -860,8 +860,8 @@ const NoTodo = styled.div`
   padding-top: 2rem;
   .noTodo {
     object-fit: contain;
-    height: 40%;
-    width: 50%;
+    height: 25%;
+    width: 35%;
   }
 `;
 
