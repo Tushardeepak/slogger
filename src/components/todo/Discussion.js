@@ -23,6 +23,7 @@ import SendIcon from "@material-ui/icons/Send";
 import SidebarTeams from "./sidebar/SidebarTeams";
 import selectTeam from "../../assets/images/selectTeam.svg";
 import ChatMemberCard from "./members/ChatMemberCard";
+import selectMsg from "../../assets/images/selectMsg.svg";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -457,7 +458,7 @@ function Discussion({ UrlTeamName, userName, profileImage, setTabValue }) {
                   height: "100%",
                 }}
               >
-                No messages...
+                <img style={{ height: "30%" }} src={selectMsg} />
               </div>
             ) : UrlTeamName.split("-")[0] === "chats" ? (
               [...personalChatList]

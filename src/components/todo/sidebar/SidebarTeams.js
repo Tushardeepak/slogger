@@ -296,25 +296,33 @@ export default function SidebarTeams({ UrlTeamName, userName, discussion }) {
       });
   }, []);
 
+  const [currId, setCurrId] = React.useState([]);
+
   React.useEffect(() => {
     if (UrlTeamName !== undefined) {
       if (UrlTeamName.split("-")[0] === "chats") {
-        const currName = chatListWith.filter(
+        const temp = chatListWith.filter(
           (list) => list.id === UrlTeamName.split("-")[1]
         );
-        db.collection("users")
-          .doc(currName[0].withId)
-          .collection("profile")
-          .onSnapshot((snapshot) => {
-            const profile = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              name: doc.data().name,
-            }));
-            setCurrentChatName(profile[0].name);
-          });
+        setCurrId(temp);
       }
     }
   }, [UrlTeamName]);
+
+  React.useEffect(() => {
+    if (currId.length !== 0) {
+      db.collection("users")
+        .doc(currId[0].withId)
+        .collection("profile")
+        .onSnapshot((snapshot) => {
+          const profile = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            name: doc.data().name,
+          }));
+          setCurrentChatName(profile[0].name);
+        });
+    }
+  }, [currId.length]);
 
   function labelText(value) {
     return priority < 33 ? "Low" : priority > 66 ? "Top" : "Med";
