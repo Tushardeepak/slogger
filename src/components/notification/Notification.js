@@ -17,7 +17,7 @@ import MemberProfile from "../profile/MemberProfile";
 
 const useStyles = makeStyles({
   list: {
-    width: 350,
+    width: 400,
     "@media (max-width:600px)": {
       width: "100vw",
     },

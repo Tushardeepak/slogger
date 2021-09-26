@@ -72,6 +72,7 @@
   font-size: x-small;
 }
 .feedBackBtn {
+  width:20% !important;
   font-size: 0.5rem !important;
   text-transform: none !important;
   background-color: rgba(33, 153, 113, 0.16) !important;

@@ -166,7 +166,7 @@ function SloggerNew() {
               <p className="bannerNavP4">
                 Pricing{" "}
                 <span>
-                  Your lucky! Slogger is free for now, We are still in
+                  Slogger is free for now, We are still in
                   development phase. So no charges will be asked for any
                   services.
                 </span>

@@ -236,21 +236,25 @@
   height: auto;
   position: relative;
   margin-top: 5rem;
+  display: flex;
+  justify-content: space-between;
 }
 .sloggerSectionImg {
   object-fit: contain;
-  position: absolute;
+  /* position: absolute;
   width: 50%;
   height: 100%;
-  right: -4rem;
+  right: -4rem; */
+  width: 40%;
   bottom: 0;
 }
 .sloggerSectionImgReverse {
   object-fit: contain;
-  position: absolute;
+  /* position: absolute;
   width: 50%;
   height: 100%;
-  left: -2rem;
+  left: -2rem; */
+  width: 40%;
   bottom: 0;
 }
 .sloggerSectionHead {

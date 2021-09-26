@@ -15,6 +15,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import CustomTooltip from "../CustomTooltip";
 import signUpLoader from "../../assets/images/signUpLoader.gif";
 import firebase from "firebase";
+import SnackBar from "../snackbar/SnackBar";
 
 function SignUp() {
   const [authToggle, setAuthToggle] = useState(false);
@@ -33,6 +34,8 @@ function SignUp() {
   const history = useHistory();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.up("sm"));
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarText, setSnackbarText] = useState("");
 
   const handleChange = (set, value) => {
     set(value);
@@ -54,6 +57,7 @@ function SignUp() {
         const USER = await signUp(email, password);
         if (USER.user.emailVerified) {
           setUserEmailVerified(false);
+          setOpenSnackbar(false);
           db.collection("users").doc(USER?.uid).collection("profile").add({
             email: email,
             // firstName: firstName,
@@ -64,6 +68,8 @@ function SignUp() {
         } else {
           setLoader(false);
           setUserEmailVerified(true);
+          setOpenSnackbar(true);
+          setSnackbarText("Check your mail for verification");
           USER.user.sendEmailVerification();
           setAuthToggle(true);
         }
@@ -71,9 +77,11 @@ function SignUp() {
         console.log(error);
         setLoader(false);
         if (error.code === "auth/email-already-in-use") {
+          setOpenSnackbar(true);
           setAuthToggle(true);
           setUserEmailVerified(true);
           setPleaseVerified(true);
+          setSnackbarText("This email is already in use");
         }
       }
     }
@@ -86,11 +94,17 @@ function SignUp() {
       try {
         setLoader(true);
         const USER = await signIn(email, password);
-        if (USER.user.emailVerified) {
+        const user = firebase.auth().currentUser;
+        user.reload().then(() => {
+          console.log(user);
+        });
+        // if (USER.user.emailVerified) {
           history.push("/home");
-        } else {
-          setPleaseVerified(true);
-        }
+        // } else {
+        //   setPleaseVerified(true);
+        //   setSnackbarText("Please verify account before sign in");
+        //   setOpenSnackbar(true);
+        // }
         setLoader(false);
       } catch (error) {
         console.log(error);
@@ -122,6 +136,8 @@ function SignUp() {
 
     if (history.location.search !== "") {
       setAuthToggle(true);
+      setOpenSnackbar(true);
+      setSnackbarText("Please sign in again");
     }
   }, []);
 
@@ -150,7 +166,7 @@ function SignUp() {
             {/* <img src={signUpImage} /> */}
             <h2 onClick={() => history.push("/")}>SLOGGER</h2>
             <div className="signUpFormBottom">
-              {userEmailVerified && (
+              {/* {userEmailVerified && (
                 <h4
                   style={{
                     color: "rgb(5, 185, 125)",
@@ -163,8 +179,8 @@ function SignUp() {
                     ? "Please verify account before sign in"
                     : "Check your mail for verification"}
                 </h4>
-              )}
-              {userEmailVerified ? (
+              )} */}
+              {/* {userEmailVerified ? (
                 <h4
                   style={{
                     color: "rgb(5, 185, 125)",
@@ -188,7 +204,7 @@ function SignUp() {
                 >
                   Please sign in again
                 </h4>
-              )}
+              )} */}
 
               <CustomTooltip
                 title="Alaric : Enter your email."
@@ -402,6 +418,14 @@ function SignUp() {
             </p>
           </div>
         </SignUpBox>
+      )}
+      {openSnackbar && (
+        <SnackBar
+          open={openSnackbar}
+          handleClose={() => setOpenSnackbar(false)}
+          text={snackbarText}
+          home={true}
+        />
       )}
     </SignUpContainer>
   );
