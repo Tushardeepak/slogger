@@ -325,7 +325,7 @@ function Discussion({ UrlTeamName, userName, profileImage, setTabValue }) {
                 style={{ position: "relative" }}
               >
                 <Tab
-                  onClick={() => setChatListWith([])}
+                  onClick={() => setPersonalChatList([])}
                   className={classes.label}
                   label="Teams"
                   {...a11yProps(0)}
