@@ -1187,7 +1187,7 @@ const TeamTodoRightContainer = styled.div`
   }
   @media (max-width: 600px) {
     .rightDownContainer {
-      height: 37% !important;
+      height: 55% !important;
     }
   }
   @media (min-height: 800px) {
