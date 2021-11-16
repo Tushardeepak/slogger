@@ -570,6 +570,7 @@
   }
   .sloggerSections {
     margin-top: 12rem;
+    flex-direction:column-reverse;
   }
   .sloggerSectionHead {
     margin-left: 0rem;
@@ -581,7 +582,7 @@
   }
   .sloggerSectionImg {
     height: 30%;
-    width: 50%;
+    width: 70%;
     left: 50%;
     top: 100%;
   }

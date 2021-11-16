@@ -561,6 +561,7 @@ const SignUpForm = styled.div`
     margin-top: 3rem;
     color: #008055;
     font-family: "Shadows Into Light", cursive;
+    cursor:pointer;
   }
 
   .signUpFormBottom {
